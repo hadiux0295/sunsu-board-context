@@ -1,0 +1,6 @@
+{
+  "name": "sunsu-board-context",
+  "scripts": {
+    "build": "node build.js"
+  }
+}

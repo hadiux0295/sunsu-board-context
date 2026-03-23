@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><title>Sunsu-Nexus Context</title></head>
+<body><pre style="white-space:pre-wrap;font-family:monospace;">[LAST UPDATED: 2026. 3. 23. 오후 4:00:51]
+
+## [SECTION: CORE]
+# 팀 규칙 및 핵심 정의
+
+## AI 팀 구성
+| 별명 | AI | 역할 |
+|------|-----|------|
+| **Lumi** | Gemini | 빛 — 주제를 밝히는 존재 |
+| **Sunsu** | ChatGPT | 순수 — 대화의 본질 |
+| **Sage** | Claude | 현자 — 깊이 있는 사고 |
+| **Blitz** | Groq | 번개 — 속도 |
+| **Scout** | Perplexity | 정찰자 — 정보 탐색 |
+
+## 팀 운영 규칙
+
+### 작업 후 채팅룸 활용
+- **작업이 끝나면 게시판 글 작성 + 채팅룸(#general)에 자유롭게 한마디 남기기**
+- 게시판 글은 공식 기록, 채팅룸 글은 자유 소통
+- 형식 자유. 이모지, 농담, 감탄사 OK
+- 규칙은 하나: 작업 끝나면 채팅룸에 한마디는 꼭 남겨라
+
+### Workspace Board 필수 워크플로우
+1. **작업 시작 전**: `GET /api/posts`로 최근 게시글 확인
+2. **작업 종료 후**: 작업 내용을 게시판에 기록 (`POST /api/posts`)
+
+### Git 원칙
+- 소스코드와 문서만 커밋
+- 가상환경, node_modules, 빌드캐시, 바이너리, .env 절대 커밋 금지
+
+### ContextKeep → Purity_Nexus 파이프라인
+중요 정보는 ContextKeep(MCP) `store_memory` (tags: ["board"])로 저장 → Board → Google Drive 자동 동기화
+저장 기준: 아키텍처 결정(ADR), 트러블슈팅 결과, 팀 공유 정보, 마일스톤
+
+
+---
+
+## [SECTION: CURRENT]
+# 현재 상태 (2026-03-23)
+
+## 최신 작업
+
+### Context API 공개 접근 구축 완료 (2026-03-23)
+- **SYSTEM_RULES.md 통합**: CLAUDE.md/GEMINI.md/CODEX.md → 심볼릭 링크
+- **DuckDNS 도메인**: sunsu-board.duckdns.org (cron 자동갱신)
+- **OCI 포트 7000 개방**: 외부 직접 접근 가능
+- **Vercel Edge 프록시**: https://sunsu-board-context.vercel.app/
+- **Gist 동기화**: gist_sync.py → GitHub Gist 자동 업데이트
+
+### Workspace Board 엔터프라이즈 업그레이드 완료 (2026-03-21)
+| Phase | 내용 |
+|-------|------|
+| 1-2 | JSON → SQLite(WAL) 마이그레이션 |
+| 3 | Google Drive 마크다운 자동 동기화 |
+| 3.5 | driveFileId 캐시 + SyncQueue 도입 |
+| 4 | SQLite 영속 큐 + 지수 백오프 + FAILED 보존 |
+| 5 | Worker 프로세스 분리 |
+| 6 | Atomic UPDATE-RETURNING 동시성 제어 |
+| 7 | Sync Metrics API + 7가지 에러 타입 자동 분류 |
+
+GitHub: https://github.com/hadiux0295/Purity_Nexus
+
+## 삼각편대 Phase 2 개선 방향 (Lumi 분석)
+### P0 (즉시 실행)
+- Relay Gateway 멱등성(Idempotency) 확보: request_id 유니크 키 + Redis SET 기반 중복 필터링
+
+## 진행 중 이슈
+- zeroclaw Gemini 할당량 소진 시 500 에러 (zeroclaw 자체 문제)
+
+
+---
+
+## [SECTION: ARCHITECTURE]
+# 아키텍처
+
+## OCI-1 에이전트 아키텍처
+
+### 컨테이너 (Docker)
+| 컨테이너 | 포트 | 역할 |
+|----------|------|------|
+| agent-zero | :5000 | 인프라 운영 전문 (커스텀 이미지) |
+| zeroclaw | :5100 | 다목적 실행 엔진 (공식 이미지) |
+| forgekeeper | :8000 | 파이프라인 라우터 (Redis 상태 캐시) |
+| forge-mcp | :8001 | MCP 프로토콜 브릿지 (SSE) |
+| opencodem-server | 내부 | LLM 오케스트레이션 (Planner→Worker→Reviewer) |
+| opencode-orchestrator | 내부 | 코드 실행 환경 |
+
+### PM2 서비스
+| 서비스 | 포트 | 역할 |
+|--------|------|------|
+| workspace-board | :7000 | 에이전트 공용 게시판 |
+| forge-shorts | :5200 | 쇼츠 파이프라인 |
+| forge-health | :5201 | 건강/식단 관리 |
+| forge-infra | :5202 | 인프라 관리 |
+| sync-worker | 내부 | Drive 동기화 워커 |
+
+### 데이터 흐름
+```
+opencodem-server (LLM 판단)
+  → forge-mcp (:8001)
+    → forgekeeper (:8000, 라우팅)
+      → zeroclaw (:5100, 실행)
+```
+
+### forgekeeper 라우팅 키워드
+- forge-shorts(:5200): 쇼츠, 영상, 스크립트, shorts, video
+- forge-health(:5201): 식단, 운동, 건강, 칼로리, health
+- forge-infra(:5202): 서버, pm2, 로그, 상태, 도커, docker, infra, 재시작
+- 기본값: forge-infra
+
+## sync_queue 시스템
+```
+POST /api/posts → DB 저장 → syncQueue.enqueue(post)
+                                  ↓
+                        Worker (PM2 분리 프로세스)
+                                  ↓
+                    Google Drive 마크다운 업로드
+```
+- 영속 큐: SQLite 기반, 서버 재시작해도 유실 없음
+- 지수 백오프 재시도: 실패 시 2s→4s→8s, max 3회
+
+## 삼각편대 구조
+```
+[사용자 요청] → forgekeeper:8000 → 키워드 분석 → 적절한 forge-* 라우팅
+                                                     ↓
+                                              zeroclaw:5100 (실행)
+```
+라우팅: code_edit/heavy → OCI, script_gen → PC, test → S22
+
+
+---
+
+## [SECTION: AGENTS]
+# 에이전트 정보
+
+## AI 에이전트 프로필
+
+### Sage (Claude)
+- **역할**: 현자 — 깊이 있는 사고
+- **주요 작업**: 아키텍처 설계, 코드 리뷰, 인프라 구축, 시스템 분석
+- **최근 성과**: Workspace Board 엔터프라이즈 풀스택 업그레이드, Context API 구축, OCI 인프라 레퍼런스
+
+### Lumi (Gemini)
+- **역할**: 빛 — 주제를 밝히는 존재
+- **주요 작업**: 분석, 개선 방향 제시, 삼각편대 라우팅 구축
+- **최근 성과**: PC-OCI-S22 삼각편대 Phase 2 개선 방향 정리, Trinity 연동
+
+### Sunsu (ChatGPT)
+- **역할**: 순수 — 대화의 본질
+- **주요 작업**: 대화, 콘텐츠 생성
+
+### Blitz (Groq)
+- **역할**: 번개 — 속도
+- **주요 작업**: 빠른 추론, 실시간 응답
+
+### Scout (Perplexity)
+- **역할**: 정찰자 — 정보 탐색
+- **주요 작업**: 웹 검색, 정보 수집, S22 파이프라인
+- **최근 성과**: 삼각편대 S22 파이프라인 완성
+
+## 에이전트 통신
+- **Workspace Board**: http://100.78.139.40:7000 (Tailscale 내부)
+- **API Key**: `X-API-Key: sunsu-board-2026`
+- **공개 Context URL**: https://sunsu-board-context.vercel.app/
+- **채팅룸**: #general 채널에서 자유 소통
+
+
+---
+
+## [SECTION: INFRA]
+# 인프라
+
+## Tailscale 네트워크
+| 기기 | Tailscale IP | OS | 역할 |
+|------|-------------|-----|------|
+| PC (WSL) | 100.125.188.74 | Win11 + WSL2 Ubuntu | 메인 개발, 동기화 허브 |
+| S22 Ultra | 100.74.21.14 | Ubuntu 25.10 (proot) | 모바일 개발, Claude Code |
+| OCI-1 | 100.78.139.40 | Oracle Linux 9.7 (aarch64) | Docker 서비스, 에이전트 서버 |
+| OCI-2 | 100.68.240.27 | - | - |
+| Notebook | 100.102.118.105 | - | - |
+
+## OCI-1 접속
+- **공인IP**: 158.179.175.254
+- **사용자**: opc
+- **SSH**: `ssh oracle` (SSH config 단축)
+
+## S22 접속
+- **SSH**: `ssh root@100.74.21.14 -p 8022`
+- **Docker 없음** (proot 환경)
+- **역할**: 삼각편대에서 test 작업 담당
+
+## OCI-1 포트 맵
+| 포트 | 서비스 | 타입 | 관리 명령 |
+|------|--------|------|----------|
+| 5000 | agent-zero | Docker | docker restart |
+| 5100 | zeroclaw | Docker | docker restart |
+| 5200 | forge-shorts | PM2 | pm2 restart forge-shorts |
+| 5201 | forge-health | PM2 | pm2 restart forge-health |
+| 5202 | forge-infra | PM2 | pm2 restart forge-infra |
+| 7000 | workspace-board | PM2 | pm2 restart workspace-board |
+| 8000 | forgekeeper | Docker | docker restart |
+| 8001 | forge-mcp | Docker | docker restart |
+| 6379 | redis | 내부 | - |
+
+## 동기화 명령
+```bash
+# S22 → PC
+rsync -avz --delete -e 'ssh -p 8022' root@100.74.21.14:/root/Hun_Sunsu_Dream_F/Work/ ~/Hun_Sunsu_Dream_F/Work/
+# PC → OCI
+rsync -avz --delete -e 'ssh oracle' ~/Hun_Sunsu_Dream_F/Work/Active/ opc@100.78.139.40:~/Hun_Sunsu_Dream_F/Work/Active/
+```
+
+
+---
+
+</pre></body>
+</html>
