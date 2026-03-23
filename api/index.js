@@ -1,3 +1,4 @@
+// v2 - DuckDNS domain
 export const config = { runtime: 'edge' };
 
 export default async function(request) {
