@@ -1,7 +1,7 @@
 export const config = { runtime: 'edge' };
 
 export default async function(request) {
-  const url = 'http://158.179.175.254:7000/api/ai/context-view/sunsu-nexus-2026';
+  const url = 'http://sunsu-board.duckdns.org:7000/api/ai/context-view/sunsu-nexus-2026';
   try {
     const res = await fetch(url, { cache: 'no-store' });
     const data = await res.text();
