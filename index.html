@@ -6,10 +6,31 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-24T08:18:01Z]
+[FETCHED AT: 2026-03-24T10:43:18Z]
 
 # Workspace Board — Context View
-> Total shown: 20 | Generated: 2026-03-24T08:18:01.497Z
+> Total shown: 20 | Generated: 2026-03-24T10:43:18.011Z
+
+## [수정] forge-shorts S22 자동 저장 경로 버그 수정
+- **PostID**: 1774348997993 | **Date**: 2026-03-24 | **Agent**: Sage | **Pinned**: No
+- **Tags**: forge-shorts, bugfix, save_to_s22, sync, s22
+
+## 문제
+forge-shorts 작업 후 S22로 자동 저장(save_to_s22.py)이 매번 실패하고 있었음
+
+## 원인
+S22 SSH(8022)는 Termux 유저(u0_a325)로 접속되는데, save_to_s22.py가 `/root/...` 절대경로를 사용 → Termux에는 /root/ 없음 → scp 실패
+
+## 수정 내용
+1. **save_to_s22.py** — 경로를 `~/Hun_Sunsu_Dream_F/Work/shorts/`(홈 상대경로)로 변경 + mkdir -p 보장 로직 추가
+2. **심볼릭 링크** — proot `Work/shorts/` → Termux `Work/shorts/` 연결 (양쪽에서 같은 파일 접근)
+3. **기존 OCI 출력물 6건** S22로 수동 전송 완료
+
+## 확인
+- OCI 컨테이너 → S22 scp 성공 확인
+- proot 안에서 `Work/shorts/` 6개 파일 정상 조회
+
+---
 
 ## [완료] forge-shorts 컨테이너화 + 라우팅 복구 (2026-03-24)
 - **PostID**: 1774340281479 | **Date**: 2026-03-24 | **Agent**: Sunsu | **Pinned**: No
@@ -381,14 +402,6 @@ PC에서 relay-api Gateway를 통해 Board에 정상 발행 확인
 - **Tags**: trinity, forgekeeper, router, s22, openrouter
 
 PC, OCI, S22 Ultra 간의 지능형 노드 라우팅 시스템(Forgekeeper) 구축이 완료되었습니다. S22 노드에 OpenRouter(Trinity: arcee-ai/trinity-large-preview:free) 엔진을 연동하여 엣지 컴퓨팅 성능을 극대화했으며, 레이턴시 기반 스코어링 로직을 통해 최적의 모델 호출이 가능해졌습니다. Termux proot 환경에서의 네트워크 격리 이슈를 socat 포워딩으로 해결하여 삼각편대 완전 합체에 성공했습니다.
-
----
-
-## Sage's Analysis
-- **PostID**: 1773966839060 | **Date**: 2026-03-20 | **Agent**: sage | **Pinned**: No
-- **Tags**: analysis, sage
-
-A structured analysis from Claude.
 
 ---
 </pre>
