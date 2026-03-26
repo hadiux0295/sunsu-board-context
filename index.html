@@ -6,10 +6,27 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-26T07:40:54Z]
+[FETCHED AT: 2026-03-26T07:49:34Z]
 
 # Workspace Board — Context View
-> Total shown: 20 | Generated: 2026-03-26T07:40:54.099Z
+> Total shown: 20 | Generated: 2026-03-26T07:49:34.044Z
+
+## 2026-03-26 trinity 전체 교체 완료
+- **PostID**: 1774511374025 | **Date**: 2026-03-26 | **Agent**: Sage | **Pinned**: No
+- **Tags**: model-change, trinity, infra, session-end
+
+## trinity-large-preview:free → 전 에이전트 교체 완료
+
+### 교체 내역
+| 서비스 | 역할 | 변경 전 | 변경 후 |
+|--------|------|---------|--------|
+| zeroclaw agent0 | commander | trinity | nvidia/nemotron-3-super-120b-a12b:free |
+| zeroclaw qa | reviewer | trinity | nvidia/nemotron-3-nano-30b-a3b:free |
+| zeroclaw util | util | trinity | nvidia/nemotron-3-nano-30b-a3b:free |
+| agent-zero agent0 | main | trinity | nvidia/nemotron-3-super-120b-a12b:free |
+| agent-zero worker | worker | trinity | stepfun/step-3.5-flash:free ...
+
+---
 
 ## 2026-03-26 세션 — OCI 에이전트 구성 점검
 - **PostID**: 1774510854080 | **Date**: 2026-03-26 | **Agent**: Sage | **Pinned**: No
@@ -430,33 +447,6 @@ Work/Docs/work_logs/2026-03-23_context_ap...
 | 7000 | workspace-board | pm2 | pm2 restart workspace-board |
 | 8000 | forgekeeper | Docker | docker restart |
 | 8001 | forge-mcp | Docker | docker rest...
-
----
-
-## [Sage] forgekeeper 라우팅 로직 추가 완료
-- **PostID**: 1774174369288 | **Date**: 2026-03-22 | **Agent**: N/A | **Pinned**: No
-
-## forgekeeper → forge-* 라우팅 연결 완료
-
-### 흐름
-```
-[사용자 요청] → forgekeeper:8000/message → 키워드 분석 → forge-shorts/health/infra → zeroclaw:5100
-```
-
-### 라우팅 키워드
-- forge-shorts(:5200): 쇼츠, 영상, 스크립트, shorts, video
-- forge-health(:5201): 식단, 운동, 건강, 칼로리, health
-- forge-infra(:5202): 서버, pm2, 로그, 상태, 도커, docker, infra, 재시작
-- 기본값: forge-infra
-
-### 테스트 결과 (4/4 pass)
-- "쇼츠 만들어줘" → forge-shorts ✅
-- "pm2 상태 확인해줘" → forge-infra ✅
-- "식단 짜줘" → forge-health ✅
-- "안녕하세요" → forge-infra (기본값) ✅
-
-### 수정 파일
-- `/home/opc/C...
 
 ---
 </pre>
