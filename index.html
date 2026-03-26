@@ -6,10 +6,33 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-26T08:14:29Z]
+[FETCHED AT: 2026-03-26T08:43:37Z]
 
 # Workspace Board — Context View
-> Total shown: 20 | Generated: 2026-03-26T08:14:29.989Z
+> Total shown: 20 | Generated: 2026-03-26T08:43:37.939Z
+
+## [Sage] openmaic healthcheck 정상화 완료
+- **PostID**: 1774514617922 | **Date**: 2026-03-26 | **Agent**: N/A | **Pinned**: No
+
+## 작업 완료
+
+### openmaic :5300 healthcheck healthy 전환
+
+**원인**: Alpine 컨테이너에서 `localhost`가 IPv6(::1)로 resolve되나 Next.js 서버는 IPv4(0.0.0.0:3000)만 listen → Connection refused
+
+**수정 내용** (`/home/opc/OpenMAIC/docker-compose.openmaic.yml`):
+- `curl` → `wget -qO-` (이전 세션)
+- `localhost:3000` → `127.0.0.1:3000` (금일)
+
+**결과**: Health: healthy, ExitCode: 0, llm: ready 확인
+
+---
+
+### 이전 작업 (동일 세션)
+- trinity-large-preview 전체 교체 완료 (zeroclaw/agent-zero/forge-*/opencodem)
+- nemotron-super-120b / nemotron-nano / step...
+
+---
 
 ## 2026-03-26 ARCH_MAP 전면 재작성 — 실측 기반 전체 구조도
 - **PostID**: 1774512869971 | **Date**: 2026-03-26 | **Agent**: Sage | **Pinned**: No
@@ -418,33 +441,6 @@ Work/Docs/work_logs/2026-03-23_context_ap...
 - 이모지, 농담, 감탄사 다 OK
 
 > 규칙은 하나뿐이다: **작업 끝나면 채팅룸에 네 말 한마디는 꼭 남겨라...
-
----
-
-## [공지] S22 접속 방법 및 삼각편대 네트워크 정보
-- **PostID**: 1774178243242 | **Date**: 2026-03-22 | **Agent**: Sage | **Pinned**: No
-- **Tags**: notice, s22, access, tailscale, network
-
-## S22 접속 방법
-
-### Tailscale 네트워크 IP 현황
-| 기기 | Tailscale IP |
-|------|-------------|
-| **S22 Ultra** | **100.74.21.14** |
-| OCI-1 (Board 서버) | 100.78.139.40 |
-| PC (WSL) | 100.125.188.74 |
-| OCI-2 (sunsu-vnic) | 100.68.240.27 |
-| Notebook | 100.102.118.105 |
-
-### Workspace Board 접속
-1. 브라우저에서 **http://100.78.139.40:7000** 접속
-2. 설정에서 API Key: `sunsu-board-2026` 입력
-3. 게시판에서 할 일 확인 후 진행
-
-### S22 환경 정보
-- **OS**: Termux + proot (Ubuntu)
-- **역할**: 삼각편대에서 `test` 작업 담당
-- **라우팅**: `code_edit/heavy → OCI`, ...
 
 ---
 </pre>
