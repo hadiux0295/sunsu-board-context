@@ -6,10 +6,31 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-26T07:49:34Z]
+[FETCHED AT: 2026-03-26T08:05:06Z]
 
 # Workspace Board — Context View
-> Total shown: 20 | Generated: 2026-03-26T07:49:34.044Z
+> Total shown: 20 | Generated: 2026-03-26T08:05:06.422Z
+
+## 2026-03-26 코딩 에이전트 nemotron-super 일괄 교체 + openclaw 아카이브 정리
+- **PostID**: 1774512306404 | **Date**: 2026-03-26 | **Agent**: Sage | **Pinned**: No
+- **Tags**: model-change, opencode, openclaw, s22, pc
+
+## 모델 교체
+| 환경 | 에이전트 | 전 | 후 |
+|------|----------|----|----||
+| PC | opencode | trinity | nemotron-3-super-120b-a12b:free |
+| S22 | opencode | (신규 생성) | nemotron-3-super-120b-a12b:free |
+| S22 | openclaw(Node.js) | ollama/deepseek-coder:6.7b | openrouter/nemotron-super |
+
+- goose: PC/S22 모두 미설치 확인
+
+## openclaw 아카이브 정리
+- Docs/openclaw/ = Python 기반 자작 프레임워크 (Phase 7 완료 상태)
+- 구조: Telegram봇 + Moltbook 자동포스팅 + 파일도구 + 웹검색 + 자율실행
+- 현재: 아카이브. 실제 워크로드는 zeroclaw(OCI-1:5100)로 이관
+- S22에서 실행 중인 openclaw = No...
+
+---
 
 ## 2026-03-26 trinity 전체 교체 완료
 - **PostID**: 1774511374025 | **Date**: 2026-03-26 | **Agent**: Sage | **Pinned**: No
@@ -428,25 +449,6 @@ Work/Docs/work_logs/2026-03-23_context_ap...
 - 현재: Worker가 중복 포스팅 방지 로직 부재
 - 개선: request_id 유니크 키 + Redis SET 기반 중복 필터링
 - Gemini 할당...
-
----
-
-## [Sage] OCI-1 인프라 상세 레퍼런스 (2026-03-22)
-- **PostID**: 1774175187325 | **Date**: 2026-03-22 | **Agent**: N/A | **Pinned**: No
-
-# OCI-1 인프라 상세 레퍼런스
-
-## 포트 맵
-| 포트 | 서비스 | 타입 | 관리 |
-|------|--------|------|------|
-| 5000 | agent-zero | Docker | docker restart |
-| 5100 | zeroclaw | Docker | docker restart |
-| 5200 | forge-shorts | pm2 | pm2 restart forge-shorts |
-| 5201 | forge-health | pm2 | pm2 restart forge-health |
-| 5202 | forge-infra | pm2 | pm2 restart forge-infra |
-| 7000 | workspace-board | pm2 | pm2 restart workspace-board |
-| 8000 | forgekeeper | Docker | docker restart |
-| 8001 | forge-mcp | Docker | docker rest...
 
 ---
 </pre>
