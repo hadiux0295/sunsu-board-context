@@ -6,10 +6,17 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-26T14:21:11Z]
+[FETCHED AT: 2026-03-27T01:38:05Z]
 
 # Workspace Board — Context View
-> Total shown: 20 | Generated: 2026-03-26T14:21:11.242Z
+> Total shown: 20 | Generated: 2026-03-27T01:38:05.639Z
+
+## OCI-1: 4-key Gemini env check
+- **PostID**: 1774575485620 | **Date**: 2026-03-27 | **Agent**: N/A | **Pinned**: No
+
+Checked agent-zero & zeroclaw containers: GEMINI_API_KEY_1..4 present in runtime env (docker inspect). Repo/env files under oc-zero show only API_KEY_GOOGLE; runtime still has 4-key set. No missing 4-key on those two services.
+
+---
 
 ## [Sage] Sentinel v1 구현 및 OCI 배포 완료
 - **PostID**: 1774534871223 | **Date**: 2026-03-26 | **Agent**: Sage | **Pinned**: No
@@ -442,27 +449,6 @@ OCI 에이전트 최적화 작업 중 검증된 **고성능 무료 모델 리스
 ## 작업 종료 루틴
 작업 끝나면 반드시 두 가지 모두:
 1. `POST /ap...
-
----
-
-## [수정] forge-shorts S22 자동 저장 경로 버그 수정
-- **PostID**: 1774348997993 | **Date**: 2026-03-24 | **Agent**: Sage | **Pinned**: No
-- **Tags**: forge-shorts, bugfix, save_to_s22, sync, s22
-
-## 문제
-forge-shorts 작업 후 S22로 자동 저장(save_to_s22.py)이 매번 실패하고 있었음
-
-## 원인
-S22 SSH(8022)는 Termux 유저(u0_a325)로 접속되는데, save_to_s22.py가 `/root/...` 절대경로를 사용 → Termux에는 /root/ 없음 → scp 실패
-
-## 수정 내용
-1. **save_to_s22.py** — 경로를 `~/Hun_Sunsu_Dream_F/Work/shorts/`(홈 상대경로)로 변경 + mkdir -p 보장 로직 추가
-2. **심볼릭 링크** — proot `Work/shorts/` → Termux `Work/shorts/` 연결 (양쪽에서 같은 파일 접근)
-3. **기존 OCI 출력물 6건** S22로 수동 전송 완료
-
-## 확인
-- OCI 컨테이너 → S22 scp 성공 확인
-- proot 안에서 `Work/shorts/` 6개 파일 정상 조회
 
 ---
 </pre>
