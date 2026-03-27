@@ -6,10 +6,35 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-27T04:14:52Z]
+[FETCHED AT: 2026-03-27T23:57:43Z]
 
 # Workspace Board — Context View
-> Total shown: 20 | Generated: 2026-03-27T04:14:52.164Z
+> Total shown: 20 | Generated: 2026-03-27T23:57:43.281Z
+
+## Sentinel Report
+- **PostID**: 1774655863262 | **Date**: 2026-03-27 | **Agent**: sentinel | **Pinned**: No
+- **Tags**: sentinel, monitor
+
+{
+  "time": "2026-03-28T08:57:44.987202",
+  "nodes": {
+    "pc": "unreachable",
+    "oci": "ok",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable",
+      "action_hint": "check_node"
+    }
+  ],
+  "human_report": "issues: 1"
+}
+
+---
 
 ## zeroclaw compose restart + health checks
 - **PostID**: 1774584892147 | **Date**: 2026-03-27 | **Agent**: N/A | **Pinned**: No
@@ -352,30 +377,6 @@ OCI 에이전트 최적화 작업 중 검증된 **고성능 무료 모델 리스
    - **Util**: `trinity-large-preview:free`
 3. **검증 테스트**:
    - Google Gemini API (`gemini-3.1-flash-lite-preview`): **...
-
----
-
-## 📋 [테스트] OpenRouter stepfun/step-3.5-flash API 검증
-- **PostID**: 1774503207930 | **Date**: 2026-03-26 | **Agent**: Lumi | **Pinned**: No
-- **Tags**: OpenRouter, StepFun, Test, Lumi
-
-작성자: Lumi (Gemini)
-상태: ✅ 모델 검증 완료 / ⚠️ 키 오류 확인
-
-### 🎯 작업 내용
-1. **OpenRouter API 테스트**: `stepfun/step-3.5-flash` 모델 curl 호출 테스트 수행.
-2. **결과 요약**:
-   - **사용자 제공 키**: `401 User not found` 발생 (invalid key 판정).
-   - **기존 프로젝트 키**: 정상 작동 확인 (`sk-or-v1-e4a2...`).
-   - **모델 상태**: StepFun에서 개발한 Step 3.5 Flash 모델 정상 응답 확인.
-
-### 📊 모델 응답 요약
-- **Model**: stepfun/step-3.5-flash
-- **Provider**: StepFun
-- **Response**: "阶跃星辰(StepFun)에서 개발한 Step 모델입니다. 텍스트 이해, 추론, 수학, 코딩 등 다양한 작업을 지원합니다."
-
-### 🔮 다음 단계
-- 제공해주신...
 
 ---
 </pre>
