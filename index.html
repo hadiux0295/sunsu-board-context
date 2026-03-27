@@ -6,10 +6,17 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-27T04:08:54Z]
+[FETCHED AT: 2026-03-27T04:11:15Z]
 
 # Workspace Board — Context View
-> Total shown: 20 | Generated: 2026-03-27T04:08:54.258Z
+> Total shown: 20 | Generated: 2026-03-27T04:11:15.821Z
+
+## agent-zero compose restart + .env cleanup
+- **PostID**: 1774584675803 | **Date**: 2026-03-27 | **Agent**: N/A | **Pinned**: No
+
+Removed GEMINI_API_KEY/GOOGLE_API_KEY from /home/opc/Hun_Sunsu_Dream_F/Work/Tools/oc-zero/docker/run/.env. Restarted agent-zero via docker compose (stop/rm old container, compose up -d). Verified API_KEY_GOOGLE parts=4 (comma count=3 in /proc/1/environ).
+
+---
 
 ## 4-key rollback (agent-zero compose + docs)
 - **PostID**: 1774584534240 | **Date**: 2026-03-27 | **Agent**: N/A | **Pinned**: No
@@ -370,37 +377,6 @@ OCI 에이전트 최적화 작업 중 검증된 **고성능 무료 모델 리스
 - **Tags**: DataPilot, Report, Sage, Lumi, Sunsu
 
 "작성일: 2026-03-26 작성자: Sage (전체 정리) 상태: ✅ 접수 완료 --- ## 🎯 오늘 한 일 요약 "모두의 창업 프로젝트 (국가 창업 오디션)" 테크 트랙 지원 접수 완료 - 접수 사이트: https://www.modoo.or.kr - 멘토 기관: 프라이머 (서울 · IT) - 접수일: 2026-03-26 --- ## 📂 작업 산출물 목록 | # | 파일명 | 용도 | 비고 | |---|--------|------|------| | 1 | DataPilot_최종플랜.md | 마스터 플랜 (7주 로드맵 포함) | 서울시 빅데이터 경진대회용 겸용 | | 2 | DataPilot_기획서_최종.docx | 기획서 2페이지 (제출용 포맷) | 순수 피드백 3회 반영 최종본 | | 3 | DataPilot_기획서_최종.md | 기획서 마크다운 버전 | board 열람 / 인수인계용 | | 4 | DataPilot_파이프라인_구조도.png | Planner→Worker→R...
-
----
-
-## [최종] Vault 파이프라인 5단계 완료 + 남은 작업
-- **PostID**: 1774416153689 | **Date**: 2026-03-25 | **Agent**: N/A | **Pinned**: No
-- **Tags**: vault, pipeline, obsidian, 최종정리, 완료
-
-## 오늘 작업 전체 완료 정리
-
-### 1단계 — Vault 구조 재편
-- 단일 볼트 확정, 00~99 폴더 체계 생성
-- 기존 파일 전체 이동 완료
-- INBOX_RULES.md, .ragignore 배치
-
-### 2단계 — oc-zero Knowledge 매핑
-- agent_knowledge_subdir → 03_Knowledge
-- symlink + bind mount 영속성 보장
-- verify.sh 5개 항목 전부 OK
-
-### 3단계 — rclone 동기화
-- OCI → Google Drive 단방향 확정
-- 184파일 전송 완료
-- 6시간마다 자동 실행 (crontab)
-- backup-dir / rate limit / 02_Logs 제외 적용
-
-### 4단계 — S22 Obsidian 연동
-- Autosync → Google Drive ↔ Documents/Obsidian/Hun_Sunsu 양방향
-- Obsidian 볼트 지정 완료
-- 그래프 뷰 정상 확인
-
-### ...
 
 ---
 </pre>
