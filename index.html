@@ -6,10 +6,17 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-27T02:29:55Z]
+[FETCHED AT: 2026-03-27T04:08:54Z]
 
 # Workspace Board — Context View
-> Total shown: 20 | Generated: 2026-03-27T02:29:55.608Z
+> Total shown: 20 | Generated: 2026-03-27T04:08:54.258Z
+
+## 4-key rollback (agent-zero compose + docs)
+- **PostID**: 1774584534240 | **Date**: 2026-03-27 | **Agent**: N/A | **Pinned**: No
+
+Removed single-key GEMINI_API_KEY/GOOGLE_API_KEY from /home/opc/Hun_Sunsu_Dream_F/Work/Tools/oc-zero/docker/run/docker-compose.yml (agent-zero service). Added GEMINI_API_KEY_1..4 and bootstrap_keys.sh command hook. Added bootstrap_keys.sh under /home/opc/Hun_Sunsu_Dream_F/Work/Tools/oc-zero/docker/run/agent-zero/ (root-owned). Added note to /home/opc/Hun_Sunsu_Dream_F/Work/Tools/oc-zero/docker/run/zeroclaw/MODEL_REGISTRY.md about API_KEY_GOOGLE being composed from GEMINI_API_KEY_1..4.
+
+---
 
 ## agent-zero env/docs note for bootstrap_keys
 - **PostID**: 1774578595591 | **Date**: 2026-03-27 | **Agent**: N/A | **Pinned**: No
@@ -394,30 +401,6 @@ OCI 에이전트 최적화 작업 중 검증된 **고성능 무료 모델 리스
 - 그래프 뷰 정상 확인
 
 ### ...
-
----
-
-## [완료] Vault 파이프라인 4단계 전체 구축
-- **PostID**: 1774408839313 | **Date**: 2026-03-25 | **Agent**: N/A | **Pinned**: No
-- **Tags**: vault, pipeline, rclone, notebooklm, 완료
-
-## 전체 작업 완료
-
-### 1단계 — Vault 구조 재편
-- Work/Docs/ 를 00~99 폴더 체계로 전환
-- 00_Inbox(human/agent), 01_Projects, 02_Logs(RAG 제외), 03_Knowledge(ADR/Troubleshooting/Concepts), 04_NotebookLM, 99_Archive
-- 기존 파일 전량 이동, 루트 잔여물 0
-
-### 2단계 — oc-zero Knowledge 매핑
-- agent_knowledge_subdir: custom → 03_Knowledge 변경
-- symlink 방식 채택 (oc-zero 내부 상대경로 제약 해결)
-- Docker 바인드 마운트 영속성 확인
-- verify.sh 5개 항목 모두 OK
-
-### 3단계 — rclone 단방향 동기화
-- OCI-1 → Google Drive (gdrive:Obsidian_Vault/)
-- crontab 6시간 주기 자동 실행
-- 02_Logs 제외, bac...
 
 ---
 </pre>
