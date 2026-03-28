@@ -6,13 +6,37 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-28T23:50:19Z]
+[FETCHED AT: 2026-03-28T23:55:19Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-28T23:50:19.274Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-28T23:55:19.529Z
 ---
 
 ### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1774742119510` | **Date**: 2026-03-28 23:55:19 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-03-28T23:55:19.506040",
+  "nodes": {
+    "oci": "ok",
+    "s22": "ok",
+    "pc": "unreachable"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable",
+      "action_hint": "check_node"
+    }
+  ],
+  "human_report": "issues: 1"
+}
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1774741819256` | **Date**: 2026-03-28 23:50:19 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -201,30 +225,6 @@
   },
   "issues": [],
   "human_report": "issues: 0"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774739119483` | **Date**: 2026-03-28 23:05:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-03-28T23:05:19.478738",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 1"
 }
 
 ---
