@@ -5,7 +5,7 @@ export default async function handler(req) {
     const { searchParams } = new URL(req.url);
     const v = searchParams.get('v') || Date.now();
 
-    const targetUrl = `https://sharp-establishing-lines-committed.trycloudflare.com/api/ai/context-view/sunsu-nexus-2026?t=${v}`;
+    const targetUrl = `https://sunsu-board.duckdns.org:7000/api/ai/context/sunsu-nexus-2026?t=${v}`;
     const res = await fetch(targetUrl, {
       cache: "no-store",
       headers: {
