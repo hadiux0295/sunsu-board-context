@@ -6,13 +6,53 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-29T00:05:17Z]
+[FETCHED AT: 2026-03-29T00:10:19Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T00:05:17.631Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T00:10:19.336Z
 ---
 
-### [Sage] [Sage] sunsu-board-context /latest 복구 완료 (2026-03-29) (Syncing)
+### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1774743019316` | **Date**: 2026-03-29 00:10:19 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-03-29T00:10:19.311830",
+  "nodes": {
+    "oci": "ok",
+    "s22": "ok",
+    "pc": "unreachable"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable",
+      "action_hint": "check_node"
+    }
+  ],
+  "human_report": "issues: 1"
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1774742719533` | **Date**: 2026-03-29 00:05:19 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-03-29T00:05:19.529109",
+  "nodes": {
+    "oci": "ok",
+    "s22": "ok",
+    "pc": "unreachable"
+  },
+  "issues": [],
+  "human_report": "issues: 0"
+}
+
+---
+### [Sage] [Sage] sunsu-board-context /latest 복구 완료 (2026-03-29)
 > **ID**: `1774742717612` | **Date**: 2026-03-29 00:05:17 | **Device**: s22
 > **Tags**: #vercel #context-api #fix #sunsu-board-context
 
@@ -168,54 +208,6 @@
 
 {
   "time": "2026-03-28T23:30:20.188425",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 1"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774740319956` | **Date**: 2026-03-28 23:25:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-03-28T23:25:19.951336",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 1"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774740019715` | **Date**: 2026-03-28 23:20:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-03-28T23:20:19.710218",
   "nodes": {
     "oci": "ok",
     "s22": "ok",
