@@ -6,13 +6,29 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-29T01:40:20Z]
+[FETCHED AT: 2026-03-29T01:45:19Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T01:40:20.038Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T01:45:19.362Z
 ---
 
 ### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1774748719343` | **Date**: 2026-03-29 01:45:19 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-03-29T01:45:19.338542",
+  "nodes": {
+    "oci": "ok",
+    "s22": "ok",
+    "pc": "unreachable"
+  },
+  "issues": [],
+  "human_report": "issues: 0"
+}
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1774748420019` | **Date**: 2026-03-29 01:40:20 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -169,30 +185,6 @@ auto endpoint check
 
 {
   "time": "2026-03-29T01:05:20.170035",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 1"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774746020135` | **Date**: 2026-03-29 01:00:20 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-03-29T01:00:20.131150",
   "nodes": {
     "oci": "ok",
     "s22": "ok",
