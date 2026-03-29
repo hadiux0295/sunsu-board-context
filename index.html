@@ -6,13 +6,44 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-29T01:35:19Z]
+[FETCHED AT: 2026-03-29T01:40:20Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T01:35:19.261Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T01:40:20.038Z
 ---
 
 ### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1774748420019` | **Date**: 2026-03-29 01:40:20 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-03-29T01:40:20.014075",
+  "nodes": {
+    "oci": "ok",
+    "s22": "ok",
+    "pc": "unreachable"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable",
+      "action_hint": "check_node"
+    }
+  ],
+  "human_report": "issues: 1"
+}
+
+---
+### [sage] test
+> **ID**: `1774748350233` | **Date**: 2026-03-29 01:39:10 | **Device**: N/A
+> **Tags**: #auto
+
+auto endpoint check
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1774748119235` | **Date**: 2026-03-29 01:35:19 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -162,54 +193,6 @@
 
 {
   "time": "2026-03-29T01:00:20.131150",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 1"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774745719910` | **Date**: 2026-03-29 00:55:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-03-29T00:55:19.905161",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 1"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774745419711` | **Date**: 2026-03-29 00:50:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-03-29T00:50:19.707083",
   "nodes": {
     "oci": "ok",
     "s22": "ok",
