@@ -6,200 +6,208 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-29T01:45:19Z]
+[FETCHED AT: 2026-03-29T23:57:58Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T01:45:19.362Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T23:57:58.067Z
 ---
 
-### [sentinel] Sentinel Report (Syncing)
-> **ID**: `1774748719343` | **Date**: 2026-03-29 01:45:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
+### [System] [완료] DataPilot 복구 + Synth LLM 교체 + 동기화 안전망 구축 (Syncing)
+> **ID**: `1774828678049` | **Date**: 2026-03-29 23:57:58 | **Device**: N/A
 
-{
-  "time": "2026-03-29T01:45:19.338542",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [],
-  "human_report": "issues: 0"
-}
+## 작업 요약 (2026-03-30)
+
+### 1. DataPilot 원본 복구
+- rsync --delete로 삭제된 datapilot을 PC 백업본에서 SCP→OCI-1 복원
+- systemd, pm2, health, E2E 전체 점검 완료 — 정상 가동
+
+### 2. Synth LLM 모델 교체
+- openai/gpt-oss-120b:free → upstream 429 rate-limit 상태 확인
+- nvidia/nemotron-3-super-120b-a12b:free 로 교체 완료
+- E2E 검증: 429 해소, 분석 품질 향상 (구체적 action 생성)
+
+### 3. 동기화 안전망 구축
+- SYSTEM_RULES.md에 S22→OCI-1 rsync 안전 규칙 추가 (--exclude Active/, --delete 금지)
+- Troubleshooting 문서 작성 및 _INDEX.md 등록
+- rclone sync_now.sh 실행하여 Google Drive 동기화 완료
+
+### 변경 파일
+- datapilot/app/services/llm_client.py
+- datapilot/app/main.py
+- SYSTEM_RULES.md
+- 03_Knowledge/Troubleshooting/rsync_delete_사태_및_PC오프라인_복구.md
+- 03_Knowledge/_INDEX.md
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774748420019` | **Date**: 2026-03-29 01:40:20 | **Device**: oci
-> **Tags**: #sentinel #monitor
+> **ID**: `1774828503499` | **Date**: 2026-03-29 23:55:03 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-29T01:40:20.014075",
+  "time": "2026-03-29T23:55:03.494660",
   "nodes": {
     "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
+    "pc": "unreachable",
+    "s22": "ok"
   },
   "issues": [
     {
       "level": "CRITICAL",
       "node": "pc",
       "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
+      "fingerprint": "pc_unreachable"
     }
-  ],
-  "human_report": "issues: 1"
+  ]
 }
 
 ---
-### [sage] test
-> **ID**: `1774748350233` | **Date**: 2026-03-29 01:39:10 | **Device**: N/A
-> **Tags**: #auto
+### [datapilot] [DataPilot] 치킨집 분석 (1건 EXECUTE)
+> **ID**: `1774828433918` | **Date**: 2026-03-29 23:53:53 | **Device**: N/A
+> **Tags**: #auto #analysis
 
-auto endpoint check
+## DataPilot 분석 결과 — 치킨집
+
+### [EXECUTE] 배달 주문 (score=0.816)
+- 문제: 배달 주문이 35% 급증했으나 배달 인력과 차량 부족으로 배달 지연 및 고객 불만이 증가하고 있음
+- 기회: 배달 capacity를 확충하여 급증하는 주문을 안정적으로 처리하고 재주문율을 높일 수 있음
+- 액션: 전담 배달 인력 2명 추가 고용 및 배달 전용 오토바이 1대 구매, 실시간 배달 추적 시스템 도입
+- 타이밍: 즉시 (2주 내)
+- confidence: 0.85
+
+*2026-03-29T23:53:53.908022+00:00*
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774748119235` | **Date**: 2026-03-29 01:35:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
+> **ID**: `1774828203054` | **Date**: 2026-03-29 23:50:03 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-29T01:35:19.219803",
+  "time": "2026-03-29T23:50:03.050235",
   "nodes": {
     "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1774827904858` | **Date**: 2026-03-29 23:45:04 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-03-29T23:45:04.853558",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
   },
   "issues": [
     {
       "level": "CRITICAL",
       "node": "pc",
       "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
+      "fingerprint": "pc_unreachable"
     }
-  ],
-  "human_report": "issues: 1"
+  ]
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774747819997` | **Date**: 2026-03-29 01:30:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
+> **ID**: `1774827604053` | **Date**: 2026-03-29 23:40:04 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-29T01:30:19.992793",
+  "time": "2026-03-29T23:40:04.048203",
   "nodes": {
     "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
+    "pc": "unreachable",
+    "s22": "ok"
   },
-  "issues": [],
-  "human_report": "issues: 0"
+  "issues": []
 }
 
 ---
+### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
+> **ID**: `1774827016917` | **Date**: 2026-03-29 23:30:16 | **Device**: N/A
+> **Tags**: #auto #analysis
+
+## DataPilot 분석 결과 — 치킨집
+
+### [EXECUTE] 배달 주문 (score=0.672)
+- 문제: 급격한 수요 증가 대응 부족
+- 기회: 단기 매출 상승 기회
+- 액션: 한정 할인 프로모션 실행
+- 타이밍: 즉시
+- confidence: 0.7
+
+### [EXECUTE] 야간 주문 (score=0.96)
+- 문제: 급격한 수요 증가 대응 부족
+- 기회: 단기 매출 상승 기회
+- 액션: 한정 할인 프로모션 실행
+- 타이밍: 즉시
+- confidence: 1.0
+
+*2026-03-29T23:30:16.905993+00:00*
+
+---
 ### [sentinel] Sentinel Report
-> **ID**: `1774747520116` | **Date**: 2026-03-29 01:25:20 | **Device**: oci
-> **Tags**: #sentinel #monitor
+> **ID**: `1774827004266` | **Date**: 2026-03-29 23:30:04 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-29T01:25:20.112096",
+  "time": "2026-03-29T23:30:04.261748",
   "nodes": {
     "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
+    "pc": "unreachable",
+    "s22": "ok"
   },
   "issues": [
     {
       "level": "CRITICAL",
       "node": "pc",
       "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
+      "fingerprint": "pc_unreachable"
     }
-  ],
-  "human_report": "issues: 1"
+  ]
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774747219606` | **Date**: 2026-03-29 01:20:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
+> **ID**: `1774826703452` | **Date**: 2026-03-29 23:25:03 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-29T01:20:19.602023",
+  "time": "2026-03-29T23:25:03.447350",
   "nodes": {
     "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
+    "pc": "unreachable",
+    "s22": "ok"
   },
-  "issues": [],
-  "human_report": "issues: 0"
+  "issues": []
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774746919717` | **Date**: 2026-03-29 01:15:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
+> **ID**: `1774826403699` | **Date**: 2026-03-29 23:20:03 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-29T01:15:19.712840",
+  "time": "2026-03-29T23:20:03.694685",
   "nodes": {
     "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
+    "pc": "unreachable",
+    "s22": "ok"
   },
   "issues": [
     {
       "level": "CRITICAL",
       "node": "pc",
       "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
+      "fingerprint": "pc_unreachable"
     }
-  ],
-  "human_report": "issues: 1"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774746619877` | **Date**: 2026-03-29 01:10:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-03-29T01:10:19.872656",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [],
-  "human_report": "issues: 0"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774746320174` | **Date**: 2026-03-29 01:05:20 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-03-29T01:05:20.170035",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 1"
+  ]
 }
 
 ---
