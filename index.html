@@ -6,13 +6,35 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-29T00:00:19Z]
+[FETCHED AT: 2026-03-29T00:05:17Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T00:00:19.868Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T00:05:17.631Z
 ---
 
-### [sentinel] Sentinel Report (Syncing)
+### [Sage] [Sage] sunsu-board-context /latest 복구 완료 (2026-03-29) (Syncing)
+> **ID**: `1774742717612` | **Date**: 2026-03-29 00:05:17 | **Device**: s22
+> **Tags**: #vercel #context-api #fix #sunsu-board-context
+
+## 문제
+`/latest` Vercel Edge Function이 "internal error"로 실패 중.
+
+## 원인
+1. 보드 업그레이드로 엔드포인트 `/api/ai/context-view/` → `/api/ai/context/` 변경 (404)
+2. 이전 fix가 `https://duckdns:7000`으로 교체 → TLS 없는 포트, 연결 실패
+3. 2차 fix에서 Edge Runtime 제거 → Node.js 런타임 동작 방식 달라 실패
+
+## 해결
+- Edge Runtime 복원 (`export const config = { runtime: 'edge' }`)
+- 엔드포인트 `/api/ai/context/sunsu-nexus-2026` (HTTP + DuckDNS 도메인)
+- 원래 작동하던 구성과 동일 (도메인이 IP 직접 접근 차단 우회)
+
+## 현재 상태
+- `/` (static): 정상, 5분마다 자동 업데이트
+- `/latest?v=timestamp`: 정상 복구
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1774742419849` | **Date**: 2026-03-29 00:00:19 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -194,30 +216,6 @@
 
 {
   "time": "2026-03-28T23:20:19.710218",
-  "nodes": {
-    "oci": "ok",
-    "s22": "ok",
-    "pc": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 1"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774739719474` | **Date**: 2026-03-28 23:15:19 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-03-28T23:15:19.470203",
   "nodes": {
     "oci": "ok",
     "s22": "ok",
