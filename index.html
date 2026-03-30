@@ -6,13 +6,99 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-29T23:57:58Z]
+[FETCHED AT: 2026-03-30T00:34:20Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-29T23:57:58.067Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-30T00:34:20.966Z
 ---
 
-### [System] [완료] DataPilot 복구 + Synth LLM 교체 + 동기화 안전망 구축 (Syncing)
+### [lumi] [완료] 옵시디언 지식망 체계화 및 동기화 인프라 최적화 (Syncing)
+> **ID**: `1774830860947` | **Date**: 2026-03-30 00:34:20 | **Device**: pc
+> **Tags**: #obsidian #rsync #automation
+
+## 주요 작업 내역
+1. **지식망 재건**: 03_Knowledge 하위 문서 Related Links 섹션 추가 및 확장자 제거 위키링크 적용
+2. **마스터 인덱스**: _INDEX.md 생성으로 지식 지도 구축
+3. **동기화 안전망**: SYSTEM_RULES.md 내 rsync 제외 옵션(--exclude) 강화 및 삭제 주의사항 명문화
+4. **스크립트 패치**: rclone 관련 스크립트 하드코딩 경로 동적 처리 ($HOME 활용)
+5. **지침 동기화**: AGENTS.md 로컬 동기화 및 세션 시작 시 최우선 참조 기억 등록
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1774830302962` | **Date**: 2026-03-30 00:25:02 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-03-30T00:25:02.958123",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable"
+    }
+  ]
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1774830002736` | **Date**: 2026-03-30 00:20:02 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-03-30T00:20:02.729067",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1774829103410` | **Date**: 2026-03-30 00:05:03 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-03-30T00:05:03.406286",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable"
+    }
+  ]
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1774828802493` | **Date**: 2026-03-30 00:00:02 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-03-30T00:00:02.489343",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [System] [완료] DataPilot 복구 + Synth LLM 교체 + 동기화 안전망 구축
 > **ID**: `1774828678049` | **Date**: 2026-03-29 23:57:58 | **Device**: N/A
 
 ## 작업 요약 (2026-03-30)
@@ -98,103 +184,6 @@
 
 {
   "time": "2026-03-29T23:45:04.853558",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    }
-  ]
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774827604053` | **Date**: 2026-03-29 23:40:04 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-29T23:40:04.048203",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": []
-}
-
----
-### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
-> **ID**: `1774827016917` | **Date**: 2026-03-29 23:30:16 | **Device**: N/A
-> **Tags**: #auto #analysis
-
-## DataPilot 분석 결과 — 치킨집
-
-### [EXECUTE] 배달 주문 (score=0.672)
-- 문제: 급격한 수요 증가 대응 부족
-- 기회: 단기 매출 상승 기회
-- 액션: 한정 할인 프로모션 실행
-- 타이밍: 즉시
-- confidence: 0.7
-
-### [EXECUTE] 야간 주문 (score=0.96)
-- 문제: 급격한 수요 증가 대응 부족
-- 기회: 단기 매출 상승 기회
-- 액션: 한정 할인 프로모션 실행
-- 타이밍: 즉시
-- confidence: 1.0
-
-*2026-03-29T23:30:16.905993+00:00*
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774827004266` | **Date**: 2026-03-29 23:30:04 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-29T23:30:04.261748",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    }
-  ]
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774826703452` | **Date**: 2026-03-29 23:25:03 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-29T23:25:03.447350",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": []
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774826403699` | **Date**: 2026-03-29 23:20:03 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-29T23:20:03.694685",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
