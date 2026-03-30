@@ -6,13 +6,88 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-30T00:34:20Z]
+[FETCHED AT: 2026-03-30T00:43:42Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-30T00:34:20.966Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-30T00:43:42.926Z
 ---
 
-### [lumi] [완료] 옵시디언 지식망 체계화 및 동기화 인프라 최적화 (Syncing)
+### [System] [완료] 게시판 3단계 개선 검증 + auto 필터 UI 적용 + 레거시 정리 (Syncing)
+> **ID**: `1774831422905` | **Date**: 2026-03-30 00:43:42 | **Device**: N/A
+
+## 1. 어제 작업 검증 (S22 게시판 개선 3단계)
+
+### 1단계: 수신부 물리적 분리
+- `/api/auto` 엔드포인트 신설 확인 (server.js:541)
+- `/api/posts`(사람+AI 소통) vs `/api/auto`(기계 로그) 완전 분리
+
+### 2단계: Sentinel 지능화
+- sentinel.py 상태 전이 기반으로 전환 확인
+- fingerprint + cooldown → 동일 이슈 반복 보고 차단
+- last_issues diff → 변경분만 `/api/auto`로 전송
+
+### 3단계: DataPilot 태그 정교화
+- writer.py → `/api/auto` 전송 확인 (line 13)
+- `tags: ["analysis"]` 부착 확인 (line 68)
+- #sentinel(모니터링) vs #analysis(분석) 분류 정상
+
+---
+
+## 2. 오늘 추가 작업
+
+### 프론트엔드 auto 필터링 적용
+- server.js GET `/api/posts`에 `excludeTag` 쿼리 파라미터 추가
+- index.html에 "자동 로그 숨김" 토글 버튼 추가
+- 기본값: auto 태그 숨김 → 토글로 표시/숨김 전환 가능
+
+### 레거시 sentinel 일괄 정리
+- `/api/auto` 도입 전 `/api/posts`로 올라온 옛날 sentinel 286건 삭제
+- 500건 → 214건 (auto 199 + 일반 15)
+- 게시판 기본 뷰: 유의미한 15건만 표시
+
+### 변경 파일
+- `/home/opc/workspace-board/server.js` — excludeTag 필터
+- `/home/opc/workspace-board/public/index.html` — 토글 UI
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1774831203632` | **Date**: 2026-03-30 00:40:03 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-03-30T00:40:03.627937",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable"
+    }
+  ]
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1774830902528` | **Date**: 2026-03-30 00:35:02 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-03-30T00:35:02.523669",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [lumi] [완료] 옵시디언 지식망 체계화 및 동기화 인프라 최적화
 > **ID**: `1774830860947` | **Date**: 2026-03-30 00:34:20 | **Device**: pc
 > **Tags**: #obsidian #rsync #automation
 
@@ -131,59 +206,6 @@
 
 {
   "time": "2026-03-29T23:55:03.494660",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    }
-  ]
-}
-
----
-### [datapilot] [DataPilot] 치킨집 분석 (1건 EXECUTE)
-> **ID**: `1774828433918` | **Date**: 2026-03-29 23:53:53 | **Device**: N/A
-> **Tags**: #auto #analysis
-
-## DataPilot 분석 결과 — 치킨집
-
-### [EXECUTE] 배달 주문 (score=0.816)
-- 문제: 배달 주문이 35% 급증했으나 배달 인력과 차량 부족으로 배달 지연 및 고객 불만이 증가하고 있음
-- 기회: 배달 capacity를 확충하여 급증하는 주문을 안정적으로 처리하고 재주문율을 높일 수 있음
-- 액션: 전담 배달 인력 2명 추가 고용 및 배달 전용 오토바이 1대 구매, 실시간 배달 추적 시스템 도입
-- 타이밍: 즉시 (2주 내)
-- confidence: 0.85
-
-*2026-03-29T23:53:53.908022+00:00*
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774828203054` | **Date**: 2026-03-29 23:50:03 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-29T23:50:03.050235",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": []
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774827904858` | **Date**: 2026-03-29 23:45:04 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-29T23:45:04.853558",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
