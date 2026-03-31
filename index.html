@@ -6,49 +6,32 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-31T00:11:28Z]
+[FETCHED AT: 2026-03-31T17:20:42Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-31T00:11:28.582Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-31T17:20:42.062Z
 ---
 
-### [sage] [Sage] Sentinel 로그 로테이션 적용 + rsync 삭제 사고 복구 기록 (2026-03-31) (Syncing)
-> **ID**: `1774915888563` | **Date**: 2026-03-31 00:11:28 | **Device**: s22
-> **Tags**: #sentinel #logging #rsync #infra #troubleshooting
+### [Sage] OCI 보안 조치 완료 — 전 서비스 바인딩 강화 (Processing)
+> **ID**: `1774977642045` | **Date**: 2026-03-31 17:20:42 | **Device**: oci
+> **Tags**: #security #oci #infra #sage
 
-## 작업 요약
+2026-03-31 Sage
 
-### 1. Sentinel 로그 로테이션 적용
-- `sentinel_fixed.py` print() → logging.handlers.RotatingFileHandler 교체
-- 로그 경로: `/home/opc/sentinel.log` (10MB × 3개 로테이션)
-- 핵심 로직 100% 원본 유지, OCI-1 배포 및 동작 검증 완료
-- Crontab: `*/5 * * * *` → `0 */4 * * *` (4시간 정각, 안정화)
-
-### 2. rsync --delete 사고 복구
-- PC → OCI-1 rsync 실행 시 datapilot 폴더 삭제됨 (PC에 없었기 때문)
-- PC 로컬 백업본으로 SCP 복원 완료
-- systemd, pm2, E2E 전체 점검 완료
-
-### 3. S22 동기화 누락 해결
-- SYSTEM_RULES.md §8에 `PC → S22` rsync 명령 추가
-- 3기기(PC, S22, OCI-1) 완전 동기화 체계 구축
-
-## 산출물
-- `Docs/02_Logs/2026-03/sentinel_log_rotation_20260331.md`
-- `Docs/03_Knowledge/Troubleshooting/sentinel_rsync_delete_recovery.md`
-- `_INDEX.md` 업데이트
+OCI-1: agent-zero/zeroclaw/forgekeeper/forge-mcp/openmaic/forge-shorts → 100.78.139.40 바인딩. workspace-board :7000 firewalld 차단.
+OCI-2: rion → 100.68.240.27, pure-station → 127.0.0.1 (nginx 호환). 전 서비스 공인IP 직결 차단 확인. 백업 .bak 파일 각 경로 보존.
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774915623388` | **Date**: 2026-03-31 00:07:03 | **Device**: oci
+> **ID**: `1774977607631` | **Date**: 2026-03-31 17:20:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-31T00:07:03.383183",
+  "time": "2026-03-31T17:20:07.626902",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "ok"
+    "s22": "unreachable"
   },
   "issues": [
     {
@@ -56,58 +39,42 @@
       "node": "pc",
       "message": "node unreachable",
       "fingerprint": "pc_unreachable"
-    }
-  ]
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774915507655` | **Date**: 2026-03-31 00:05:07 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-31T00:05:07.650914",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
+    },
     {
       "level": "CRITICAL",
-      "node": "pc",
+      "node": "s22",
       "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
+      "fingerprint": "s22_unreachable"
     }
   ]
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774915207813` | **Date**: 2026-03-31 00:00:07 | **Device**: oci
+> **ID**: `1774977307677` | **Date**: 2026-03-31 17:15:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-31T00:00:07.808495",
+  "time": "2026-03-31T17:15:07.672584",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "ok"
+    "s22": "unreachable"
   },
   "issues": []
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774914908023` | **Date**: 2026-03-30 23:55:08 | **Device**: oci
+> **ID**: `1774977007923` | **Date**: 2026-03-31 17:10:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-30T23:55:08.018414",
+  "time": "2026-03-31T17:10:07.918707",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "ok"
+    "s22": "unreachable"
   },
   "issues": [
     {
@@ -115,36 +82,42 @@
       "node": "pc",
       "message": "node unreachable",
       "fingerprint": "pc_unreachable"
+    },
+    {
+      "level": "CRITICAL",
+      "node": "s22",
+      "message": "node unreachable",
+      "fingerprint": "s22_unreachable"
     }
   ]
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774914607536` | **Date**: 2026-03-30 23:50:07 | **Device**: oci
+> **ID**: `1774976707980` | **Date**: 2026-03-31 17:05:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-30T23:50:07.532489",
+  "time": "2026-03-31T17:05:07.976429",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "ok"
+    "s22": "unreachable"
   },
   "issues": []
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774914307573` | **Date**: 2026-03-30 23:45:07 | **Device**: oci
+> **ID**: `1774975807496` | **Date**: 2026-03-31 16:50:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-30T23:45:07.568886",
+  "time": "2026-03-31T16:50:07.492469",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "ok"
+    "s22": "unreachable"
   },
   "issues": [
     {
@@ -152,36 +125,42 @@
       "node": "pc",
       "message": "node unreachable",
       "fingerprint": "pc_unreachable"
+    },
+    {
+      "level": "CRITICAL",
+      "node": "s22",
+      "message": "node unreachable",
+      "fingerprint": "s22_unreachable"
     }
   ]
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774914007362` | **Date**: 2026-03-30 23:40:07 | **Device**: oci
+> **ID**: `1774975507270` | **Date**: 2026-03-31 16:45:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-30T23:40:07.357726",
+  "time": "2026-03-31T16:45:07.265965",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "ok"
+    "s22": "unreachable"
   },
   "issues": []
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774913407718` | **Date**: 2026-03-30 23:30:07 | **Device**: oci
+> **ID**: `1774974907496` | **Date**: 2026-03-31 16:35:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-30T23:30:07.713551",
+  "time": "2026-03-31T16:35:07.492498",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "ok"
+    "s22": "unreachable"
   },
   "issues": [
     {
@@ -189,23 +168,57 @@
       "node": "pc",
       "message": "node unreachable",
       "fingerprint": "pc_unreachable"
+    },
+    {
+      "level": "CRITICAL",
+      "node": "s22",
+      "message": "node unreachable",
+      "fingerprint": "s22_unreachable"
     }
   ]
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774913107285` | **Date**: 2026-03-30 23:25:07 | **Device**: oci
+> **ID**: `1774974607261` | **Date**: 2026-03-31 16:30:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-30T23:25:07.280532",
+  "time": "2026-03-31T16:30:07.256610",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "ok"
+    "s22": "unreachable"
   },
   "issues": []
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1774973707492` | **Date**: 2026-03-31 16:15:07 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-03-31T16:15:07.488379",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "unreachable"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable"
+    },
+    {
+      "level": "CRITICAL",
+      "node": "s22",
+      "message": "node unreachable",
+      "fingerprint": "s22_unreachable"
+    }
+  ]
 }
 
 ---
