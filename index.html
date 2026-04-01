@@ -6,13 +6,171 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-01T11:09:16Z]
+[FETCHED AT: 2026-04-01T11:54:50Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-01T11:09:16.279Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-01T11:54:51.013Z
 ---
 
-### [sentinel] Sentinel Report (Syncing)
+### [sage] Drift 배포 완료 + 보안 점검 (Syncing)
+> **ID**: `1775044490986` | **Date**: 2026-04-01 11:54:50 | **Device**: pc
+> **Tags**: #drift #sentinel #security #deploy
+
+## 작업 요약 (2026-04-01)
+
+### 1. 보안 정비 상태 확인
+- 어제 작업(2026-03-31) 전체 유지 확인
+- 모든 서비스 Tailscale IP 전용 바인딩 유지
+- firewalld public 존 2222/tcp만 유지
+
+### 2. Sentinel PC unreachable 수정
+- 원인: PC IP가 100.125.188.74(Windows)로 설정 → WSL SSH 미연결
+- 수정: 100.72.247.35(WSL), port 22, user hun
+- WSL sshd 설치 + OCI-1 공개키 등록
+- sshd + tailscaled systemctl enable 완료
+- 결과: OCI/PC/S22 3노드 전부 OK
+
+### 3. Drift 배포 (antigravity → drift 리네임)
+- 위치: OCI-1 ~/agents/drift/ (Docker Compose)
+- drift-ollama: ollama/ollama (ARM)
+- drift-app: Gradio :7860 (100.78.139.40 전용)
+- 모델: qwen2.5:1.5b + gemma2:2b
+- 접속: http://100.78.139.40:7860
+
+### 4. 버그 수정 및 UI 개선
+- 유저 주제 두 턴 연속 주입 (Alice+Bob 모두 맥락 공유)
+- Start/Stop 버튼 활성/비활성 상태 표시
+- 캔버스 하단 현재 주제 실시간 표시
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775044202912` | **Date**: 2026-04-01 11:50:02 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T11:50:02.906904",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775043903018` | **Date**: 2026-04-01 11:45:03 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T11:45:03.013833",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable"
+    }
+  ]
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775043602382` | **Date**: 2026-04-01 11:40:02 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T11:40:02.377986",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775043003668` | **Date**: 2026-04-01 11:30:03 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T11:30:03.663600",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable"
+    }
+  ]
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775042704101` | **Date**: 2026-04-01 11:25:04 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T11:25:04.096735",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775042103033` | **Date**: 2026-04-01 11:15:03 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T11:15:03.029251",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable"
+    }
+  ]
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775041778971` | **Date**: 2026-04-01 11:09:38 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-04-01T11:09:38.966684",
+  "nodes": {
+    "oci": "ok",
+    "pc": "ok",
+    "s22": "ok"
+  },
+  "issues": [],
+  "human_report": "issues: 0"
+}
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1775041756261` | **Date**: 2026-04-01 11:09:16 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -49,154 +207,6 @@
     }
   ],
   "human_report": "issues: 1"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775041502517` | **Date**: 2026-04-01 11:05:02 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-01T11:05:02.512834",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": []
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775041202530` | **Date**: 2026-04-01 11:00:02 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-01T11:00:02.526309",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    }
-  ]
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775040902622` | **Date**: 2026-04-01 10:55:02 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-01T10:55:02.618310",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": []
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775040003169` | **Date**: 2026-04-01 10:40:03 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-01T10:40:03.164779",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    }
-  ]
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775039702934` | **Date**: 2026-04-01 10:35:02 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-01T10:35:02.929978",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": []
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775039102803` | **Date**: 2026-04-01 10:25:02 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-01T10:25:02.799017",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    }
-  ]
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775038802885` | **Date**: 2026-04-01 10:20:02 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-01T10:20:02.880445",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": []
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775037002354` | **Date**: 2026-04-01 09:50:02 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-01T09:50:02.349865",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    }
-  ]
 }
 
 ---
