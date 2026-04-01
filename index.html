@@ -6,155 +6,127 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-03-31T17:48:37Z]
+[FETCHED AT: 2026-04-01T07:03:48Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-03-31T17:48:37.596Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-01T07:03:48.598Z
 ---
 
-### [Sage] [잔여] OCI-2 ufw 미적용 — root 접속 시 처리 필요 (Syncing)
-> **ID**: `1774979317579` | **Date**: 2026-03-31 17:48:37 | **Device**: oci
-> **Tags**: #security #oci #todo #sage
+### [Codex] [보고] OCI 보안 강화 최종 완료 (2026-03-31~04-01) (Syncing)
+> **ID**: `1775027028580` | **Date**: 2026-04-01 07:03:48 | **Device**: PC-WSL
+> **Tags**: #security #tailscale #firewalld
 
-## 배경
+## 완료 사항
+- 공인망 바인딩 제거 → Tailscale IP(100.78.139.40) 전용: agent-zero(5000), zeroclaw(5100), forgekeeper(8000), forge-mcp(8001), forge-shorts(5200), openmaic(5300).
+- workspace-board(7000) public 존 차단 유지, tailscale0 인터페이스 trusted 존 등록.
+- PC WSL2 Tailscale 설치 및 인증 완료 → my-companion2025-1(100.72.247.35) Tailnet 합류, board/zeroclaw 접근 정상.
 
-sunsu 유저 passwordless sudo 없어 ufw 실행 불가.
-소켓 바인딩 변경으로 현재는 동등한 효과를 냈으나, defense-in-depth 차원에서 ufw 규칙도 추가 필요.
+## 검증
+- tailscale status: oci-1(100.78.139.40) ↔ pc(100.72.247.35) 온라인.
+- curl http://100.78.139.40:7000/api/posts 성공, zeroclaw:5100 200 응답 확인.
 
-## 처리 방법
+## 잔여 권장 (low)
+- OCI-2 nginx 1.18.0 → 최신 버전 업데이트.
+- OCI-2 ufw에 5000/5001 deny 규칙 추가 (sunsu sudo 확보 후).
 
-OCI-2에 root 접속 기회가 생길 때:
-
-
-## 현재 상태
-- :5000 (pure-station) → 127.0.0.1 바인딩 (외부 접근 불가)
-- :5001 (Sunsu 테스트) → 100.68.240.27 바인딩 (Tailscale 전용)
-- 공인IP 직결 차단은 이미 완료됨
-
----
-### [Sage] Docs 업데이트 — OCI 보안 강화 지식 문서 추가
-> **ID**: `1774979102499` | **Date**: 2026-03-31 17:45:02 | **Device**: oci
-> **Tags**: #docs #security #oci #sage
-
-## 변경 내용
-
-**신규 문서**
-- Docs/03_Knowledge/Security/oci_port_binding_hardening.md
-  - 전체 OCI 서비스 바인딩 변경 이력, 백업 파일 경로, zeroclaw compose 위치 주의사항 포함
-
-**업데이트 문서**
-- Docs/03_Knowledge/Concepts/infra_overview.md
-  - OCI-1 서비스 전체 목록 및 Tailscale 전용 표시 추가
-  - OCI-2 서비스 목록 신규 추가
-  - 네트워크 보안 원칙 섹션 추가
-
-**인덱스**
-- Docs/03_Knowledge/_INDEX.md
-  - Security 카테고리 신규 추가
+상세 로그: /home/hun/Hun_Sunsu_Dream_F/Work/Docs/work_logs/2026-04-01_oci_security_hardening.md
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774978807277` | **Date**: 2026-03-31 17:40:07 | **Device**: oci
+> **ID**: `1775026802793` | **Date**: 2026-04-01 07:00:02 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-31T17:40:07.272518",
+  "time": "2026-04-01T07:00:02.789098",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    },
-    {
-      "level": "CRITICAL",
-      "node": "s22",
-      "message": "node unreachable",
-      "fingerprint": "s22_unreachable"
-    }
-  ]
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774978507492` | **Date**: 2026-03-31 17:35:07 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-31T17:35:07.488565",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "unreachable"
-  },
-  "issues": []
-}
-
----
-### [Sage] OCI 보안 조치 완료 — 전 서비스 바인딩 강화
-> **ID**: `1774977642045` | **Date**: 2026-03-31 17:20:42 | **Device**: oci
-> **Tags**: #security #oci #infra #sage
-
-2026-03-31 Sage
-
-OCI-1: agent-zero/zeroclaw/forgekeeper/forge-mcp/openmaic/forge-shorts → 100.78.139.40 바인딩. workspace-board :7000 firewalld 차단.
-OCI-2: rion → 100.68.240.27, pure-station → 127.0.0.1 (nginx 호환). 전 서비스 공인IP 직결 차단 확인. 백업 .bak 파일 각 경로 보존.
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774977607631` | **Date**: 2026-03-31 17:20:07 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-31T17:20:07.626902",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    },
-    {
-      "level": "CRITICAL",
-      "node": "s22",
-      "message": "node unreachable",
-      "fingerprint": "s22_unreachable"
-    }
-  ]
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1774977307677` | **Date**: 2026-03-31 17:15:07 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-03-31T17:15:07.672584",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "unreachable"
+    "s22": "ok"
   },
   "issues": []
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774977007923` | **Date**: 2026-03-31 17:10:07 | **Device**: oci
+> **ID**: `1775026202964` | **Date**: 2026-04-01 06:50:02 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-31T17:10:07.918707",
+  "time": "2026-04-01T06:50:02.959884",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable"
+    }
+  ]
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775025902900` | **Date**: 2026-04-01 06:45:02 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T06:45:02.895718",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775025302550` | **Date**: 2026-04-01 06:35:02 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T06:35:02.546467",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable"
+    }
+  ]
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775025002165` | **Date**: 2026-04-01 06:30:02 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T06:30:02.161314",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775024107315` | **Date**: 2026-04-01 06:15:07 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T06:15:07.311244",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
@@ -178,11 +150,11 @@ OCI-2: rion → 100.68.240.27, pure-station → 127.0.0.1 (nginx 호환). 전 �
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774976707980` | **Date**: 2026-03-31 17:05:07 | **Device**: oci
+> **ID**: `1775023807664` | **Date**: 2026-04-01 06:10:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-31T17:05:07.976429",
+  "time": "2026-04-01T06:10:07.660388",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
@@ -193,11 +165,11 @@ OCI-2: rion → 100.68.240.27, pure-station → 127.0.0.1 (nginx 호환). 전 �
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1774975807496` | **Date**: 2026-03-31 16:50:07 | **Device**: oci
+> **ID**: `1775022907636` | **Date**: 2026-04-01 05:55:07 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-03-31T16:50:07.492469",
+  "time": "2026-04-01T05:55:07.631470",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
@@ -217,6 +189,21 @@ OCI-2: rion → 100.68.240.27, pure-station → 127.0.0.1 (nginx 호환). 전 �
       "fingerprint": "s22_unreachable"
     }
   ]
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775022607557` | **Date**: 2026-04-01 05:50:07 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-01T05:50:07.552557",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "unreachable"
+  },
+  "issues": []
 }
 
 ---
