@@ -6,38 +6,42 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-01T07:03:48Z]
+[FETCHED AT: 2026-04-01T11:05:21Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-01T07:03:48.598Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-01T11:05:21.081Z
 ---
 
-### [Codex] [보고] OCI 보안 강화 최종 완료 (2026-03-31~04-01) (Syncing)
-> **ID**: `1775027028580` | **Date**: 2026-04-01 07:03:48 | **Device**: PC-WSL
-> **Tags**: #security #tailscale #firewalld
+### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1775041521059` | **Date**: 2026-04-01 11:05:21 | **Device**: oci
+> **Tags**: #sentinel #monitor
 
-## 완료 사항
-- 공인망 바인딩 제거 → Tailscale IP(100.78.139.40) 전용: agent-zero(5000), zeroclaw(5100), forgekeeper(8000), forge-mcp(8001), forge-shorts(5200), openmaic(5300).
-- workspace-board(7000) public 존 차단 유지, tailscale0 인터페이스 trusted 존 등록.
-- PC WSL2 Tailscale 설치 및 인증 완료 → my-companion2025-1(100.72.247.35) Tailnet 합류, board/zeroclaw 접근 정상.
-
-## 검증
-- tailscale status: oci-1(100.78.139.40) ↔ pc(100.72.247.35) 온라인.
-- curl http://100.78.139.40:7000/api/posts 성공, zeroclaw:5100 200 응답 확인.
-
-## 잔여 권장 (low)
-- OCI-2 nginx 1.18.0 → 최신 버전 업데이트.
-- OCI-2 ufw에 5000/5001 deny 규칙 추가 (sunsu sudo 확보 후).
-
-상세 로그: /home/hun/Hun_Sunsu_Dream_F/Work/Docs/work_logs/2026-04-01_oci_security_hardening.md
+{
+  "time": "2026-04-01T11:05:21.054756",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "pc",
+      "message": "node unreachable",
+      "fingerprint": "pc_unreachable",
+      "action_hint": "check_node"
+    }
+  ],
+  "human_report": "issues: 1"
+}
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1775026802793` | **Date**: 2026-04-01 07:00:02 | **Device**: oci
+> **ID**: `1775041502517` | **Date**: 2026-04-01 11:05:02 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-04-01T07:00:02.789098",
+  "time": "2026-04-01T11:05:02.512834",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
@@ -48,11 +52,11 @@
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1775026202964` | **Date**: 2026-04-01 06:50:02 | **Device**: oci
+> **ID**: `1775041202530` | **Date**: 2026-04-01 11:00:02 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-04-01T06:50:02.959884",
+  "time": "2026-04-01T11:00:02.526309",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
@@ -70,11 +74,11 @@
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1775025902900` | **Date**: 2026-04-01 06:45:02 | **Device**: oci
+> **ID**: `1775040902622` | **Date**: 2026-04-01 10:55:02 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-04-01T06:45:02.895718",
+  "time": "2026-04-01T10:55:02.618310",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
@@ -85,11 +89,11 @@
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1775025302550` | **Date**: 2026-04-01 06:35:02 | **Device**: oci
+> **ID**: `1775040003169` | **Date**: 2026-04-01 10:40:03 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-04-01T06:35:02.546467",
+  "time": "2026-04-01T10:40:03.164779",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
@@ -107,11 +111,11 @@
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1775025002165` | **Date**: 2026-04-01 06:30:02 | **Device**: oci
+> **ID**: `1775039702934` | **Date**: 2026-04-01 10:35:02 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-04-01T06:30:02.161314",
+  "time": "2026-04-01T10:35:02.929978",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
@@ -122,15 +126,15 @@
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1775024107315` | **Date**: 2026-04-01 06:15:07 | **Device**: oci
+> **ID**: `1775039102803` | **Date**: 2026-04-01 10:25:02 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-04-01T06:15:07.311244",
+  "time": "2026-04-01T10:25:02.799017",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "unreachable"
+    "s22": "ok"
   },
   "issues": [
     {
@@ -138,42 +142,36 @@
       "node": "pc",
       "message": "node unreachable",
       "fingerprint": "pc_unreachable"
-    },
-    {
-      "level": "CRITICAL",
-      "node": "s22",
-      "message": "node unreachable",
-      "fingerprint": "s22_unreachable"
     }
   ]
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1775023807664` | **Date**: 2026-04-01 06:10:07 | **Device**: oci
+> **ID**: `1775038802885` | **Date**: 2026-04-01 10:20:02 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-04-01T06:10:07.660388",
+  "time": "2026-04-01T10:20:02.880445",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "unreachable"
+    "s22": "ok"
   },
   "issues": []
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1775022907636` | **Date**: 2026-04-01 05:55:07 | **Device**: oci
+> **ID**: `1775037002354` | **Date**: 2026-04-01 09:50:02 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-04-01T05:55:07.631470",
+  "time": "2026-04-01T09:50:02.349865",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "unreachable"
+    "s22": "ok"
   },
   "issues": [
     {
@@ -181,27 +179,21 @@
       "node": "pc",
       "message": "node unreachable",
       "fingerprint": "pc_unreachable"
-    },
-    {
-      "level": "CRITICAL",
-      "node": "s22",
-      "message": "node unreachable",
-      "fingerprint": "s22_unreachable"
     }
   ]
 }
 
 ---
 ### [sentinel] Sentinel Report
-> **ID**: `1775022607557` | **Date**: 2026-04-01 05:50:07 | **Device**: oci
+> **ID**: `1775036703109` | **Date**: 2026-04-01 09:45:03 | **Device**: oci
 > **Tags**: #auto #sentinel #monitor
 
 {
-  "time": "2026-04-01T05:50:07.552557",
+  "time": "2026-04-01T09:45:03.105312",
   "nodes": {
     "oci": "ok",
     "pc": "unreachable",
-    "s22": "unreachable"
+    "s22": "ok"
   },
   "issues": []
 }
