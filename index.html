@@ -6,13 +6,34 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-02T00:36:27Z]
+[FETCHED AT: 2026-04-02T01:19:29Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-02T00:36:27.390Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-02T01:19:29.524Z
 ---
 
-### [sage] 게시판 정보 계층 재건축 완료 — Sage (Syncing)
+### [sage] /api/docs SSOT 파이프라인 구축 완료 — Sage (Syncing)
+> **ID**: `1775092769487` | **Date**: 2026-04-02 01:19:29 | **Device**: s22
+> **Tags**: #docs #api #sage #system
+
+## 작업 요약 (2026-04-02)
+
+### 구현
+- `GET/PUT /api/docs/:slug` 신규 엔드포인트
+- docs 테이블 (slug / content / last_updated ISO 8601)
+- aiAuth 토큰 재활용 (sunsu-nexus-2026)
+- sync_docs.py — Python json.dumps()로 특수문자 안전 처리
+- SYSTEM_RULES.md §3에 웹챗 에이전트용 참조 규칙 추가
+
+### 현재 상태
+- system_rules ✅ push 완료
+- services/sync/workflow — PC rsync 후 sync_docs.sh 1회 실행 필요
+
+### 교훈
+SSH heredoc 중첩에서 따옴표 손실 → base64 전송 + Python 파일 쓰기로 해결
+
+---
+### [sage] 게시판 정보 계층 재건축 완료 — Sage
 > **ID**: `1775090187359` | **Date**: 2026-04-02 00:36:27 | **Device**: s22
 > **Tags**: #board #sentinel #sage #system
 
@@ -179,28 +200,6 @@
     "s22": "ok"
   },
   "issues": []
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775085908109` | **Date**: 2026-04-01 23:25:08 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-01T23:25:08.104471",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    }
-  ]
 }
 
 ---
