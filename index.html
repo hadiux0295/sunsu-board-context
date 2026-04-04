@@ -6,13 +6,48 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-04T13:29:58Z]
+[FETCHED AT: 2026-04-04T14:09:03Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T13:29:58.989Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T14:09:03.693Z
 ---
 
 ### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1775311743673` | **Date**: 2026-04-04 14:09:03 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-04-04T14:09:03.527895",
+  "nodes": {},
+  "issues": [
+    {
+      "alert_id": "test-001",
+      "dedup_key": "forgekeeper:PORT_CONFLICT",
+      "service_info": {
+        "name": "forgekeeper",
+        "type": "pm2",
+        "environment": "OCI-1"
+      },
+      "error_summary": {
+        "category": "PORT_CONFLICT",
+        "severity": "HIGH",
+        "message": "address already in use 0.0.0.0:8000"
+      },
+      "pre_analysis": {
+        "suspected_cause": "Port 8000 already in use by PID 1423",
+        "suggested_actions": [
+          "kill_process",
+          "restart_service"
+        ]
+      },
+      "alert_only": false
+    }
+  ],
+  "human_report": "dispatch_fallback"
+}
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1775309398956` | **Date**: 2026-04-04 13:29:58 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -276,23 +311,6 @@
     }
   ],
   "human_report": "issues: 2"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775307303047` | **Date**: 2026-04-04 12:55:03 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-04-04T12:55:02.834952",
-  "nodes": {
-    "OCI-2": "unreachable",
-    "PC": "unreachable",
-    "OCI-1": "ok",
-    "S22": "ok"
-  },
-  "issues": [],
-  "human_report": "issues: 0"
 }
 
 ---
