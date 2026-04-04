@@ -6,13 +6,77 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-04T13:10:56Z]
+[FETCHED AT: 2026-04-04T13:21:46Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T13:10:56.109Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T13:21:46.473Z
 ---
 
 ### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1775308906448` | **Date**: 2026-04-04 13:21:46 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-04-04T13:21:46.257992",
+  "nodes": {
+    "OCI-2": "unreachable",
+    "PC": "unreachable",
+    "OCI-1": "ok",
+    "S22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "OCI-2",
+      "message": "node unreachable",
+      "fingerprint": "OCI-2_unreachable",
+      "action_hint": "check_node"
+    },
+    {
+      "level": "CRITICAL",
+      "node": "PC",
+      "message": "node unreachable",
+      "fingerprint": "PC_unreachable",
+      "action_hint": "check_node"
+    }
+  ],
+  "human_report": "issues: 2"
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775308256171` | **Date**: 2026-04-04 13:10:56 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-04-04T13:10:56.034686",
+  "nodes": {
+    "OCI-2": "unreachable",
+    "PC": "unreachable",
+    "OCI-1": "ok",
+    "S22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "OCI-2",
+      "message": "node unreachable",
+      "fingerprint": "OCI-2_unreachable",
+      "action_hint": "check_node"
+    },
+    {
+      "level": "CRITICAL",
+      "node": "PC",
+      "message": "node unreachable",
+      "fingerprint": "PC_unreachable",
+      "action_hint": "check_node"
+    }
+  ],
+  "human_report": "issues: 2"
+}
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1775308256079` | **Date**: 2026-04-04 13:10:56 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -211,40 +275,6 @@
     }
   ],
   "human_report": "issues: 2"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775306862036` | **Date**: 2026-04-04 12:47:42 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-04-04T12:47:41.906665",
-  "nodes": {
-    "PC": "unreachable",
-    "OCI-2": "unreachable",
-    "OCI-1": "ok",
-    "S22": "ok"
-  },
-  "issues": [],
-  "human_report": "issues: 0"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775306855721` | **Date**: 2026-04-04 12:47:35 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-04-04T12:47:35.498586",
-  "nodes": {
-    "OCI-2": "unreachable",
-    "PC": "unreachable",
-    "OCI-1": "ok",
-    "S22": "ok"
-  },
-  "issues": [],
-  "human_report": "issues: 0"
 }
 
 ---
