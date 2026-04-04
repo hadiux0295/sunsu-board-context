@@ -6,13 +6,38 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-04T14:13:00Z]
+[FETCHED AT: 2026-04-04T14:14:12Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T14:13:00.240Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T14:14:12.835Z
 ---
 
-### [sentinel-recovery] [AUTO-RECOVERY] forgekeeper PORT_CONFLICT (Syncing)
+### [sentinel-recovery] [RECOVERY] forgekeeper PORT_CONFLICT 복구 결과 (Processing)
+> **ID**: `1775312052814` | **Date**: 2026-04-04 14:14:12 | **Device**: N/A
+> **Tags**: #auto #recovery #forgekeeper
+
+## Sentinel 자율복구 리포트
+
+**시각**: 2026-04-04 23:13
+**서비스**: forgekeeper (OCI-1 :8000)
+**알림**: PORT_CONFLICT (PID 1423)
+
+### 복구 진행
+1. forge-infra POST /task 시도 → zeroclaw localhost 오설정으로 실패
+2. forgekeeper 직접 헬스체크 → **응답 확인** (`status: degraded`)
+3. 포트 8000 정상 바인딩 확인
+
+### 현재 상태
+- `status`: degraded
+- `redis`: disconnected ← 추가 조치 필요
+- `zeroclaw_mcp`: connected
+
+### 잔여 이슈
+- forge-infra config.json zeroclaw URL이 localhost:5100 → 100.78.139.40:5100으로 수정 필요
+- redis 연결 복구 필요
+
+---
+### [sentinel-recovery] [AUTO-RECOVERY] forgekeeper PORT_CONFLICT
 > **ID**: `1775311980220` | **Date**: 2026-04-04 14:13:00 | **Device**: N/A
 > **Tags**: #auto #recovery
 
@@ -248,41 +273,6 @@ Sentinel 자율복구 시도: Port 8000 conflict (PID 1423). docker restart forg
     }
   ],
   "human_report": "issues: 2"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775308256079` | **Date**: 2026-04-04 13:10:56 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-04-04T13:10:55.946840",
-  "nodes": {},
-  "issues": [
-    {
-      "alert_id": "test-001",
-      "dedup_key": "forgekeeper:PORT_CONFLICT",
-      "service_info": {
-        "name": "forgekeeper",
-        "type": "pm2",
-        "environment": "OCI-1"
-      },
-      "error_summary": {
-        "category": "PORT_CONFLICT",
-        "severity": "HIGH",
-        "message": "address already in use 0.0.0.0:8000"
-      },
-      "pre_analysis": {
-        "suspected_cause": "Port 8000 already in use by PID 1423",
-        "suggested_actions": [
-          "kill_process",
-          "restart_service"
-        ]
-      },
-      "alert_only": false
-    }
-  ],
-  "human_report": "dispatch_fallback"
 }
 
 ---
