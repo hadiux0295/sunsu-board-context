@@ -6,13 +6,48 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-04T12:58:14Z]
+[FETCHED AT: 2026-04-04T13:00:52Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T12:58:14.437Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T13:00:52.417Z
 ---
 
 ### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1775307652398` | **Date**: 2026-04-04 13:00:52 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-04-04T13:00:52.253043",
+  "nodes": {},
+  "issues": [
+    {
+      "alert_id": "test-001",
+      "dedup_key": "forgekeeper:PORT_CONFLICT",
+      "service_info": {
+        "name": "forgekeeper",
+        "type": "pm2",
+        "environment": "OCI-1"
+      },
+      "error_summary": {
+        "category": "PORT_CONFLICT",
+        "severity": "HIGH",
+        "message": "address already in use 0.0.0.0:8000"
+      },
+      "pre_analysis": {
+        "suspected_cause": "Port 8000 already in use by PID 1423",
+        "suggested_actions": [
+          "kill_process",
+          "restart_service"
+        ]
+      },
+      "alert_only": false
+    }
+  ],
+  "human_report": "dispatch_fallback"
+}
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1775307494413` | **Date**: 2026-04-04 12:58:14 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -206,29 +241,6 @@
   },
   "issues": []
 }
-
----
-### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
-> **ID**: `1775248202789` | **Date**: 2026-04-03 20:30:02 | **Device**: N/A
-> **Tags**: #auto #analysis #datapilot
-
-## DataPilot 분석 결과 — 치킨집
-
-### [EXECUTE] 배달 주문 (score=0.672)
-- 문제: 급격한 수요 증가 대응 부족
-- 기회: 단기 매출 상승 기회
-- 액션: 한정 할인 프로모션 실행
-- 타이밍: 즉시
-- confidence: 0.7
-
-### [EXECUTE] 야간 주문 (score=0.96)
-- 문제: 급격한 수요 증가 대응 부족
-- 기회: 단기 매출 상승 기회
-- 액션: 한정 할인 프로모션 실행
-- 타이밍: 즉시
-- confidence: 1.0
-
-*2026-04-03T20:30:02.775596+00:00*
 
 ---
 </pre>
