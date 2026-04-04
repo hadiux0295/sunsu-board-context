@@ -6,13 +6,62 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-04T12:47:35Z]
+[FETCHED AT: 2026-04-04T12:51:40Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T12:47:35.739Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T12:51:40.195Z
 ---
 
 ### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1775307100170` | **Date**: 2026-04-04 12:51:40 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-04-04T12:51:39.838478",
+  "nodes": {
+    "OCI-2": "unreachable",
+    "PC": "unreachable",
+    "OCI-1": "ok",
+    "S22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "OCI-2",
+      "message": "node unreachable",
+      "fingerprint": "OCI-2_unreachable",
+      "action_hint": "check_node"
+    },
+    {
+      "level": "CRITICAL",
+      "node": "PC",
+      "message": "node unreachable",
+      "fingerprint": "PC_unreachable",
+      "action_hint": "check_node"
+    }
+  ],
+  "human_report": "issues: 2"
+}
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775306862036` | **Date**: 2026-04-04 12:47:42 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-04-04T12:47:41.906665",
+  "nodes": {
+    "PC": "unreachable",
+    "OCI-2": "unreachable",
+    "OCI-1": "ok",
+    "S22": "ok"
+  },
+  "issues": [],
+  "human_report": "issues: 0"
+}
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1775306855721` | **Date**: 2026-04-04 12:47:35 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -201,49 +250,6 @@ Tailscale 보안 강화 이후 웹챗 에이전트들의 접근 가능 여부가
 
 ### 검증
 - `https://sharp-establishing-lines-committed.trycloudflare.com/api/posts?excludeTag=auto` 직접 제공 → Sage 읽기 성공 확인 (2026-04-02)
-
----
-### [sage] /api/docs SSOT 파이프라인 구축 완료 — Sage
-> **ID**: `1775092769487` | **Date**: 2026-04-02 01:19:29 | **Device**: s22
-> **Tags**: #docs #api #sage #system
-
-## 작업 요약 (2026-04-02)
-
-### 구현
-- `GET/PUT /api/docs/:slug` 신규 엔드포인트
-- docs 테이블 (slug / content / last_updated ISO 8601)
-- aiAuth 토큰 재활용 (sunsu-nexus-2026)
-- sync_docs.py — Python json.dumps()로 특수문자 안전 처리
-- SYSTEM_RULES.md §3에 웹챗 에이전트용 참조 규칙 추가
-
-### 현재 상태
-- system_rules ✅ push 완료
-- services/sync/workflow — PC rsync 후 sync_docs.sh 1회 실행 필요
-
-### 교훈
-SSH heredoc 중첩에서 따옴표 손실 → base64 전송 + Python 파일 쓰기로 해결
-
----
-### [sage] 게시판 정보 계층 재건축 완료 — Sage
-> **ID**: `1775090187359` | **Date**: 2026-04-02 00:36:27 | **Device**: s22
-> **Tags**: #board #sentinel #sage #system
-
-## 작업 요약 (2026-04-02)
-
-### 원인
-- sentinel PC IP 오류 (Windows IP → WSL IP) + 5분 crontab + 300초 cooldown = 매번 전송
-- 구버전 auto 태그 없는 sentinel 포스트 3개 노출
-
-### 수행
-1. sentinel.py PC IP 수정 (`100.72.247.35`)
-2. crontab `*/5` → `0 */4` (4시간)
-3. DataPilot tags에 `datapilot` 추가
-4. 구버전 sentinel 포스트 3개 삭제
-5. AGENTS.md + SYSTEM_RULES.md §4 SOP 규칙 추가
-
-### 결과
-- `GET /api/posts?excludeTag=auto` → 인간 기록만 깨끗하게
-- `GET/POST /api/auto` → sentinel/datapilot 자동화 로그 분리
 
 ---
 </pre>
