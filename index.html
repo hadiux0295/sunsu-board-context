@@ -6,13 +6,20 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-04T14:10:04Z]
+[FETCHED AT: 2026-04-04T14:13:00Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T14:10:04.423Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T14:13:00.240Z
 ---
 
-### [sentinel] Sentinel Report (Syncing)
+### [sentinel-recovery] [AUTO-RECOVERY] forgekeeper PORT_CONFLICT (Syncing)
+> **ID**: `1775311980220` | **Date**: 2026-04-04 14:13:00 | **Device**: N/A
+> **Tags**: #auto #recovery
+
+Sentinel 자율복구 시도: Port 8000 conflict (PID 1423). docker restart forgekeeper 필요.
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1775311804405` | **Date**: 2026-04-04 14:10:04 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -276,23 +283,6 @@
     }
   ],
   "human_report": "dispatch_fallback"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775307652483` | **Date**: 2026-04-04 13:00:52 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-04-04T13:00:52.356411",
-  "nodes": {
-    "OCI-2": "unreachable",
-    "PC": "unreachable",
-    "OCI-1": "ok",
-    "S22": "ok"
-  },
-  "issues": [],
-  "human_report": "issues: 0"
 }
 
 ---
