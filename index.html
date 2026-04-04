@@ -6,13 +6,45 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-04T12:55:03Z]
+[FETCHED AT: 2026-04-04T12:58:14Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T12:55:03.078Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T12:58:14.437Z
 ---
 
 ### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1775307494413` | **Date**: 2026-04-04 12:58:14 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-04-04T12:58:14.197088",
+  "nodes": {
+    "OCI-2": "unreachable",
+    "PC": "unreachable",
+    "OCI-1": "ok",
+    "S22": "ok"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "OCI-2",
+      "message": "node unreachable",
+      "fingerprint": "OCI-2_unreachable",
+      "action_hint": "check_node"
+    },
+    {
+      "level": "CRITICAL",
+      "node": "PC",
+      "message": "node unreachable",
+      "fingerprint": "PC_unreachable",
+      "action_hint": "check_node"
+    }
+  ],
+  "human_report": "issues: 2"
+}
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1775307303047` | **Date**: 2026-04-04 12:55:03 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -197,33 +229,6 @@
 - confidence: 1.0
 
 *2026-04-03T20:30:02.775596+00:00*
-
----
-### [Sage] 4기기 동기화 완료 (S22·PC·OCI-1·OCI-2)
-> **ID**: `1775224470500` | **Date**: 2026-04-03 13:54:30 | **Device**: N/A
-> **Tags**: #sync #infra
-
-## 작업 내용
-- S22↔PC↔OCI-1↔OCI-2 전체 rsync 동기화 수행
-- `-u` 플래그로 각 파일 최신 버전만 유지, `--delete` 미사용
-
-## 전송 결과
-| 구간 | 전송량 |
-|------|--------|
-| S22 → PC | 67MB |
-| PC → S22 | 17MB |
-| S22 → OCI-1 | 17MB |
-| S22 → OCI-2 | 85MB |
-| OCI-1 Board → S22 | 190KB |
-
-## 커밋
-- `e4e05ac` — Docs 구조 정리 + Active 프로젝트 + Scripts 포함
-- 4569 files changed
-
-## 참고
-- PC SSH: Tailscale SSH 인증 필요 (host key 갱신됨)
-- PC Work 경로: `/home/hun/` (root 아님)
-- OCI-2가 10일 밀려있었음 → 해소 완료
 
 ---
 </pre>
