@@ -6,13 +6,67 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-04T14:15:59Z]
+[FETCHED AT: 2026-04-04T14:17:51Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T14:15:59.857Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T14:17:51.090Z
 ---
 
-### [sentinel-recovery] [RECOVERY REPORT] forgekeeper PORT_CONFLICT 자율복구 완료 (Syncing)
+### [sentinel-recovery] [SENTINEL RECOVERY] forgekeeper 자율복구 최종 보고 (Syncing)
+> **ID**: `1775312271070` | **Date**: 2026-04-04 14:17:51 | **Device**: N/A
+> **Tags**: #auto #sentinel #recovery #forgekeeper #final
+
+## 🛡️ 자율복구 최종 보고서
+
+**시각**: 2026-04-04 23:17
+**서비스**: forgekeeper :8000 | OCI-1
+**알림**: PORT_CONFLICT (PID 1423 포트 선점)
+
+---
+
+## ✅ 복구 결과: PORT_CONFLICT 해소 확인
+
+forgekeeper Docker 컨테이너가 포트 8000에 정상 바인딩 확인:
+```json
+{"status":"degraded","service":"forgekeeper","version":"0.5.0","redis":"disconnected","zeroclaw_mcp":"connected"}
+```
+
+---
+
+## 🔍 진단 과정
+
+| 단계 | 시도 | 결과 |
+|------|------|------|
+| 1 | forge-infra POST /task | ❌ zeroclaw 접속 실패 (localhost:5100) |
+| 2 | forgekeeper /health 직접 확인 | ✅ 응답 확인 (degraded) |
+| 3 | forge-mcp MCP run_single | ❌ /pipeline/run 500 오류 |
+| 4 | 포트 8000 바인딩 확인 | ✅ forgekeeper 점유 중 |
+
+**결론**: 컨테이너가 Docker 자동 재시작 정책으로 자체 복구. PID 1423 충돌 해소됨.
+
+---
+
+## ⚠️ 수동 조치 필요 항목
+
+### 1️⃣ forge-infra zeroclaw URL 오설정 (HIGH)
+```bash
+# OCI-1 접속 후:
+sed -i "s|localhost:5100|100.78.139.40:5100|g" /home/opc/agents/forge-infra/config.json
+pm2 restart forge-infra
+```
+
+### 2️⃣ zeroclaw API 키 갱신 (HIGH)
+- 기존 키 `zeroclaw-mcp-fixed` 보안강화 후 무효
+- forge-infra worker.py에 신규 키 반영 필요
+
+### 3️⃣ forgekeeper redis 재연결 (MEDIUM)
+```bash
+docker restart redis
+# 또는 redis 서비스 상태 확인
+```
+
+---
+### [sentinel-recovery] [RECOVERY REPORT] forgekeeper PORT_CONFLICT 자율복구 완료
 > **ID**: `1775312159837` | **Date**: 2026-04-04 14:15:59 | **Device**: N/A
 > **Tags**: #auto #recovery #forgekeeper #sentinel
 
@@ -254,38 +308,6 @@ Sentinel 자율복구 시도: Port 8000 conflict (PID 1423). docker restart forg
     }
   ],
   "human_report": "dispatch_fallback"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775308906448` | **Date**: 2026-04-04 13:21:46 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-04-04T13:21:46.257992",
-  "nodes": {
-    "OCI-2": "unreachable",
-    "PC": "unreachable",
-    "OCI-1": "ok",
-    "S22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "OCI-2",
-      "message": "node unreachable",
-      "fingerprint": "OCI-2_unreachable",
-      "action_hint": "check_node"
-    },
-    {
-      "level": "CRITICAL",
-      "node": "PC",
-      "message": "node unreachable",
-      "fingerprint": "PC_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 2"
 }
 
 ---
