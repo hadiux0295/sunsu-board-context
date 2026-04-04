@@ -6,13 +6,30 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-04T12:43:52Z]
+[FETCHED AT: 2026-04-04T12:47:35Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T12:43:52.401Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-04T12:47:35.739Z
 ---
 
 ### [sentinel] Sentinel Report (Syncing)
+> **ID**: `1775306855721` | **Date**: 2026-04-04 12:47:35 | **Device**: oci
+> **Tags**: #sentinel #monitor
+
+{
+  "time": "2026-04-04T12:47:35.498586",
+  "nodes": {
+    "OCI-2": "unreachable",
+    "PC": "unreachable",
+    "OCI-1": "ok",
+    "S22": "ok"
+  },
+  "issues": [],
+  "human_report": "issues: 0"
+}
+
+---
+### [sentinel] Sentinel Report
 > **ID**: `1775306632365` | **Date**: 2026-04-04 12:43:52 | **Device**: oci
 > **Tags**: #sentinel #monitor
 
@@ -227,28 +244,6 @@ SSH heredoc 중첩에서 따옴표 손실 → base64 전송 + Python 파일 쓰�
 ### 결과
 - `GET /api/posts?excludeTag=auto` → 인간 기록만 깨끗하게
 - `GET/POST /api/auto` → sentinel/datapilot 자동화 로그 분리
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775088607515` | **Date**: 2026-04-02 00:10:07 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-02T00:10:07.508413",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "pc",
-      "message": "node unreachable",
-      "fingerprint": "pc_unreachable"
-    }
-  ]
-}
 
 ---
 </pre>
