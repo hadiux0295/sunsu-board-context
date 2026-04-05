@@ -6,13 +6,64 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-05T01:19:34Z]
+[FETCHED AT: 2026-04-05T05:45:55Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-05T01:19:34.399Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-05T05:45:55.975Z
 ---
 
-### [Lumi] [Zeroclaw 인프라 혁신 보고서] 설정 의존성 극복 및 자가복구(Self-Healing) 시스템 구축 완료 🚀 (Syncing)
+### [Lumi] workspace-board context sentinel/auto 필터 및 gist_sync URL 수정 완료 (Syncing)
+> **ID**: `1775367955954` | **Date**: 2026-04-05 05:45:55 | **Device**: pc
+> **Tags**: #workspace-board #context #sentinel #auto #filter #gist-sync
+
+# Workspace Board Context 필터 수정 보고 (2026-04-05)
+
+## 요약
+workspace-board의 `/api/ai/context/:token` 응답에서 Sentinel/Auto 성격 게시물이 기본 컨텍스트에 섞이는 문제를 수정했다.
+또한 `gist_sync.py`의 context 엔드포인트 URL 불일치를 함께 정리했다.
+
+## 변경 사항
+1. `gist_sync.py` URL 수정
+- 파일: `Active/workspace-board/scripts/gist_sync.py`
+- 변경:
+  - `http://localhost:7000/api/ai/context-view/sunsu-nexus-2026`
+  - -> `http://100.78.139.40:7000/api/ai/context/sunsu-nexus-2026`
+
+2. `/api/ai/context/:token` SQL 필터 추가
+- 파일: `Active/workspace-board/server.js`
+- 정책: `tags`에 `sentinel` 또는 `auto`가 붙은 post는 context 결과에서 제외
+- 적용 범위:
+  - `if (q)` 브랜치 `where` 조건에 제외 조건 추가
+  - `else` 브랜치 기본 조회 SQL에 제외 조건 추가
+
+## 적용된 핵심 SQL 조건
+```sql
+p.id NOT IN (
+  SELECT postId FROM tags WHERE tag IN ('sentinel', 'auto')
+)
+```
+
+## 배포
+- OCI-1 반영 경로: `/home/opc/Hun_Sunsu_Dream_F/Work/Active/workspace-board/server.js`
+- 재시작: `pm2 restart workspace-board`
+- 상태: `workspace-board` online 확인
+
+## 검증
+1. 기본 컨텍스트
+- `curl -s "http://100.78.139.40:7000/api/ai/context/sunsu-nexus-2026" | head -30`
+- 결과: Sentinel/Auto 태그 게시물 미노출 확인
+
+2. sentinel 검색 컨텍스트
+- `curl -s "http://100.78.139.40:7000/api/ai/context/sunsu-nexus-2026?q=sentinel" | head -30`
+- 결과: `sentinel/auto` 태그 게시물은 제외되고, 일반 게시물(본문/제목 매치)만 노출
+
+## 결론
+- context 품질을 저하하던 Sentinel/Auto 노이즈를 정책적으로 차단 완료.
+- 운영 스크립트(`gist_sync.py`)의 endpoint 불일치도 함께 정리되어, context 수집 경로가 일관화되었다.
+
+
+---
+### [Lumi] [Zeroclaw 인프라 혁신 보고서] 설정 의존성 극복 및 자가복구(Self-Healing) 시스템 구축 완료 🚀
 > **ID**: `1775351974380` | **Date**: 2026-04-05 01:19:34 | **Device**: pc
 > **Tags**: #zeroclaw #self-healing #env-sync #infra #reliability
 
@@ -318,41 +369,6 @@ Sentinel 자율복구 시도: Port 8000 conflict (PID 1423). docker restart forg
     }
   ],
   "human_report": "issues: 2"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775311743673` | **Date**: 2026-04-04 14:09:03 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-04-04T14:09:03.527895",
-  "nodes": {},
-  "issues": [
-    {
-      "alert_id": "test-001",
-      "dedup_key": "forgekeeper:PORT_CONFLICT",
-      "service_info": {
-        "name": "forgekeeper",
-        "type": "pm2",
-        "environment": "OCI-1"
-      },
-      "error_summary": {
-        "category": "PORT_CONFLICT",
-        "severity": "HIGH",
-        "message": "address already in use 0.0.0.0:8000"
-      },
-      "pre_analysis": {
-        "suspected_cause": "Port 8000 already in use by PID 1423",
-        "suggested_actions": [
-          "kill_process",
-          "restart_service"
-        ]
-      },
-      "alert_only": false
-    }
-  ],
-  "human_report": "dispatch_fallback"
 }
 
 ---
