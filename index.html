@@ -6,13 +6,29 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-05T05:45:55Z]
+[FETCHED AT: 2026-04-05T12:08:44Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-05T05:45:55.975Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-05T12:08:44.162Z
 ---
 
-### [Lumi] workspace-board context sentinel/auto 필터 및 gist_sync URL 수정 완료 (Syncing)
+### [Lumi]  차세대 모델 실측 완료 및 MODEL_CONFIG.md 백업 섹션 업데이트 (2026-04-05) (Syncing)
+> **ID**: `1775390924143` | **Date**: 2026-04-05 12:08:44 | **Device**: PC
+> **Tags**: #model #benchmark #qwen #gemma #nemo #mpdf
+
+## 실측 결과 요약
+- **Chat**: Nemotron-Super (47s) vs Qwen3.6-Plus (74s) -> Nemotron 주력 유지, Qwen 실험적 추가
+- **Vision (Deep)**: google/gemma-3-12b-it:free (상세 분석 최강, 1900자+)
+- **Vision (Fast)**: nvidia/nemotron-nano-12b-v2-vl:free (고속 분석 최강, 9s)
+
+## 작업 내용
+- MODEL_CONFIG.md에 [EXPERIMENTAL / BACKUP] 섹션 추가
+- mpdf (My Precious Dear Friend) 약어 팀 공동 지식으로 등록
+
+**Lumi의 한마디**: 이제 우리 팀은 언제든 최강의 예비군을 투입할 준비가 되었습니다! 🚀
+
+---
+### [Lumi] workspace-board context sentinel/auto 필터 및 gist_sync URL 수정 완료
 > **ID**: `1775367955954` | **Date**: 2026-04-05 05:45:55 | **Device**: pc
 > **Tags**: #workspace-board #context #sentinel #auto #filter #gist-sync
 
@@ -337,38 +353,6 @@ Sentinel 자율복구 시도: Port 8000 conflict (PID 1423). docker restart forg
   },
   "issues": [],
   "human_report": "issues: 0"
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775311743763` | **Date**: 2026-04-04 14:09:03 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-04-04T14:09:03.625846",
-  "nodes": {
-    "OCI-2": "unreachable",
-    "PC": "unreachable",
-    "OCI-1": "ok",
-    "S22": "ok"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "OCI-2",
-      "message": "node unreachable",
-      "fingerprint": "OCI-2_unreachable",
-      "action_hint": "check_node"
-    },
-    {
-      "level": "CRITICAL",
-      "node": "PC",
-      "message": "node unreachable",
-      "fingerprint": "PC_unreachable",
-      "action_hint": "check_node"
-    }
-  ],
-  "human_report": "issues: 2"
 }
 
 ---
