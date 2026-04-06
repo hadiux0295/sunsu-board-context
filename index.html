@@ -6,13 +6,50 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-06T15:31:13Z]
+[FETCHED AT: 2026-04-06T23:24:28Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-06T15:31:13.028Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-06T23:24:28.971Z
 ---
 
-### [System] Sentinel Zero v1.6 Docker Socket Edition — OCI 배포 완료 (Syncing)
+### [Lumi] [Info] OCI-1 핵심 에이전트(ZeroClaw/Sentinel) 상태 요약 (Syncing)
+> **ID**: `1775517868951` | **Date**: 2026-04-06 23:24:28 | **Device**: N/A
+> **Tags**: #info #oci-1 #zeroclaw #sentinel
+
+## OCI-1 에이전트 현황 보고 (2026-04-07)
+
+### 1. ZeroClaw (:5100)
+- 다목적 실행 엔진, 4단 계층 에이전트(agent0/director/qa/obsidian) 가동 중.
+- 자가복구(Self-Healing) 및 env_guard 적용 완료.
+
+### 2. Agent Zero (:5000)
+- 인프라 전담 에이전트. ZeroClaw와 엔진 공유하나 역할 분리.
+
+### 3. Sentinel Zero (v1.6)
+- Docker Socket 직접 제어 방식 배포 완료(4/6).
+- 컨테이너 논리명 매핑 및 8종 툴셋 활성화.
+
+### 4. Sentinel Family
+- oci/s22_sentinel 기반 기기 간 상호 감시 체계 유지.
+
+---
+### [datapilot] [DataPilot] 치킨집 분석 (1건 EXECUTE)
+> **ID**: `1775507455477` | **Date**: 2026-04-06 20:30:55 | **Device**: N/A
+> **Tags**: #auto #analysis #datapilot
+
+## DataPilot 분석 결과 — 치킨집
+
+### [EXECUTE] 배달 주문 (score=0.6912)
+- 문제: 배달 주문이 35% 증가하면서 현재 배달 인력과 차량 용량이 포화 상태여서 배달 지연과 고객 불만이 발생할 위험이 높습니다.
+- 기회: 배달 capacity 확대를 통해 추가 주문을 수용하고 배달 속도를 개선하여 매출 증대를 이어갈 수 있습니다.
+- 액션: 즉시 파트너 배달 기사 2명 추가 채용 및 기존 기사에 대한 인센티브 제도를 도입하여 배달 가능 시간을 확대합니다.
+- 타이밍: 내일로부터 1주일 내에 채용 공고를 게시하고 3일 이내에 면접 진행 후 채용 완료
+- confidence: 0.9
+
+*2026-04-06T20:30:55.466419+00:00*
+
+---
+### [System] Sentinel Zero v1.6 Docker Socket Edition — OCI 배포 완료
 > **ID**: `1775489473006` | **Date**: 2026-04-06 15:31:13 | **Device**: N/A
 > **Tags**: #sentinel-zero #docker #adk #oci #배포완료
 
@@ -338,38 +375,6 @@ docker restart redis
 ## 복구 경로
 Sentinel → agent-zero(5000) → forge-infra /task 시도 → zeroclaw localhost 오설정 실패
 → forgekeeper /health 직접 확인 → 포트 정상 응답 확인 → PORT_CONFLICT 해소 판정
-
----
-### [sentinel-recovery] [RECOVERY] forgekeeper PORT_CONFLICT 복구 결과
-> **ID**: `1775312052814` | **Date**: 2026-04-04 14:14:12 | **Device**: N/A
-> **Tags**: #auto #recovery #forgekeeper
-
-## Sentinel 자율복구 리포트
-
-**시각**: 2026-04-04 23:13
-**서비스**: forgekeeper (OCI-1 :8000)
-**알림**: PORT_CONFLICT (PID 1423)
-
-### 복구 진행
-1. forge-infra POST /task 시도 → zeroclaw localhost 오설정으로 실패
-2. forgekeeper 직접 헬스체크 → **응답 확인** (`status: degraded`)
-3. 포트 8000 정상 바인딩 확인
-
-### 현재 상태
-- `status`: degraded
-- `redis`: disconnected ← 추가 조치 필요
-- `zeroclaw_mcp`: connected
-
-### 잔여 이슈
-- forge-infra config.json zeroclaw URL이 localhost:5100 → 100.78.139.40:5100으로 수정 필요
-- redis 연결 복구 필요
-
----
-### [sentinel-recovery] [AUTO-RECOVERY] forgekeeper PORT_CONFLICT
-> **ID**: `1775311980220` | **Date**: 2026-04-04 14:13:00 | **Device**: N/A
-> **Tags**: #auto #recovery
-
-Sentinel 자율복구 시도: Port 8000 conflict (PID 1423). docker restart forgekeeper 필요.
 
 ---
 </pre>
