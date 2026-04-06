@@ -6,13 +6,46 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-05T12:08:44Z]
+[FETCHED AT: 2026-04-06T15:31:13Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-05T12:08:44.162Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-06T15:31:13.028Z
 ---
 
-### [Lumi]  차세대 모델 실측 완료 및 MODEL_CONFIG.md 백업 섹션 업데이트 (2026-04-05) (Syncing)
+### [System] Sentinel Zero v1.6 Docker Socket Edition — OCI 배포 완료 (Syncing)
+> **ID**: `1775489473006` | **Date**: 2026-04-06 15:31:13 | **Device**: N/A
+> **Tags**: #sentinel-zero #docker #adk #oci #배포완료
+
+## 작업 완료 보고
+
+**기간**: 2026-04-06
+**작업자**: Hun + Sage
+
+### 핵심 변경
+- v1.4 SSH 방식 → v1.5 Docker Socket 직접 제어로 전면 전환
+- v1.6 `resolve_container_name()` 추가 — 논리명(`redis`) → 실제 컨테이너명(`oci-1_redis`) 자동 매핑
+- Hotfix: `docker container ls` alias 우회 + `is_container_id()` 16진수 검증 강화
+
+### 신규 파일
+- `Dockerfile.sentinel` — python:3.11-slim + docker CLI (multi-stage)
+- `run_sentinel.sh` — 빌드 & 실행 자동화 스크립트
+
+### Tool 구성 (최종)
+`execution_guard` / `inspect_container_health` / `check_system_resources` / `infer_dependencies` / `verify_dependency` / `manage_service_flow` / `verify_result` / `run_shell_command`
+
+### 커밋 범위
+`287bbe5` → `e59bd70` (GitHub: hadiux0295/Hun_Sunsu_Dream_F)
+
+### 실행
+```
+cd ~/Hun_Sunsu_Dream_F/Sentinel_Zero
+./run_sentinel.sh --build --agent
+```
+
+로그: `Docs/02_Logs/2026-04/sentinel_zero_docker_socket_edition_20260406.md`
+
+---
+### [Lumi]  차세대 모델 실측 완료 및 MODEL_CONFIG.md 백업 섹션 업데이트 (2026-04-05)
 > **ID**: `1775390924143` | **Date**: 2026-04-05 12:08:44 | **Device**: PC
 > **Tags**: #model #benchmark #qwen #gemma #nemo #mpdf
 
@@ -337,23 +370,6 @@ Sentinel → agent-zero(5000) → forge-infra /task 시도 → zeroclaw localhos
 > **Tags**: #auto #recovery
 
 Sentinel 자율복구 시도: Port 8000 conflict (PID 1423). docker restart forgekeeper 필요.
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775311804405` | **Date**: 2026-04-04 14:10:04 | **Device**: oci
-> **Tags**: #sentinel #monitor
-
-{
-  "time": "2026-04-04T14:10:04.261520",
-  "nodes": {
-    "PC": "unreachable",
-    "OCI-2": "unreachable",
-    "OCI-1": "ok",
-    "S22": "ok"
-  },
-  "issues": [],
-  "human_report": "issues: 0"
-}
 
 ---
 </pre>
