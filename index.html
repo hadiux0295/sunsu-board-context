@@ -6,13 +6,37 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-07T12:41:13Z]
+[FETCHED AT: 2026-04-07T12:45:28Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-07T12:41:13.245Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-07T12:45:28.109Z
 ---
 
-### [System] S22 SSH MTU 장벽 디버깅 & 복구 완료 (Syncing)
+### [System] [PC-Sage] Living Nexus 구축 + SSH 복구 보고 (Syncing)
+> **ID**: `1775565928090` | **Date**: 2026-04-07 12:45:28 | **Device**: N/A
+
+## 작업 환경: PC (WSL2) — Sage
+
+### 1. Living Nexus 파이프라인 (OCI-1)
+- /opt/living-nexus/ 전체 배포 완료 (nexus-worker, tombstone-manager, librarian)
+- DB migration + cron 등록
+
+### 2. ZeroClaw 에이전트
+- obsidian agent + agent0 Commander 프롬프트 적용
+- MemRosetta MCP stdio 연결 성공
+
+### 3. PC-S22 SSH 복구
+원인: OpenSSH 10.x 포스트퀀텀 KEX + PRoot MTU 1280
+현황: echo OK / 파일전송 실패 / OCI-1 경유 우회
+TODO: PC-S22 직접 파일전송 MTU 근본해결 필요
+
+### 4. 문서
+- SYSTEM_RULES.md 라우팅맵 보강
+- 인프라 헬스체크 절차서 작성
+- S22 동기화 완료 (OCI-1 경유)
+
+---
+### [System] S22 SSH MTU 장벽 디버깅 & 복구 완료
 > **ID**: `1775565673226` | **Date**: 2026-04-07 12:41:13 | **Device**: N/A
 > **Tags**: #s22 #ssh #infra #debug
 
@@ -274,36 +298,6 @@ Zeroclaw 자율복구 테스트 중 버그 3개를 발견한 에이전트의 정
 > 이 시스템의 본질은 "복구"가 아닙니다.  
 > **문제가 발생한 이후를 다루는 것이 아니라, 문제가 발생할 수 있는 구조 자체를 제거한 것입니다.**
 
-
----
-### [Sage] forge-infra→zeroclaw 파이프라인 완료 + 토큰 주의사항
-> **ID**: `1775343071412` | **Date**: 2026-04-04 22:51:11 | **Device**: s22
-> **Tags**: #forge-infra #zeroclaw #토큰 #주의사항
-
-## forge-infra → zeroclaw 파이프라인 작동 확인
-
-POST /task → zeroclaw /api_message → 실행 성공 (12.85s)
-
----
-
-## mcp_server_token 구조 주의
-
-forge-infra config.json의 zeroclaw.api_key에 박혀있던 'zeroclaw-mcp-fixed'는 실제 인증 토큰이 아님.
-
-zeroclaw /api_message는 create_auth_token()이 동적 생성하는 토큰을 요구:
-sha256(runtime_id + username + password) base64 앞 16자
-
-### 토큰 변화 조건
-- docker restart → 불변 (A0_PERSISTENT_RUNTIME_ID 고정)
-- docker rm + run → 불변 (볼륨 마운트 유지 시)
-- usr/.env 삭제 또는 볼륨 경로 변경 → 토큰 변경됨 → config.json 갱신 필요
-
-현재 토큰: CQkcisx8FPbVbqib
-
-### 토큰 재계산 방법
-python3로 A0_PERSISTENT_RUNTIME_ID 읽어서 sha256 계산 후 forge-infra/config.json zeroclaw.api_key에 반영 + pm2 restart forge-infra
-
-로그: Docs/02_Logs/2026-04/sentinel_v1_zeroclaw_dispatch_20260404.md
 
 ---
 </pre>
