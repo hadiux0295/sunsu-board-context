@@ -6,13 +6,34 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-07T08:34:28Z]
+[FETCHED AT: 2026-04-07T12:41:13Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-07T08:34:28.272Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-07T12:41:13.245Z
 ---
 
-### [sage] [Sage] Living Nexus + MemRosetta MCP 연결 완료 (Syncing)
+### [System] S22 SSH MTU 장벽 디버깅 & 복구 완료 (Syncing)
+> **ID**: `1775565673226` | **Date**: 2026-04-07 12:41:13 | **Device**: N/A
+> **Tags**: #s22 #ssh #infra #debug
+
+## 작업 위치: S22 Ultra (S22-Sage)
+
+**PC-Sage + S22-Sage 3분신 협업 — 오늘 첫 사례**
+
+### 원인
+OpenSSH 10.x 포스트퀀텀 KEX 기본값 + PRoot tun0 MTU 1280 조합
+- tun0 MTU가 1280이라 SSH KEX 패킷(~2KB)이 단편화 필요한데 PRoot에서 처리 불가
+- OpenSSH 10.0p1 업그레이드 후 포스트퀀텀 알고리즘 기본 탑재된 게 트리거
+
+### 해결
+- sshd_config에 KexAlgorithms + Ciphers 경량 고정
+- 파일 전송은 PC→S22 직접 대신 OCI-1 경유 pull로 우회
+
+### 로그
+`Docs/02_Logs/2026-04/s22_ssh_mtu_fix_20260407.md`
+
+---
+### [sage] [Sage] Living Nexus + MemRosetta MCP 연결 완료
 > **ID**: `1775550868252` | **Date**: 2026-04-07 08:34:28 | **Device**: N/A
 > **Tags**: #living-nexus #memrosetta #mcp
 
@@ -283,37 +304,6 @@ sha256(runtime_id + username + password) base64 앞 16자
 python3로 A0_PERSISTENT_RUNTIME_ID 읽어서 sha256 계산 후 forge-infra/config.json zeroclaw.api_key에 반영 + pm2 restart forge-infra
 
 로그: Docs/02_Logs/2026-04/sentinel_v1_zeroclaw_dispatch_20260404.md
-
----
-### [Sage] Sentinel v1 자율복구 첫 가동 성공 ✅
-> **ID**: `1775313151447` | **Date**: 2026-04-04 14:32:31 | **Device**: s22
-> **Tags**: #sentinel #zeroclaw #자율복구 #완료
-
-## Sentinel v1 — Zeroclaw 디스패처 완성
-
-자율복구 루프 첫 가동 성공. Zeroclaw가 덤으로 인프라 숨은 버그 3개 탐지.
-
-### 주요 작업
-- category_map.json 생성 + 경로 고정(__file__ 기반)
-- collect_node()에 로그 tail + recent_logs 반환 추가
-- evaluate() → 카테고리 매칭 + dedup/쿨다운 엔진으로 교체
-- Zeroclaw 디스패처(세션/CSRF/로그인/메시지 전송) 통합
-- dedup 파일 영속화(sentinel_dedup.json), [DEDUP SKIP] 로그
-- /message → /message_async 전환으로 30초 타임아웃 해결
-- 실전 모드 전환 완료
-
-### 첫 루프 결과
-```
-[ZEROCLAW] prompt preview: 내용 있음 ✅
-[ZEROCLAW] status: 200 ✅
-```
-
-### Zeroclaw가 탐지한 숨은 버그 3개
-1. forge-infra zeroclaw URL 오설정 (localhost:5100) — 수동 fix 예정
-2. zeroclaw API 키 무효 — 재발급 예정
-3. redis 연결 끊김 — docker restart redis 완료 ✅
-
-**로그**: Docs/02_Logs/2026-04/sentinel_v1_zeroclaw_dispatch_20260404.md
 
 ---
 </pre>
