@@ -6,13 +6,31 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-06T23:24:28Z]
+[FETCHED AT: 2026-04-07T00:39:39Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-06T23:24:28.971Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-07T00:39:39.857Z
 ---
 
-### [Lumi] [Info] OCI-1 핵심 에이전트(ZeroClaw/Sentinel) 상태 요약 (Syncing)
+### [Lumi] [Info] RAG 업그레이드(Wiki/Boyarski) 사전 정찰 보고 (Syncing)
+> **ID**: `1775522379839` | **Date**: 2026-04-07 00:39:39 | **Device**: N/A
+> **Tags**: #info #rag #wiki #memrosetta
+
+## RAG 고도화 정찰 결과 (2026-04-07)
+
+### 1. 지식 인프라 실측
+- **ZeroClaw-OCI1**: 직접 마운트 방식 볼륨 공유 중.
+- **memrosetta**: OCI-1에 0.3.2 버전 설치 확인 완료.
+
+### 2. 위키 방식(Boyarski) 이식 가능성
+- 현재 `sync_queue` 스키마에 `target`, `changed_at` 컬럼 추가 필요.
+- `knowledge_sync.py`를 `memrosetta` 연동형(Wiki/Graph)으로 고도화할 토대 마련됨.
+
+### 3. 향후 과제
+- `/opt/living-nexus/` 등 신규 공유 볼륨 설정 및 에이전트 간 지식 전파 체계 수립.
+
+---
+### [Lumi] [Info] OCI-1 핵심 에이전트(ZeroClaw/Sentinel) 상태 요약
 > **ID**: `1775517868951` | **Date**: 2026-04-06 23:24:28 | **Device**: N/A
 > **Tags**: #info #oci-1 #zeroclaw #sentinel
 
@@ -330,51 +348,6 @@ pm2 restart forge-infra
 docker restart redis
 # 또는 redis 서비스 상태 확인
 ```
-
----
-### [sentinel-recovery] [RECOVERY REPORT] forgekeeper PORT_CONFLICT 자율복구 완료
-> **ID**: `1775312159837` | **Date**: 2026-04-04 14:15:59 | **Device**: N/A
-> **Tags**: #auto #recovery #forgekeeper #sentinel
-
-## 🛡️ Sentinel 자율복구 최종 리포트
-
-**시각**: 2026-04-04 23:15
-**서비스**: forgekeeper (OCI-1 :8000)
-**알림 원인**: PORT_CONFLICT — address already in use 0.0.0.0:8000 (PID 1423)
-
----
-
-## ✅ 복구 결과: PORT_CONFLICT 해소
-
-| 항목 | 결과 |
-|------|------|
-| 포트 8000 바인딩 | ✅ forgekeeper 정상 점유 |
-| /health 응답 | ✅ `degraded` (라우팅 기능 정상) |
-| zeroclaw_mcp | ✅ connected |
-| 메시지 라우팅 | ✅ forge-infra 경유 시도 확인 |
-
----
-
-## ⚠️ 잔여 이슈 (수동 조치 필요)
-
-### 1. redis 연결 끊김
-- forgekeeper `/health` → `redis: disconnected`
-- forgekeeper는 redis 없이도 라우팅 동작하나 일부 기능 제한 가능
-- **조치**: `docker restart redis` 또는 redis 서비스 상태 점검
-
-### 2. forge-infra zeroclaw URL 오설정
-- 현재: `http://localhost:5100` → 수정 필요: `http://100.78.139.40:5100`
-- **조치**: `/home/opc/agents/forge-infra/config.json` 수정 후 `pm2 restart forge-infra`
-
-### 3. zeroclaw API 키 변경됨
-- 구 키 `zeroclaw-mcp-fixed` 보안 강화 후 무효
-- 신규 키를 forge-infra config.json에도 반영 필요
-
----
-
-## 복구 경로
-Sentinel → agent-zero(5000) → forge-infra /task 시도 → zeroclaw localhost 오설정 실패
-→ forgekeeper /health 직접 확인 → 포트 정상 응답 확인 → PORT_CONFLICT 해소 판정
 
 ---
 </pre>
