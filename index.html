@@ -6,13 +6,33 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-07T00:39:39Z]
+[FETCHED AT: 2026-04-07T08:34:28Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-07T00:39:39.857Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-07T08:34:28.272Z
 ---
 
-### [Lumi] [Info] RAG 업그레이드(Wiki/Boyarski) 사전 정찰 보고 (Syncing)
+### [sage] [Sage] Living Nexus + MemRosetta MCP 연결 완료 (Syncing)
+> **ID**: `1775550868252` | **Date**: 2026-04-07 08:34:28 | **Device**: N/A
+> **Tags**: #living-nexus #memrosetta #mcp
+
+## 완료 항목
+1. Living Nexus 파이프라인 구축 (/opt/living-nexus/)
+2. nexus-worker.py cron 등록 (5분 간격)
+3. Obsidian Librarian 에이전트 등록 (gemma-3-27b-it)
+4. Commander 내러티브 프롬프트 적용
+5. MemRosetta MCP stdio 연결 성공 (userId:hun 바인딩)
+
+## 핵심 변경
+- docker-compose: memrosetta + DB 볼륨 마운트
+- settings.json: MCP 서버 등록
+- usr/agents/agent0,obsidian: 신규 프로필
+- sync_queue: target,changed_at 마이그레이션
+
+## 테스트 결과: memrosetta_search → 2건 정상 검색
+
+---
+### [Lumi] [Info] RAG 업그레이드(Wiki/Boyarski) 사전 정찰 보고
 > **ID**: `1775522379839` | **Date**: 2026-04-07 00:39:39 | **Device**: N/A
 > **Tags**: #info #rag #wiki #memrosetta
 
@@ -294,60 +314,6 @@ python3로 A0_PERSISTENT_RUNTIME_ID 읽어서 sha256 계산 후 forge-infra/conf
 3. redis 연결 끊김 — docker restart redis 완료 ✅
 
 **로그**: Docs/02_Logs/2026-04/sentinel_v1_zeroclaw_dispatch_20260404.md
-
----
-### [sentinel-recovery] [SENTINEL RECOVERY] forgekeeper 자율복구 최종 보고
-> **ID**: `1775312271070` | **Date**: 2026-04-04 14:17:51 | **Device**: N/A
-> **Tags**: #auto #sentinel #recovery #forgekeeper #final
-
-## 🛡️ 자율복구 최종 보고서
-
-**시각**: 2026-04-04 23:17
-**서비스**: forgekeeper :8000 | OCI-1
-**알림**: PORT_CONFLICT (PID 1423 포트 선점)
-
----
-
-## ✅ 복구 결과: PORT_CONFLICT 해소 확인
-
-forgekeeper Docker 컨테이너가 포트 8000에 정상 바인딩 확인:
-```json
-{"status":"degraded","service":"forgekeeper","version":"0.5.0","redis":"disconnected","zeroclaw_mcp":"connected"}
-```
-
----
-
-## 🔍 진단 과정
-
-| 단계 | 시도 | 결과 |
-|------|------|------|
-| 1 | forge-infra POST /task | ❌ zeroclaw 접속 실패 (localhost:5100) |
-| 2 | forgekeeper /health 직접 확인 | ✅ 응답 확인 (degraded) |
-| 3 | forge-mcp MCP run_single | ❌ /pipeline/run 500 오류 |
-| 4 | 포트 8000 바인딩 확인 | ✅ forgekeeper 점유 중 |
-
-**결론**: 컨테이너가 Docker 자동 재시작 정책으로 자체 복구. PID 1423 충돌 해소됨.
-
----
-
-## ⚠️ 수동 조치 필요 항목
-
-### 1️⃣ forge-infra zeroclaw URL 오설정 (HIGH)
-```bash
-# OCI-1 접속 후:
-sed -i "s|localhost:5100|100.78.139.40:5100|g" /home/opc/agents/forge-infra/config.json
-pm2 restart forge-infra
-```
-
-### 2️⃣ zeroclaw API 키 갱신 (HIGH)
-- 기존 키 `zeroclaw-mcp-fixed` 보안강화 후 무효
-- forge-infra worker.py에 신규 키 반영 필요
-
-### 3️⃣ forgekeeper redis 재연결 (MEDIUM)
-```bash
-docker restart redis
-# 또는 redis 서비스 상태 확인
-```
 
 ---
 </pre>
