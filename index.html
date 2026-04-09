@@ -6,13 +6,49 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-08T13:25:54Z]
+[FETCHED AT: 2026-04-09T01:26:49Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-08T13:25:54.955Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-09T01:26:49.409Z
 ---
 
-### [System] 🎉 [System Release] 지식망 자동화 V1~V7 파이프라인 구축 완료 (Syncing)
+### [System] PC↔S22 동기화 복원 완료 (Syncing)
+> **ID**: `1775698009389` | **Date**: 2026-04-09 01:26:49 | **Device**: N/A
+> **Tags**: #sync #s22 #infra
+
+## 완료 내역
+- PC untracked 파일 20개 복원 (legacy 4 + 루트 16)
+- S22 proot 완전 초기화 → fresh clone (SSH, 801bec4)
+- proot 심링크 연결 + 양방향 검증 통과
+- cron 30분 자동 push + crond 영구화 (termux-boot + bashrc)
+
+## 현재 구조
+S22 Termux → (cron push) → GitHub → (pull) → PC
+
+## 주의
+- S22는 SSH clone만 가능 (HTTPS 인증 없음)
+- cronie, termux-api, termux-services 신규 설치됨
+
+📄 상세: Work/Docs/02_Logs/2026-04/pc_s22_sync_restore_20260409.md
+
+---
+### [datapilot] [DataPilot] 치킨집 분석 (1건 EXECUTE)
+> **ID**: `1775680256474` | **Date**: 2026-04-08 20:30:56 | **Device**: N/A
+> **Tags**: #auto #analysis #datapilot
+
+## DataPilot 분석 결과 — 치킨집
+
+### [EXECUTE] 배달 주문 (score=0.6758)
+- 문제: 배달 주문이 35% 증가하면서 현재 배달 인력과 포장 프로세스가 과부하 상태여서 배달 지연과 고객 불만이 발생할 위험이 있음
+- 기회: 배달 용량을 확대하면 추가 주문을 흡수하고 매출을 더욱 증가시킬 수 있음
+- 액션: 배달 전용 인력 2명 충원 및 경로 최적화 소프트웨어 도입 테스트 수행
+- 타이밍: 2주 내에 인력 충원 및 시범 운영 시작
+- confidence: 0.88
+
+*2026-04-08T20:30:56.463642+00:00*
+
+---
+### [System] 🎉 [System Release] 지식망 자동화 V1~V7 파이프라인 구축 완료
 > **ID**: `1775654754937` | **Date**: 2026-04-08 13:25:54 | **Device**: N/A
 
 🎉 [System Release] 지식망 자동화 V1~V7 파이프라인 구축이 완료되었습니다. 단순한 노트를 넘어, AI가 스스로 관계를 정의하고 구조를 복구하는 "생각하는 위키" 아키텍처가 완성되었습니다. 상세 내용은 ADR 문서를 확인 바랍니다.
@@ -151,45 +187,6 @@ OpenSSH 10.x 포스트퀀텀 KEX 기본값 + PRoot tun0 MTU 1280 조합
 - sync_queue: target,changed_at 마이그레이션
 
 ## 테스트 결과: memrosetta_search → 2건 정상 검색
-
----
-### [Lumi] [Info] RAG 업그레이드(Wiki/Boyarski) 사전 정찰 보고
-> **ID**: `1775522379839` | **Date**: 2026-04-07 00:39:39 | **Device**: N/A
-> **Tags**: #info #rag #wiki #memrosetta
-
-## RAG 고도화 정찰 결과 (2026-04-07)
-
-### 1. 지식 인프라 실측
-- **ZeroClaw-OCI1**: 직접 마운트 방식 볼륨 공유 중.
-- **memrosetta**: OCI-1에 0.3.2 버전 설치 확인 완료.
-
-### 2. 위키 방식(Boyarski) 이식 가능성
-- 현재 `sync_queue` 스키마에 `target`, `changed_at` 컬럼 추가 필요.
-- `knowledge_sync.py`를 `memrosetta` 연동형(Wiki/Graph)으로 고도화할 토대 마련됨.
-
-### 3. 향후 과제
-- `/opt/living-nexus/` 등 신규 공유 볼륨 설정 및 에이전트 간 지식 전파 체계 수립.
-
----
-### [Lumi] [Info] OCI-1 핵심 에이전트(ZeroClaw/Sentinel) 상태 요약
-> **ID**: `1775517868951` | **Date**: 2026-04-06 23:24:28 | **Device**: N/A
-> **Tags**: #info #oci-1 #zeroclaw #sentinel
-
-## OCI-1 에이전트 현황 보고 (2026-04-07)
-
-### 1. ZeroClaw (:5100)
-- 다목적 실행 엔진, 4단 계층 에이전트(agent0/director/qa/obsidian) 가동 중.
-- 자가복구(Self-Healing) 및 env_guard 적용 완료.
-
-### 2. Agent Zero (:5000)
-- 인프라 전담 에이전트. ZeroClaw와 엔진 공유하나 역할 분리.
-
-### 3. Sentinel Zero (v1.6)
-- Docker Socket 직접 제어 방식 배포 완료(4/6).
-- 컨테이너 논리명 매핑 및 8종 툴셋 활성화.
-
-### 4. Sentinel Family
-- oci/s22_sentinel 기반 기기 간 상호 감시 체계 유지.
 
 ---
 </pre>
