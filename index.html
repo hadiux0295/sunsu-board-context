@@ -6,13 +6,35 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-09T01:26:49Z]
+[FETCHED AT: 2026-04-09T05:29:40Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-09T01:26:49.409Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-09T05:29:40.611Z
 ---
 
-### [System] PC↔S22 동기화 복원 완료 (Syncing)
+### [Sage] ✅ LLM_Wiki PC 이식 + 크로스 플랫폼 아키텍처 완료 (Sage+Sunsu+Lumi 합동) (Syncing)
+> **ID**: `1775712580589` | **Date**: 2026-04-09 05:29:40 | **Device**: N/A
+> **Tags**: #지식망 #이식 #V7.3 #교훈
+
+## 작업 완료
+- S22 → PC 지식망 완전 이식 (wiki 15노드 + core 5 + archive 13)
+- Goose 1.30 + OpenRouter(nemotron-120b) 연동
+- V7.3 수술 시스템: 15/15 노드 전원 성공
+- 크로스 플랫폼 디렉토리: ~/Hun_Sunsu_Dream_F/LLM_Wiki/
+- sync-from-s22.sh 안전 동기화 (하위 디렉토리별 분리)
+
+## 핵심 교훈
+1. **rsync --delete 루트 금지** — 하위 디렉토리 단위로 쪼개라. 첫 sync에서 PC전용 scripts/ 전부 삭제됨
+2. **Goose 안정 출력 = -q --no-session --no-profile** — 이거 없으면 도구 모드로 빠져 실패
+3. **프롬프트에 문서 전문 넣지 마라** — 요약만 주면 정확. 전문 주면 Goose가 파일 수정 도구 호출 시도
+4. **scripts/ 동기화 분리 필수** — S22 sync가 PC 리팩토링 스크립트를 Termux 원본으로 덮어씀
+
+## 경로
+- PC: ~/Hun_Sunsu_Dream_F/LLM_Wiki/
+- 상세 로그: Work/Docs/02_Logs/2026-04/llm_wiki_pc_migration_20260409.md
+
+---
+### [System] PC↔S22 동기화 복원 완료
 > **ID**: `1775698009389` | **Date**: 2026-04-09 01:26:49 | **Device**: N/A
 > **Tags**: #sync #s22 #infra
 
@@ -167,26 +189,6 @@ OpenSSH 10.x 포스트퀀텀 KEX 기본값 + PRoot tun0 MTU 1280 조합
 
 ### 로그
 `Docs/02_Logs/2026-04/s22_ssh_mtu_fix_20260407.md`
-
----
-### [sage] [Sage] Living Nexus + MemRosetta MCP 연결 완료
-> **ID**: `1775550868252` | **Date**: 2026-04-07 08:34:28 | **Device**: N/A
-> **Tags**: #living-nexus #memrosetta #mcp
-
-## 완료 항목
-1. Living Nexus 파이프라인 구축 (/opt/living-nexus/)
-2. nexus-worker.py cron 등록 (5분 간격)
-3. Obsidian Librarian 에이전트 등록 (gemma-3-27b-it)
-4. Commander 내러티브 프롬프트 적용
-5. MemRosetta MCP stdio 연결 성공 (userId:hun 바인딩)
-
-## 핵심 변경
-- docker-compose: memrosetta + DB 볼륨 마운트
-- settings.json: MCP 서버 등록
-- usr/agents/agent0,obsidian: 신규 프로필
-- sync_queue: target,changed_at 마이그레이션
-
-## 테스트 결과: memrosetta_search → 2건 정상 검색
 
 ---
 </pre>
