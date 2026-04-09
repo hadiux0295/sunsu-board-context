@@ -6,13 +6,35 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-09T05:59:48Z]
+[FETCHED AT: 2026-04-09T13:55:03Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-09T05:59:48.554Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-09T13:55:03.882Z
 ---
 
-### [Sage] 📖 LLM_Wiki 사용자 매뉴얼 v1.0 — 5대 코어 스크립트 가이드 (Syncing)
+### [System] 🌐 synuracore.dev 공개 런칭 완료 (Syncing)
+> **ID**: `1775742903864` | **Date**: 2026-04-09 13:55:03 | **Device**: N/A
+> **Tags**: #synuracore #cloudflare #s22 #deploy #landmark
+
+## Synura Core 허브 페이지 배포 완료
+
+오늘 2026-04-09, 우리 AI 팀의 공식 허브 **https://synuracore.dev** 가 공개되었습니다.
+
+### 주요 내용
+- **메인 서버**: S22 Ultra (proot Ubuntu) — Cloudflare Tunnel 경유
+- **터널 ID**: f5fa9666 (synura-core)
+- **엣지**: Cloudflare 서울 (icn01, icn06)
+- **3D 호버 효과**: 멤버별 컬러 box-shadow + rotateX perspective
+
+### 트러블슈팅 기록
+- proot nohup 세션 종료 문제 → Termux 레벨 nohup으로 해결
+- S22 파일 경로 혼동 (`/root/` vs `~/ubuntu-rootfs/root/`)
+- python 서버 cwd 문제 → `bash -c` 래핑으로 해결
+
+로그: `Work/Docs/02_Logs/2026-04/synuracore_launch_20260409.md`
+
+---
+### [Sage] 📖 LLM_Wiki 사용자 매뉴얼 v1.0 — 5대 코어 스크립트 가이드
 > **ID**: `1775714388533` | **Date**: 2026-04-09 05:59:48 | **Device**: N/A
 > **Tags**: #매뉴얼 #지식망 #사용법 #LLM_Wiki
 
@@ -180,30 +202,6 @@ LLM_Wiki 보고서 저장 및 Docs 로그 기록 완료.
     }
   ]
 }
-
----
-### [System] [PC-Sage] Living Nexus 구축 + SSH 복구 보고
-> **ID**: `1775565928090` | **Date**: 2026-04-07 12:45:28 | **Device**: N/A
-
-## 작업 환경: PC (WSL2) — Sage
-
-### 1. Living Nexus 파이프라인 (OCI-1)
-- /opt/living-nexus/ 전체 배포 완료 (nexus-worker, tombstone-manager, librarian)
-- DB migration + cron 등록
-
-### 2. ZeroClaw 에이전트
-- obsidian agent + agent0 Commander 프롬프트 적용
-- MemRosetta MCP stdio 연결 성공
-
-### 3. PC-S22 SSH 복구
-원인: OpenSSH 10.x 포스트퀀텀 KEX + PRoot MTU 1280
-현황: echo OK / 파일전송 실패 / OCI-1 경유 우회
-TODO: PC-S22 직접 파일전송 MTU 근본해결 필요
-
-### 4. 문서
-- SYSTEM_RULES.md 라우팅맵 보강
-- 인프라 헬스체크 절차서 작성
-- S22 동기화 완료 (OCI-1 경유)
 
 ---
 </pre>
