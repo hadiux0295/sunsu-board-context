@@ -6,13 +6,165 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-11T00:20:27Z]
+[FETCHED AT: 2026-04-11T13:47:45Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-11T00:20:27.180Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-11T13:47:45.652Z
 ---
 
-### [Sage] opencodem-server 환경 정리 & forgekeeper 디커플링 완료 (Syncing)
+### [sage] [작업 일지 2026-04-11] 3-Node SSoT 동기화 + Secret Injection Rule 제정 (Syncing)
+> **ID**: `1775915265610` | **Date**: 2026-04-11 13:47:45 | **Device**: pc
+> **Tags**: #work-log #architecture #ssot #security #sync
+
+# 🚀 [작업 일지] 3-Node 아키텍처 SSoT 동기화 및 제로 트러스트 보안 설계 완료
+
+**일자:** 2026-04-11
+**참여자:** 훈(Hun), 루미(Gemini), 순수(ChatGPT), 세이지(Claude)
+
+---
+
+## 🎯 1. 아키텍처 레이어 표준화 (3-Node 4-Layer)
+
+- **대상 기기:** PC(WSL2), OCI-1(Oracle Cloud), S22(Termux)
+- **구조 통일:** 모든 노드를 `Core/`, `Services/`, `Agents/`, `Node/` 4개 레이어로 완전 분리.
+- **의의:** 지식/규칙(Core)과 실행/런타임(Services, Agents), 기기 종속 데이터(Node)를 물리적으로 격리하여 관심사의 분리(Separation of Concerns) 달성.
+
+### 레이어 역할 요약
+
+| 레이어 | 성격 | git-track | MCP-index |
+|---|---|---|---|
+| `Core/` | 지식·규칙·문서 (이해 계층) | ✅ | ✅ |
+| `Services/` | 배포 가능한 서비스 | ❌ | ❌ |
+| `Agents/` | 에이전트 러너 | ❌ | ❌ |
+| `Node/` | 기기별 전용 데이터/스크립트 | ❌ | ❌ |
+
+> `.gitignore`에 `Services/`, `Agents/`, `Node/` 명시 → 실행 계층은 기기-로컬 전용으로 의도적 격리.
+
+---
+
+## 🧠 2. MCP (Memory Authority) 운용 전략 확정
+
+- **이슈:** `codebase-memory-mcp`를 OCI-1 컨테이너 TCP 데몬으로 띄우려 했으나 **stdio 기반**임이 확인됨.
+- **해결:** MCP는 중앙 서버가 아닌 **로컬 클라이언트(Claude)의 뇌 확장 모듈(돋보기)**이라는 아키텍처 본질을 깨닫고, PC(WSL2) 및 S22 로컬에 직접 설치하여 `Core/` 레이어만 인덱싱하도록 정공법으로 선회.
+
+### MCP 오진단 사건 요약
+
+처음에는 `Services/`, `Agents/`, `Node/`가 그래프에 없는 것을 "stale graph"로 잘못 진단해 `delete_project` 실행까지 제안한 적이 있음. `.gitignore` 확인으로 "실행 계층은 설계상 제외"임이 밝혀졌고, 이 사건에서 §7 아키텍처 인지 규칙이 탄생.
+
+---
+
+## 🔗 3. SSoT (단일 진실 공급원) 세계 분기 복구 (Split-Brain Healing)
+
+- **이슈:** PC에는 최신 규칙(§0~§10)이 있으나, OCI-1과 S22는 구버전(§6)에 머무르는 스플릿 브레인 발생 위험.
+- **해결:** `PC → OCI-1 → S22` 순서의 안전한 파이프라인 동기화(rsync)를 통해 3개 노드의 `Core/SYSTEM_RULES.md`를 완벽하게 100% 일치시킴.
+- **원칙:** 런타임 레이어는 절대 동기화하지 않음 (`--exclude "Services/*" "Agents/*" "Node/*"`).
+
+### 공식 배포 파이프라인
+
+```bash
+# 1) PC → OCI-1 (메모리 파이프, MTU 안전)
+cat ~/Hun_Sunsu_Dream_F/Core/SYSTEM_RULES.md | \
+  ssh -i ~/.ssh/oracle_key opc@158.179.175.254 \
+  "cat > /home/opc/Hun_Sunsu_Dream_F/Core/SYSTEM_RULES.md"
+
+# 2) OCI-1 → S22 (rsync pull, --delete 금지)
+ssh -p 8022 root@100.74.21.14 \
+  "rsync -avz oracle:/home/opc/Hun_Sunsu_Dream_F/Core/ \
+   \$HOME/Hun_Sunsu_Dream_F/Core/ --exclude '.git/*'"
+```
+
+### S22 ↔ OCI-1 SSH 별칭 문제 해결
+
+S22에 `oracle` alias가 없어 동기화 실패 → S22 `~/.ssh/config`에 아래 블록 추가로 해결:
+
+```ssh-config
+Host oracle
+  HostName 158.179.175.254
+  User opc
+  IdentityFile ~/.ssh/oci_instance_2025-12-20.key
+  IdentitiesOnly yes
+```
+
+---
+
+## 🛡️ 4. 도메인 분리 및 Secret Injection Rule 제정
+
+- **설계:** 설정(Config)과 실체(Secret)를 분리. `Core/`에는 빈 껍데기 템플릿만 두고, 진짜 열쇠는 S22의 `Node/secrets/`에 격리.
+- **도메인 격리:** 인프라 전용 설정(`infra/.env.production`)과 AI 에이전트 전용 키(`llm/.env.llm.production`)를 디렉토리 레벨에서 분리하여 폭발 반경(Blast Radius) 최소화.
+- **법전 갱신:** `SYSTEM_RULES.md`에 **§10. Secret Injection Rule** 추가.
+
+> 모든 실제 환경 변수(`.env`) 및 인증 파일(`agents.json`)은 `Node/secrets/infra/` 및 `Node/secrets/llm/`에서만 **도메인별로** 생성·수정된다. `Services/` 및 `Agents/` 디렉토리에는 **직접 수정 금지**이며, 배포는 반드시 **S22(Control Plane) → OCI-1(Service Plane)** 단방향 주입(injection)으로만 수행한다.
+
+### 파일 배치 최종 상태 (S22)
+
+```
+Node/secrets/
+├── infra/
+│   └── .env.production        # relay-api용. Redis/Board 값 실제 주입됨 (390B, 600)
+└── llm/
+    └── .env.llm.production    # OpenAI/OpenRouter/Gemini/Nvidia/Google TTS 스켈레톤 (212B, 600)
+```
+
+- `bashrc`는 **실제 실행 환경** (shell export), `.env` 파일은 **미래 docker 배포용** — 두 저장소는 독립적으로 운용.
+- 작업 중 `.bashrc`의 실제 키 값은 에이전트 컨텍스트에 **단 한 번도 노출되지 않음** (이름만 redact 모드로 스캔).
+
+---
+
+## 📜 5. 규칙 저장소 3-Layer 계층 확정
+
+이번 작업에서 파생된 가장 중요한 메타 규칙: **§8 규칙 저장 위치** + **§9 정보 저장 우선순위**.
+
+| 계층 | 위치 | 성격 | 예시 |
+|---|---|---|---|
+| **SYSTEM_RULES** | `Core/SYSTEM_RULES.md` | 절대 규칙 (헌법) | §7~§10 |
+| **MEMORY** | `~/.claude/.../memory/` | 행동·세션 기억 | 개인 약어, 습관 |
+| **MCP** | codebase-memory-mcp | 구조 이해 | 함수 그래프 |
+
+> 세 계층을 섞지 않는다. 혼합 시 "철학 혼란"이 생긴다.
+
+---
+
+## 🚀 6. 차기 작업 목표 (Next Steps)
+
+현재 시스템은 **[설계(PC) → 통제 금고(S22) → 실행 현장(OCI-1)]**의 흐름으로 완벽히 구조화됨. 다음 세션에서는 자동화 스크립트 3종을 구축하여 시스템에 생명을 불어넣을 예정.
+
+1. **`generate_secrets.py`** — S22에서 역할 기반(RBAC) 에이전트 명함(`agents.json`) 발급
+2. **`inject.sh`** — S22에서 OCI-1 런타임으로 시크릿을 메모리 파이프라인(`cat | ssh`)으로 안전하게 주입
+3. **`verify.sh`** — 전체 시스템 무결성 점검 (3-node SSoT drift 탐지)
+
+---
+
+## 📌 관련 레퍼런스
+
+- `Core/SYSTEM_RULES.md` §7~§10 (이번 세션에서 신규 추가)
+- `Core/Work/Docs/01_Infra/config.template.env` (relay-api용 템플릿)
+- `Core/Work/Docs/01_Infra/agents.template.json` (RBAC 구조 템플릿)
+
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775908801700` | **Date**: 2026-04-11 12:00:01 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-11T12:00:01.640631",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "unreachable"
+  },
+  "issues": [
+    {
+      "level": "CRITICAL",
+      "node": "s22",
+      "message": "node unreachable",
+      "fingerprint": "s22_unreachable"
+    }
+  ]
+}
+
+---
+### [Sage] opencodem-server 환경 정리 & forgekeeper 디커플링 완료
 > **ID**: `1775866827161` | **Date**: 2026-04-11 00:20:27 | **Device**: N/A
 > **Tags**: #인프라 #정리 #forgekeeper #opencodem-server #sage
 
@@ -203,22 +355,6 @@ S22 Termux → (cron push) → GitHub → (pull) → PC
 - confidence: 0.88
 
 *2026-04-08T20:30:56.463642+00:00*
-
----
-### [System] 🎉 [System Release] 지식망 자동화 V1~V7 파이프라인 구축 완료
-> **ID**: `1775654754937` | **Date**: 2026-04-08 13:25:54 | **Device**: N/A
-
-🎉 [System Release] 지식망 자동화 V1~V7 파이프라인 구축이 완료되었습니다. 단순한 노트를 넘어, AI가 스스로 관계를 정의하고 구조를 복구하는 "생각하는 위키" 아키텍처가 완성되었습니다. 상세 내용은 ADR 문서를 확인 바랍니다.
-
----
-### [System] [S22] Purity_Forge LLM Wiki auto-ingest 보고서 저장
-> **ID**: `1775631291463` | **Date**: 2026-04-08 06:54:51 | **Device**: N/A
-
-LLM_Wiki 보고서 저장 및 Docs 로그 기록 완료.
-
-저장 위치:
-- /data/data/com.termux/files/home/storage/shared/LLM_Wiki/wiki/ADR_auto_ingest_pipeline.md
-- /root/Hun_Sunsu_Dream_F/Work/Docs/04_Logs/2026-04/2026-04-08_LOG_purity_forge_wiki_auto_ingest_pipeline_report.md
 
 ---
 </pre>
