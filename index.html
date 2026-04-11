@@ -6,13 +6,90 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-09T13:55:03Z]
+[FETCHED AT: 2026-04-11T00:20:27Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-09T13:55:03.882Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-11T00:20:27.180Z
 ---
 
-### [System] 🌐 synuracore.dev 공개 런칭 완료 (Syncing)
+### [Sage] opencodem-server 환경 정리 & forgekeeper 디커플링 완료 (Syncing)
+> **ID**: `1775866827161` | **Date**: 2026-04-11 00:20:27 | **Device**: N/A
+> **Tags**: #인프라 #정리 #forgekeeper #opencodem-server #sage
+
+## 오늘 한 일 요약
+
+### 1. MODEL_CONFIG.md 실측 반영
+- agent-zero/zeroclaw browser 모델: `gemini-3-flash-lite-preview (google)` → `nvidia/nemotron-nano-12b-v2-vl:free (openrouter)` (실측 일치)
+- 4기기(PC/OCI-1/OCI-2/S22) 동기화 완료 (md5 일치)
+
+### 2. OCI-1 레거시 삭제
+- `/home/opc/Coder/opencodem-server/` (Feb 28 구본, 40MB) 안전 삭제
+- 사전 컨테이너/프로세스 참조 전수 검증 후 진행
+
+### 3. opencodem-server 혼종 분리 (PC/OCI-1/S22)
+- `opencodem-server/` → stable router 전용 (router.py, 4키 로테이션, telemetry)
+- OpenClaw 계열 20개+ 파일/디렉토리 → `opencodem-openclaw/` 신규 분리
+- 3기기 `router.py` md5 `9a2a25fa...` 완전 일치
+
+### 4. forgekeeper 디커플링
+- **Before**: forgekeeper가 opencodem-server 전체를 `/app`으로 마운트 + 파일 오버레이
+- **After**: `/home/opc/Coder/forgekeeper:/app` 단독 마운트 (Self-contained)
+- `node_router.py` → `/home/opc/Coder/forgekeeper/`로 이관
+- forgekeeper/forge-mcp 재생성, `/health` 200 OK 확인
+
+### 5. 메모리 갱신
+- `MEMORY.md` + `infra-reference.md` 구버전 마운트 규칙 삭제 → 디커플링 완료 규칙으로 교체
+
+**상세 로그**: `Work/Docs/02_Logs/2026-04/opencodem_forgekeeper_cleanup_20260411.md`
+
+---
+### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
+> **ID**: `1775853041967` | **Date**: 2026-04-10 20:30:41 | **Device**: N/A
+> **Tags**: #auto #analysis #datapilot
+
+## DataPilot 분석 결과 — 치킨집
+
+### [EXECUTE] 배달 주문 (score=0.864)
+- 문제: 배달 수요 급증으로 인한 배달 지연 및 품질 저하 위험
+- 기회: 배달 인프라 확충 및 프로모션을 통한 추가 매출 증대
+- 액션: 배달 기사 추가 고용 및 배달 전용 주방 영역 확대
+- 타이밍: 즉시 (다음 주 내)
+- confidence: 0.9
+
+### [EXECUTE] 야간 주문 (score=0.6528)
+- 문제: 야간 주문 증가로 인한 인력 부족 및 야간 운영 비용 상승
+- 기회: 야간 특화 메뉴 개발 및 야간 할인 프로모션을 통해 고객 충성도 상승
+- 액션: 야간 전용 메뉴 라인업 구축 및 야간 근무 인원 스케줄 조정
+- 타이밍: 2주 내 시범 운영 후 확대
+- confidence: 0.85
+
+*2026-04-10T20:30:41.957358+00:00*
+
+---
+### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
+> **ID**: `1775766628992` | **Date**: 2026-04-09 20:30:28 | **Device**: N/A
+> **Tags**: #auto #analysis #datapilot
+
+## DataPilot 분석 결과 — 치킨집
+
+### [EXECUTE] 배달 주문 (score=0.6758)
+- 문제: 배달 주문이 35% 급증하면서 배달 인력과 포장 자원이 부족해져 배달 지연과 고객 불만이 증가할 위험이 있다.
+- 기회: 배달 용량을 확대하면 현재 수요를 충족시키고 추가 매출 증대를 달성할 수 있다.
+- 액션: 배달 전용 인력을 20% 증원하고, 포장 효율성을 높이기 위해 사전 포장 라인을 구축한다.
+- 타이밍: 다음 주 내에 인력 채용 절차를 시작하고, 포장 라인은 한 달 이내에 설치 완료한다.
+- confidence: 0.88
+
+### [EXECUTE] 야간 주문 (score=0.6989)
+- 문제: 야간 주문이 50% 증가하면서 야간 근무 인력 부족과 주방 운영 과부하로 음식 품질 저하와 주문 오류가 발생할 우려가 있다.
+- 기회: 야간 운영 체계를 최적화하면 심야 수요를 선점하여 추가 수익을 창출하고 브랜드 충성도를 높일 수 있다.
+- 액션: 야간 전용 조리 인력을 추가로 채용하고, 야간 메뉴를 간소화하여 조리 시간을 단축시킨다.
+- 타이밍: 이번 주말까지 야간 인력 채용 공고를 내고, 다음 주 초에 메뉴 간소화 방안을 확정한다.
+- confidence: 0.91
+
+*2026-04-09T20:30:28.982121+00:00*
+
+---
+### [System] 🌐 synuracore.dev 공개 런칭 완료
 > **ID**: `1775742903864` | **Date**: 2026-04-09 13:55:03 | **Device**: N/A
 > **Tags**: #synuracore #cloudflare #s22 #deploy #landmark
 
@@ -142,66 +219,6 @@ LLM_Wiki 보고서 저장 및 Docs 로그 기록 완료.
 저장 위치:
 - /data/data/com.termux/files/home/storage/shared/LLM_Wiki/wiki/ADR_auto_ingest_pipeline.md
 - /root/Hun_Sunsu_Dream_F/Work/Docs/04_Logs/2026-04/2026-04-08_LOG_purity_forge_wiki_auto_ingest_pipeline_report.md
-
----
-### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
-> **ID**: `1775593854727` | **Date**: 2026-04-07 20:30:54 | **Device**: N/A
-> **Tags**: #auto #analysis #datapilot
-
-## DataPilot 분석 결과 — 치킨집
-
-### [EXECUTE] 배달 주문 (score=0.6912)
-- 문제: 배달 주문이 35% 증가하면서 주방 과부하와 배달 기사 배정 지연이 발생하여 음식 품질 저하와 고객 불만이 우려됨
-- 기회: 배달 수요 증가를 활용해 배달 전용 메뉴와 포장 프로세스를 개선하면 매출 상승과 운영 효율성을 동시에 달성할 수 있음
-- 액션: 배달 전용 조리 라인을 증설하고 피크 시간대에 인력을 추가 배정하며 배달 전용 포장재를 도입함
-- 타이밍: 다음 주 내에 시범 운영을 시작하고 2주 내에 전면 적용함
-- confidence: 0.9
-
-### [EXECUTE] 야간 주문 (score=0.6528)
-- 문제: 야간 주문이 50% 급증하면서 야간 인력 부족과 배달 기사 확보 difficulty가 발생하여 서비스 지연과 안전 위험이 커짐
-- 기회: 야간 특화 프로모션과 메뉴를 개발하면 야간 수요를 선점하고 브랜드 충성도를 높일 수 있음
-- 액션: 야간 전용 스태프 스케줄을 조정하고 야간 근무 인센티브를 제공하며 야간 메뉴 라인업을 테스트함
-- 타이밍: 금주 내에 야간 근무 조율 회의를 개최하고 다음 달부터 시범 적용함
-- confidence: 0.85
-
-*2026-04-07T20:30:54.717071+00:00*
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775592007827` | **Date**: 2026-04-07 20:00:07 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-07T20:00:07.822977",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": []
-}
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775577607784` | **Date**: 2026-04-07 16:00:07 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-07T16:00:07.780350",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "unreachable"
-  },
-  "issues": [
-    {
-      "level": "CRITICAL",
-      "node": "s22",
-      "message": "node unreachable",
-      "fingerprint": "s22_unreachable"
-    }
-  ]
-}
 
 ---
 </pre>
