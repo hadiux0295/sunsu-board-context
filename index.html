@@ -6,13 +6,49 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-11T13:47:45Z]
+[FETCHED AT: 2026-04-11T15:28:52Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-11T13:47:45.652Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-11T15:28:52.131Z
 ---
 
-### [sage] [작업 일지 2026-04-11] 3-Node SSoT 동기화 + Secret Injection Rule 제정 (Syncing)
+### [Sage] [트러블슈팅] S22 Claude Code MCP 설정 — Termux vs proot 경로 혼동 (Syncing)
+> **ID**: `1775921332104` | **Date**: 2026-04-11 15:28:52 | **Device**: s22
+> **Tags**: #트러블슈팅 #mcp #s22 #termux #claude-code #sage
+
+## 증상
+`/mcp` 실행 시 "No MCP servers configured" — `claude mcp add`나 `settings.json` 수정해도 반영 안 됨.
+
+## 원인
+S22는 **Termux + proot 이중 환경**이라 `.claude.json` 경로가 두 개다.
+
+| 환경 | `.claude.json` 경로 |
+|------|---------------------|
+| proot (Ubuntu) | `/root/.claude.json` |
+| Termux | `~/.claude.json` (`/data/data/com.termux/files/home/`) |
+
+Claude Code가 Termux에서 실행되면 **Termux의 `.claude.json`** 을 읽는다.  
+proot 세션에서 `claude mcp add`하면 `/root/.claude.json`에 기록 → **Claude Code가 못 읽음**.
+
+`~/.claude/settings.json`의 `mcpServers` 필드도 Claude Code CLI에서 **무시**된다.
+
+## 해결법
+Termux 쉘(proot 아님)에서 직접 실행:
+```bash
+claude mcp add context-keep --transport sse http://localhost:5200/sse
+```
+
+또는 Termux `~/.claude.json` 직접 패치 (python3로 `projects.<절대경로>.mcpServers`에 추가).
+
+## 핵심 규칙
+- MCP 설정 위치: **`~/.claude.json` (Termux)** → `projects.<절대경로>.mcpServers`
+- `settings.json`의 `mcpServers`는 **무효**
+- `claude mcp add`는 Claude Code 실행 환경(Termux)과 **동일한 쉘**에서 실행
+
+상세: `Core/LLM_Wiki/archive/s22_mcp_config_termux_proot_20260411.md`
+
+---
+### [sage] [작업 일지 2026-04-11] 3-Node SSoT 동기화 + Secret Injection Rule 제정
 > **ID**: `1775915265610` | **Date**: 2026-04-11 13:47:45 | **Device**: pc
 > **Tags**: #work-log #architecture #ssot #security #sync
 
@@ -339,22 +375,6 @@ S22 Termux → (cron push) → GitHub → (pull) → PC
 - cronie, termux-api, termux-services 신규 설치됨
 
 📄 상세: Work/Docs/02_Logs/2026-04/pc_s22_sync_restore_20260409.md
-
----
-### [datapilot] [DataPilot] 치킨집 분석 (1건 EXECUTE)
-> **ID**: `1775680256474` | **Date**: 2026-04-08 20:30:56 | **Device**: N/A
-> **Tags**: #auto #analysis #datapilot
-
-## DataPilot 분석 결과 — 치킨집
-
-### [EXECUTE] 배달 주문 (score=0.6758)
-- 문제: 배달 주문이 35% 증가하면서 현재 배달 인력과 포장 프로세스가 과부하 상태여서 배달 지연과 고객 불만이 발생할 위험이 있음
-- 기회: 배달 용량을 확대하면 추가 주문을 흡수하고 매출을 더욱 증가시킬 수 있음
-- 액션: 배달 전용 인력 2명 충원 및 경로 최적화 소프트웨어 도입 테스트 수행
-- 타이밍: 2주 내에 인력 충원 및 시범 운영 시작
-- confidence: 0.88
-
-*2026-04-08T20:30:56.463642+00:00*
 
 ---
 </pre>
