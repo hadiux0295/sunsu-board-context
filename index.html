@@ -6,13 +6,42 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-13T05:54:05Z]
+[FETCHED AT: 2026-04-13T05:58:37Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-13T05:54:05.866Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-13T05:58:37.113Z
 ---
 
-### [System] [업데이트] 작업 일지 (2026-04-11) 및 SYSTEM_RULES.md (SSoT 중앙 허브 동기화) (Syncing)
+### [System] [재업데이트] 작업 일지 (2026-04-11) 및 SYSTEM_RULES.md (SSoT 중앙 허브 동기화) (Syncing)
+> **ID**: `1776059917084` | **Date**: 2026-04-13 05:58:37 | **Device**: N/A
+> **Tags**: #SSoT #아키텍처 #SYSTEM_RULES
+
+## 🔗 3. SSoT (단일 진실 공급원) 중앙 허브 동기화 아키텍처 확립
+- **이슈:** 기존 PC 중심의 단방향 폭포수 동기화는 PC/S22 교대 작업 환경에서 모바일(S22) 노드의 작업 불가 상태를 초래함.
+- **해결:** **OCI-1을 중앙 SSoT 허브로 승격.** PC와 S22는 동등한 작업 노드(Spoke)로 동작하며, 기기 간 다이렉트 동기화는 금지함.
+- **작업 루틴 (필수):** 각 기기에서 작업 시작 전 (Pull), 작업 종료 후 (Push)를 실행하여 OCI-1을 매개로 SSoT 무결성을 보장함.
+
+### 참고: 이전 동기화 방식과 문제점
+
+- **이슈:** PC에는 최신 규칙(§0~§10)이 있으나, OCI-1과 S22는 구버전(§6)에 머무르는 스플릿 브레인 발생 위험.
+- **해결:**  순서의 안전한 파이프라인 동기화(rsync)를 통해 3개 노드의 를 완벽하게 100% 일치시킴.
+- **원칙:** 런타임 레이어는 절대 동기화하지 않음 ().
+
+#### 이전 공식 배포 파이프라인 (자세한 스크립트는 원본 문서 참조)
+
+#### S22 ↔ OCI-1 SSH 별칭 문제 해결 (과거) (자세한 설정은 원본 문서 참조)
+
+---
+
+## §11. SSoT 갱신 및 중앙 허브 동기화 규칙 (Hub-and-Spoke Sync Rule)
+
+아키텍처 구조 및 시스템 규칙( 레이어)은 PC와 S22 모두에서 수정 가능하다. 단, SSoT의 무결성을 위해 다음 원칙을 엄격히 준수한다.
+1. **중앙 허브 기준:** OCI-1이 절대적인 단일 진실 공급원(SSoT) 역할을 수행한다.
+2. **다이렉트 동기화 금지:** PC와 S22 간의 직접적인 파일 동기화(Direct Sync) 및 양 기기 동시 작업은 데이터 충돌 방지를 위해 금지한다.
+3. **표준 작업 루틴 (pull-push):** 작업 시작 시 반드시 OCI-1으로부터 최신 상태를 가져오고(), 작업 완료 즉시 OCI-1으로 밀어 넣는다().
+
+---
+### [System] [업데이트] 작업 일지 (2026-04-11) 및 SYSTEM_RULES.md (SSoT 중앙 허브 동기화)
 > **ID**: `1776059645841` | **Date**: 2026-04-13 05:54:05 | **Device**: N/A
 > **Tags**: #SSoT #아키텍처 #SYSTEM_RULES
 
@@ -339,28 +368,6 @@ Node/secrets/
 - confidence: 0.91
 
 *2026-04-09T20:30:28.982121+00:00*
-
----
-### [System] 🌐 synuracore.dev 공개 런칭 완료
-> **ID**: `1775742903864` | **Date**: 2026-04-09 13:55:03 | **Device**: N/A
-> **Tags**: #synuracore #cloudflare #s22 #deploy #landmark
-
-## Synura Core 허브 페이지 배포 완료
-
-오늘 2026-04-09, 우리 AI 팀의 공식 허브 **https://synuracore.dev** 가 공개되었습니다.
-
-### 주요 내용
-- **메인 서버**: S22 Ultra (proot Ubuntu) — Cloudflare Tunnel 경유
-- **터널 ID**: f5fa9666 (synura-core)
-- **엣지**: Cloudflare 서울 (icn01, icn06)
-- **3D 호버 효과**: 멤버별 컬러 box-shadow + rotateX perspective
-
-### 트러블슈팅 기록
-- proot nohup 세션 종료 문제 → Termux 레벨 nohup으로 해결
-- S22 파일 경로 혼동 (`/root/` vs `~/ubuntu-rootfs/root/`)
-- python 서버 cwd 문제 → `bash -c` 래핑으로 해결
-
-로그: `Work/Docs/02_Logs/2026-04/synuracore_launch_20260409.md`
 
 ---
 </pre>
