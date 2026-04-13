@@ -6,13 +6,58 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-11T15:28:52Z]
+[FETCHED AT: 2026-04-13T01:53:10Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-11T15:28:52.131Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-13T01:53:10.748Z
 ---
 
-### [Sage] [트러블슈팅] S22 Claude Code MCP 설정 — Termux vs proot 경로 혼동 (Syncing)
+### [Sage] PC pulloci/pushoci 세팅 + 인프라 정리 완료 (Syncing)
+> **ID**: `1776045190719` | **Date**: 2026-04-13 01:53:10 | **Device**: PC
+> **Tags**: #infra #sync #cleanup #synuracore #pc
+
+## 2026-04-13 PC 작업 요약
+
+### pulloci/pushoci 동기화 환경
+- PC, S22 양쪽 모두 pulloci/pushoci 스크립트 세팅 완료
+- 동기화 모델: PC ←→ OCI-1 ←→ S22 (OCI-1 허브, 직접 동기화 없음)
+- S22 기존 스크립트의 --delete 옵션 제거 (§6 위반)
+- .syncignore 기반 exclude로 통일
+
+### 문서 갱신
+- sync.md: 전체 프로젝트 동기화 + OCI 경유 모델로 전면 개정
+- mcp_context_keep.md: S22 proot 전용 명시 추가
+- SYSTEM_RULES 참조 경로 전수 체크: 9개 전부 OK
+
+### 잔재 정리
+- Agents/opencode/, Services/living-nexus-setup/, Services/synuracore/ — OCI-1+PC에서 삭제
+- 깨진 agents 심링크 OCI-1+PC 삭제
+- .syncignore에 */tmp/playwright/ 추가
+
+### synuracore.dev 복구
+- S22 proot에 index.html + auto-synura.sh 재배포 (base64 파이프)
+- 모바일 뷰포트 3D 센터링 개선 버전 적용
+- https://synuracore.dev 200 OK 확인
+
+로그: Work/Docs/work_logs/2026-04-13_pc_sync_setup_and_cleanup.md
+
+---
+### [sentinel] Sentinel Report
+> **ID**: `1775923208215` | **Date**: 2026-04-11 16:00:08 | **Device**: oci
+> **Tags**: #auto #sentinel #monitor
+
+{
+  "time": "2026-04-11T16:00:08.210610",
+  "nodes": {
+    "oci": "ok",
+    "pc": "unreachable",
+    "s22": "ok"
+  },
+  "issues": []
+}
+
+---
+### [Sage] [트러블슈팅] S22 Claude Code MCP 설정 — Termux vs proot 경로 혼동
 > **ID**: `1775921332104` | **Date**: 2026-04-11 15:28:52 | **Device**: s22
 > **Tags**: #트러블슈팅 #mcp #s22 #termux #claude-code #sage
 
@@ -333,48 +378,6 @@ Node/secrets/
 - sync 시 wiki/는 S22 기준 덮어씀 → PC 수술 결과 보존 필요시 sync 전 확인
 - `.lock` 파일로 sync 차단 가능
 - 상세: Work/Docs/03_Knowledge/Concepts/llm_wiki_user_manual.md
-
----
-### [Sage] ✅ LLM_Wiki PC 이식 + 크로스 플랫폼 아키텍처 완료 (Sage+Sunsu+Lumi 합동)
-> **ID**: `1775712580589` | **Date**: 2026-04-09 05:29:40 | **Device**: N/A
-> **Tags**: #지식망 #이식 #V7.3 #교훈
-
-## 작업 완료
-- S22 → PC 지식망 완전 이식 (wiki 15노드 + core 5 + archive 13)
-- Goose 1.30 + OpenRouter(nemotron-120b) 연동
-- V7.3 수술 시스템: 15/15 노드 전원 성공
-- 크로스 플랫폼 디렉토리: ~/Hun_Sunsu_Dream_F/LLM_Wiki/
-- sync-from-s22.sh 안전 동기화 (하위 디렉토리별 분리)
-
-## 핵심 교훈
-1. **rsync --delete 루트 금지** — 하위 디렉토리 단위로 쪼개라. 첫 sync에서 PC전용 scripts/ 전부 삭제됨
-2. **Goose 안정 출력 = -q --no-session --no-profile** — 이거 없으면 도구 모드로 빠져 실패
-3. **프롬프트에 문서 전문 넣지 마라** — 요약만 주면 정확. 전문 주면 Goose가 파일 수정 도구 호출 시도
-4. **scripts/ 동기화 분리 필수** — S22 sync가 PC 리팩토링 스크립트를 Termux 원본으로 덮어씀
-
-## 경로
-- PC: ~/Hun_Sunsu_Dream_F/LLM_Wiki/
-- 상세 로그: Work/Docs/02_Logs/2026-04/llm_wiki_pc_migration_20260409.md
-
----
-### [System] PC↔S22 동기화 복원 완료
-> **ID**: `1775698009389` | **Date**: 2026-04-09 01:26:49 | **Device**: N/A
-> **Tags**: #sync #s22 #infra
-
-## 완료 내역
-- PC untracked 파일 20개 복원 (legacy 4 + 루트 16)
-- S22 proot 완전 초기화 → fresh clone (SSH, 801bec4)
-- proot 심링크 연결 + 양방향 검증 통과
-- cron 30분 자동 push + crond 영구화 (termux-boot + bashrc)
-
-## 현재 구조
-S22 Termux → (cron push) → GitHub → (pull) → PC
-
-## 주의
-- S22는 SSH clone만 가능 (HTTPS 인증 없음)
-- cronie, termux-api, termux-services 신규 설치됨
-
-📄 상세: Work/Docs/02_Logs/2026-04/pc_s22_sync_restore_20260409.md
 
 ---
 </pre>
