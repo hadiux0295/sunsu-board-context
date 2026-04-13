@@ -6,13 +6,32 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-13T01:53:10Z]
+[FETCHED AT: 2026-04-13T05:54:05Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-13T01:53:10.748Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-13T05:54:05.866Z
 ---
 
-### [Sage] PC pulloci/pushoci 세팅 + 인프라 정리 완료 (Syncing)
+### [System] [업데이트] 작업 일지 (2026-04-11) 및 SYSTEM_RULES.md (SSoT 중앙 허브 동기화) (Syncing)
+> **ID**: `1776059645841` | **Date**: 2026-04-13 05:54:05 | **Device**: N/A
+> **Tags**: #SSoT #아키텍처 #SYSTEM_RULES
+
+## 🔗 3. SSoT (단일 진실 공급원) 중앙 허브 동기화 아키텍처 확립
+- **이슈:** 기존 PC 중심의 단방향 폭포수 동기화는 PC/S22 교대 작업 환경에서 모바일(S22) 노드의 작업 불가 상태를 초래함.
+- **해결:** **OCI-1을 중앙 SSoT 허브로 승격.** PC와 S22는 동등한 작업 노드(Spoke)로 동작하며, 기기 간 다이렉트 동기화는 금지함.
+- **작업 루틴 (필수):** 각 기기에서 작업 시작 전 `pulloci`(Pull), 작업 종료 후 `pushoci`(Push)를 실행하여 OCI-1을 매개로 SSoT 무결성을 보장함.
+
+---
+
+## §11. SSoT 갱신 및 중앙 허브 동기화 규칙 (Hub-and-Spoke Sync Rule)
+
+아키텍처 구조 및 시스템 규칙(`Core/` 레이어)은 PC와 S22 모두에서 수정 가능하다. 단, SSoT의 무결성을 위해 다음 원칙을 엄격히 준수한다.
+1. **중앙 허브 기준:** OCI-1이 절대적인 단일 진실 공급원(SSoT) 역할을 수행한다.
+2. **다이렉트 동기화 금지:** PC와 S22 간의 직접적인 파일 동기화(Direct Sync) 및 양 기기 동시 작업은 데이터 충돌 방지를 위해 금지한다.
+3. **표준 작업 루틴 (pull-push):** 작업 시작 시 반드시 OCI-1으로부터 최신 상태를 가져오고(`pulloci`), 작업 완료 즉시 OCI-1으로 밀어 넣는다(`pushoci`).
+
+---
+### [Sage] PC pulloci/pushoci 세팅 + 인프라 정리 완료
 > **ID**: `1776045190719` | **Date**: 2026-04-13 01:53:10 | **Device**: PC
 > **Tags**: #infra #sync #cleanup #synuracore #pc
 
@@ -342,42 +361,6 @@ Node/secrets/
 - python 서버 cwd 문제 → `bash -c` 래핑으로 해결
 
 로그: `Work/Docs/02_Logs/2026-04/synuracore_launch_20260409.md`
-
----
-### [Sage] 📖 LLM_Wiki 사용자 매뉴얼 v1.0 — 5대 코어 스크립트 가이드
-> **ID**: `1775714388533` | **Date**: 2026-04-09 05:59:48 | **Device**: N/A
-> **Tags**: #매뉴얼 #지식망 #사용법 #LLM_Wiki
-
-## 핵심 스크립트 5개
-
-| 스크립트 | 한줄 설명 | 사용법 |
-|---------|----------|--------|
-| `auto_ingest.sh` | 메모 → 공식 노드 | `bash scripts/auto_ingest.sh` |
-| `inspector-v2.sh` | 노드 엑스레이 | `bash scripts/inspector-v2.sh [이름]` |
-| `auto-fix-v7.3.sh` | AI 수술 (PC) | `bash scripts/auto-fix-v7.3.sh [이름]` |
-| `rollback.sh` | 타임머신 (PC) | `bash scripts/rollback.sh [이름]` |
-| `sync-from-s22.sh` | S22→PC 동기화 | `bash scripts/sync-from-s22.sh` |
-
-## 일상 루틴 예시
-```
-1. S22 Obsidian: raw/프롬프트_체이닝_기법.md 작성
-2. S22 proot: bash scripts/auto_ingest.sh → wiki/ 편입
-3. PC: bash scripts/sync-from-s22.sh → 동기화
-4. PC: bash scripts/inspector-v2.sh 프롬프트_체이닝_기법 → 검진
-5. PC: bash scripts/auto-fix-v7.3.sh 프롬프트_체이닝_기법 → 수술
-6. (실패시) bash scripts/rollback.sh 프롬프트_체이닝_기법 → 복원
-```
-
-## 양쪽 동일 사용 가능
-- PC/S22 모두 ingest, inspect, fix 실행 가능
-- 경로: PC `~/Hun_Sunsu_Dream_F/LLM_Wiki/` / S22 `~/storage/shared/LLM_Wiki/`
-- S22는 proot Ubuntu 진입 후 실행 (`proot-distro login ubuntu`)
-- Goose 1.30.0 + nemotron-120b (양쪽 동일)
-
-## 주의
-- sync 시 wiki/는 S22 기준 덮어씀 → PC 수술 결과 보존 필요시 sync 전 확인
-- `.lock` 파일로 sync 차단 가능
-- 상세: Work/Docs/03_Knowledge/Concepts/llm_wiki_user_manual.md
 
 ---
 </pre>
