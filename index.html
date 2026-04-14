@@ -6,13 +6,57 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-13T05:58:37Z]
+[FETCHED AT: 2026-04-14T11:26:25Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-13T05:58:37.113Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-14T11:26:25.988Z
 ---
 
-### [System] [재업데이트] 작업 일지 (2026-04-11) 및 SYSTEM_RULES.md (SSoT 중앙 허브 동기화) (Syncing)
+### [Sunsu] context-keep MCP 연동 완료 (Claude/Gemini/Sunsu 기억 공유) (Syncing)
+> **ID**: `1776165985964` | **Date**: 2026-04-14 11:26:25 | **Device**: codex-cli
+> **Tags**: #mcp #context-keep #setup #claude #gemini #sunsu
+
+오늘(2026-04-14) context-keep MCP를 Claude Code 쪽에서 안정적으로 붙이는 데 성공했고, 이제 Claude / Gemini / Sunsu(ChatGPT)가 같은 keep 저장소의 기억을 함께 쓰는 상태로 정리됐다.
+
+핵심 정리(재발 방지용):
+- MCP 설정 파일 경로: Claude Code v2.x는 ~/.claude/.mcp.json이 아니라 ~/.claude.json(user scope) 기준 → claude mcp add --scope user 로 등록해야 인식
+- server.py SyntaxError: f-string 안에서 여러 줄 문자열 미종료로 SyntaxError 발생 → 수정본 배포로 해결
+- 제일 큰 함정(bash -lc + &&): bash -lc "cd ... && ..." 조합에서 cd가 적용되지 않으면 상대경로가 깨져 venv/bin/python: No such file or directory 발생 → bash 없이 절대경로로 SSH stdio 직접 등록
+
+권장 등록 패턴(요약):
+- claude mcp add --scope user <name> ssh <host> /절대경로/venv/bin/python /절대경로/server.py
+
+추가 작업:
+- context-keep 서버에 delete_memory 툴을 추가해 keep 저장소에서 키 기반 삭제 가능
+- keep 저장소는 SQLite가 아니라 JSON 파일 방식(파일명 = md5(key))이라 비상시 파일 검색/삭제로도 정리 가능
+
+이제부터는 세 에이전트가 같은 keep 기억을 공유하니까, 키 기반으로 통일해서 기록하자.
+
+---
+### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
+> **ID**: `1776112559237` | **Date**: 2026-04-13 20:35:59 | **Device**: N/A
+> **Tags**: #auto #analysis #datapilot
+
+## DataPilot 분석 결과 — 치킨집
+
+### [EXECUTE] 배달 주문 (score=0.6528)
+- 문제: 배달 주문 급증으로 인해 주문 처리 지연과 음식 품질 저하 위험이 발생하고 있음
+- 기회: 배달 수요 증가를 활용해 배달 전용 프로모션 및 인프라 확충으로 매출을 극대화할 수 있음
+- 액션: 배달 전용 인력 2명 추가 채용 및 주문 관리 시스템 업그레이드 수행
+- 타이밍: 다음 주 내에 인력 충원 및 시스템 점검 완료
+- confidence: 0.85
+
+### [EXECUTE] 야간 주문 (score=0.6912)
+- 문제: 야간 주문 증가에 비해 야간 인력 부족 및 운영 비용 증가가 문제로 작용
+- 기회: 야간 특화 메뉴 및 할인 프로모션을 통해 야간 매출을 더욱 확대할 수 있음
+- 액션: 야간 전용 메뉴 개발 및 야간 근무 스케줄을 조정하여 인력 효율성 높이기
+- 타이밍: 이번 달 안에 야간 메뉴 테스트 및 스케줄 조정 시행
+- confidence: 0.9
+
+*2026-04-13T20:35:59.227372+00:00*
+
+---
+### [System] [재업데이트] 작업 일지 (2026-04-11) 및 SYSTEM_RULES.md (SSoT 중앙 허브 동기화)
 > **ID**: `1776059917084` | **Date**: 2026-04-13 05:58:37 | **Device**: N/A
 > **Tags**: #SSoT #아키텍처 #SYSTEM_RULES
 
@@ -322,52 +366,6 @@ Node/secrets/
 - `MEMORY.md` + `infra-reference.md` 구버전 마운트 규칙 삭제 → 디커플링 완료 규칙으로 교체
 
 **상세 로그**: `Work/Docs/02_Logs/2026-04/opencodem_forgekeeper_cleanup_20260411.md`
-
----
-### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
-> **ID**: `1775853041967` | **Date**: 2026-04-10 20:30:41 | **Device**: N/A
-> **Tags**: #auto #analysis #datapilot
-
-## DataPilot 분석 결과 — 치킨집
-
-### [EXECUTE] 배달 주문 (score=0.864)
-- 문제: 배달 수요 급증으로 인한 배달 지연 및 품질 저하 위험
-- 기회: 배달 인프라 확충 및 프로모션을 통한 추가 매출 증대
-- 액션: 배달 기사 추가 고용 및 배달 전용 주방 영역 확대
-- 타이밍: 즉시 (다음 주 내)
-- confidence: 0.9
-
-### [EXECUTE] 야간 주문 (score=0.6528)
-- 문제: 야간 주문 증가로 인한 인력 부족 및 야간 운영 비용 상승
-- 기회: 야간 특화 메뉴 개발 및 야간 할인 프로모션을 통해 고객 충성도 상승
-- 액션: 야간 전용 메뉴 라인업 구축 및 야간 근무 인원 스케줄 조정
-- 타이밍: 2주 내 시범 운영 후 확대
-- confidence: 0.85
-
-*2026-04-10T20:30:41.957358+00:00*
-
----
-### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
-> **ID**: `1775766628992` | **Date**: 2026-04-09 20:30:28 | **Device**: N/A
-> **Tags**: #auto #analysis #datapilot
-
-## DataPilot 분석 결과 — 치킨집
-
-### [EXECUTE] 배달 주문 (score=0.6758)
-- 문제: 배달 주문이 35% 급증하면서 배달 인력과 포장 자원이 부족해져 배달 지연과 고객 불만이 증가할 위험이 있다.
-- 기회: 배달 용량을 확대하면 현재 수요를 충족시키고 추가 매출 증대를 달성할 수 있다.
-- 액션: 배달 전용 인력을 20% 증원하고, 포장 효율성을 높이기 위해 사전 포장 라인을 구축한다.
-- 타이밍: 다음 주 내에 인력 채용 절차를 시작하고, 포장 라인은 한 달 이내에 설치 완료한다.
-- confidence: 0.88
-
-### [EXECUTE] 야간 주문 (score=0.6989)
-- 문제: 야간 주문이 50% 증가하면서 야간 근무 인력 부족과 주방 운영 과부하로 음식 품질 저하와 주문 오류가 발생할 우려가 있다.
-- 기회: 야간 운영 체계를 최적화하면 심야 수요를 선점하여 추가 수익을 창출하고 브랜드 충성도를 높일 수 있다.
-- 액션: 야간 전용 조리 인력을 추가로 채용하고, 야간 메뉴를 간소화하여 조리 시간을 단축시킨다.
-- 타이밍: 이번 주말까지 야간 인력 채용 공고를 내고, 다음 주 초에 메뉴 간소화 방안을 확정한다.
-- confidence: 0.91
-
-*2026-04-09T20:30:28.982121+00:00*
 
 ---
 </pre>
