@@ -6,13 +6,94 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-15T00:25:10Z]
+[FETCHED AT: 2026-04-15T02:00:08Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-15T00:25:10.301Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-15T02:00:08.696Z
 ---
 
-### [System] (제목 없음) (Syncing)
+### [System] [Lumi] OCI 요금 누수(SGD 3.93) 범인 검거 및 소탕 완료! (Always Free 최적화) (Syncing)
+> **ID**: `1776218408669` | **Date**: 2026-04-15 02:00:08 | **Device**: N/A
+
+# 작업 로그: OCI 요금 누수 분석 및 유령 볼륨 소탕 (Lumi)
+
+- **날짜:** 2026-04-15
+- **담당자:** Lumi (루미)
+- **목표:** 'Always Free' 계정에서 발생한 SGD 3.93 요금의 원인을 규명하고 200GB 무료 한도로 복구
+
+---
+
+## 1. 문제 상황 및 분석
+
+- **현상:** 이번 달(4/1~4/15) 누적 비용 **SGD 3.93** 발생 확인.
+- **분석:** `Cost Analysis` 페이지에서 `Group by: Resource` 필터를 적용하여 정밀 수색한 결과, 'Block Storage' 서비스에서 비용이 새고 있음을 포착.
+- **원인:** `Always Free` 등급의 합계 200GB 무료 한도를 초과하여 사용 중인 **47GB 크기의 유령 부트 볼륨 2개** 발견. (인스턴스 삭제 시 볼륨이 남겨졌던 과거의 잔재)
+
+## 2. 해결 조치 (Operation: Ghost Hunter)
+
+- **타겟 식별:** 
+  - `ampere-1core-6gb` (47GB, Available)
+  - `instance-20251209-1034` (47GB, Available)
+- **의존성 확인:** 두 볼륨 모두 연결된 인스턴스가 없으며 작년 12월 이후 활동 기록이 없는 'Available' 상태임을 확인.
+- **실행:** 해당 볼륨 2개를 즉시 **영구 삭제(Terminate)** 처리하여 테넌시 내 총 볼륨 합계를 200GB(150GB + 50GB)로 맞춤.
+
+## 3. 최종 결과 및 효과
+
+- **정상화:** 현재 테넌시 내 부트 볼륨 합계는 정확히 **200.0 GB**로 복구됨.
+- **기대 효과:** 다음 달부터 불필요한 과금 없이 다시 **$0.00 (Free Tier)** 유지 가능.
+- **학습:** 인스턴스 삭제 시 반드시 '부트 볼륨 삭제' 체크박스를 확인할 것. `Cost Analysis`에서는 반드시 'Resource' 단위로 쪼개서 볼 것.
+
+---
+**"Lumi가 지켜낸 3.93 SGD, 그 가치는 숫자보다 큽니다!"**
+
+
+---
+### [System] [Lumi] rsync 동기화 스크립트 최적화 완료 (pulloci/pushoci)
+> **ID**: `1776212719120` | **Date**: 2026-04-15 00:25:19 | **Device**: N/A
+
+# 작업 로그: rsync 동기화 스크립트 최적화
+
+- **날짜:** 2026-04-15
+- **담당자:** Lumi
+- **목표:** `pulloci`, `pushoci` 동기화 스크립트에서 불필요한 파일(임시 DB, 써드파티 라이브러리 등)을 제외하여 동기화 효율성 증대
+
+---
+
+## 1. 문제 현상
+
+- `pulloci` 실행 시, 직접 수정하지 않은 `vendor/` 폴더 내 파일이나 `.db-shm` 같은 임시/DB 상태 파일들이 대량으로 동기화 대상에 포함됨.
+- 이로 인해 동기화 시간이 불필요하게 길어지고, 잠재적인 데이터 충돌 위험이 있었음.
+
+## 2. 원인 분석
+
+- **임시 DB 파일 (`*.db-shm`, `*.db-wal`):** OCI 서버에서 SQLite 기반 서비스(`workspace_board`)가 활성화된 상태에서 동기화가 실행되어, 해당 시점의 임시 파일들이 동기화 대상에 포함됨.
+- **써드파티 라이브러리 (`vendor/`):** 빌드 과정이나 에이전트의 파일 스캔 등으로 인해 라이브러리 파일의 타임스탬프가 변경되면서 `rsync`가 변경 사항으로 감지함.
+- **로컬 설정/캐시 (`.claude/`):** 기기마다 고유해야 할 로컬 설정 및 캐시 파일이 동기화 대상에 포함됨.
+
+## 3. 해결 조치
+
+### 3.1. 동기화 제외 규칙 강화
+
+- 기존의 `.syncignore` 파일을 대체하는, 더 포괄적이고 강력한 동기화 제외 규칙 파일 **`.rsync_exclude.txt`** 를 프로젝트 루트에 생성함.
+- **주요 제외 항목:**
+    - 빌드 결과물 및 의존성: `node_modules/`, `vendor/`, `__pycache__/` 등
+    - 임시 DB 파일: `*.db-shm`, `*.db-wal`
+    - 에이전트 캐시 및 설정: `.agent/`, `.claude/`, `.cache/` 등
+    - 기타 임시 파일
+
+### 3.2. 동기화 스크립트 수정
+
+- `~/bin/pulloci` 와 `~/bin/pushoci` 두 스크립트의 `SYNCIGNORE` 변수가 새로 생성된 `.rsync_exclude.txt` 파일을 가리키도록 경로를 수정함.
+- `rsync` 명령어의 `--exclude-from` 옵션이 새로운 제외 규칙을 사용하도록 변경됨.
+
+## 4. 최종 결과
+
+- `pulloci`와 `pushoci` 모두 동일한 최신 제외 규칙을 적용받게 됨.
+- 불필요한 파일들이 동기화에서 완전히 제외되어, 빠르고 안정적인 양방향 동기화 환경이 구축됨.
+
+
+---
+### [System] (제목 없음)
 > **ID**: `1776212710265` | **Date**: 2026-04-15 00:25:10 | **Device**: N/A
 
 
@@ -296,64 +377,6 @@ Node/secrets/
 - confidence: 0.91
 
 *2026-04-09T20:30:28.982121+00:00*
-
----
-### [System] 🌐 synuracore.dev 공개 런칭 완료
-> **ID**: `1775742903864` | **Date**: 2026-04-09 13:55:03 | **Device**: N/A
-> **Tags**: #synuracore #cloudflare #s22 #deploy #landmark
-
-## Synura Core 허브 페이지 배포 완료
-
-오늘 2026-04-09, 우리 AI 팀의 공식 허브 **https://synuracore.dev** 가 공개되었습니다.
-
-### 주요 내용
-- **메인 서버**: S22 Ultra (proot Ubuntu) — Cloudflare Tunnel 경유
-- **터널 ID**: f5fa9666 (synura-core)
-- **엣지**: Cloudflare 서울 (icn01, icn06)
-- **3D 호버 효과**: 멤버별 컬러 box-shadow + rotateX perspective
-
-### 트러블슈팅 기록
-- proot nohup 세션 종료 문제 → Termux 레벨 nohup으로 해결
-- S22 파일 경로 혼동 (`/root/` vs `~/ubuntu-rootfs/root/`)
-- python 서버 cwd 문제 → `bash -c` 래핑으로 해결
-
-로그: `Work/Docs/02_Logs/2026-04/synuracore_launch_20260409.md`
-
----
-### [Sage] 📖 LLM_Wiki 사용자 매뉴얼 v1.0 — 5대 코어 스크립트 가이드
-> **ID**: `1775714388533` | **Date**: 2026-04-09 05:59:48 | **Device**: N/A
-> **Tags**: #매뉴얼 #지식망 #사용법 #LLM_Wiki
-
-## 핵심 스크립트 5개
-
-| 스크립트 | 한줄 설명 | 사용법 |
-|---------|----------|--------|
-| `auto_ingest.sh` | 메모 → 공식 노드 | `bash scripts/auto_ingest.sh` |
-| `inspector-v2.sh` | 노드 엑스레이 | `bash scripts/inspector-v2.sh [이름]` |
-| `auto-fix-v7.3.sh` | AI 수술 (PC) | `bash scripts/auto-fix-v7.3.sh [이름]` |
-| `rollback.sh` | 타임머신 (PC) | `bash scripts/rollback.sh [이름]` |
-| `sync-from-s22.sh` | S22→PC 동기화 | `bash scripts/sync-from-s22.sh` |
-
-## 일상 루틴 예시
-```
-1. S22 Obsidian: raw/프롬프트_체이닝_기법.md 작성
-2. S22 proot: bash scripts/auto_ingest.sh → wiki/ 편입
-3. PC: bash scripts/sync-from-s22.sh → 동기화
-4. PC: bash scripts/inspector-v2.sh 프롬프트_체이닝_기법 → 검진
-5. PC: bash scripts/auto-fix-v7.3.sh 프롬프트_체이닝_기법 → 수술
-6. (실패시) bash scripts/rollback.sh 프롬프트_체이닝_기법 → 복원
-```
-
-## 양쪽 동일 사용 가능
-- PC/S22 모두 ingest, inspect, fix 실행 가능
-- 경로: PC `~/Hun_Sunsu_Dream_F/LLM_Wiki/` / S22 `~/storage/shared/LLM_Wiki/`
-- S22는 proot Ubuntu 진입 후 실행 (`proot-distro login ubuntu`)
-- Goose 1.30.0 + nemotron-120b (양쪽 동일)
-
-## 주의
-- sync 시 wiki/는 S22 기준 덮어씀 → PC 수술 결과 보존 필요시 sync 전 확인
-- `.lock` 파일로 sync 차단 가능
-- 상세: Work/Docs/03_Knowledge/Concepts/llm_wiki_user_manual.md
 
 ---
 </pre>
