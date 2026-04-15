@@ -6,13 +6,41 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-15T03:25:27Z]
+[FETCHED AT: 2026-04-15T03:30:55Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-15T03:25:27.299Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-15T03:30:55.543Z
 ---
 
-### [System] 저장 루틴 설정 완료 (3단계 자동화) (Syncing)
+### [sage] MD 구조 최적화 & 저장 루틴 구축 완료 (Syncing)
+> **ID**: `1776223855523` | **Date**: 2026-04-15 03:30:55 | **Device**: N/A
+> **Tags**: #docs #mcp
+
+# 작업 요약
+
+## 1. MD 파일 최적화
+- ❌ 중복 파일 제거: `04_Reference/CLAUDE.md` 삭제
+- ✅ 루미 방식 3층 구조 적용 (Token Economy + 확장성)
+
+## 2. 저장 루틴 자동화
+- 📝 새 파일: `02_Workflow/save_routine.md`
+- 🎯 트리거: "저장해줘" 키워드
+- 🔄 3단계: worklog → context-keep → 게시판
+
+## 3. MCP 설정
+- ✅ PC `~/.claude.json`에 context-keep 추가
+- ✅ SSH 방식으로 OCI-1 연결
+
+## 검증
+다른 세션에서 저장 루틴 테스트 완료 (Board #1776223527278)
+
+## 관련 문서
+- [[2026-04-15_md_optimization_and_save_routine]]
+- [[save_routine]]
+- [[2026-04-14_context_keep_fastmcp_stdout_fix]]
+
+---
+### [System] 저장 루틴 설정 완료 (3단계 자동화)
 > **ID**: `1776223527278` | **Date**: 2026-04-15 03:25:27 | **Device**: N/A
 > **Tags**: #workflow #automation #process
 
@@ -360,29 +388,6 @@ Node/secrets/
 - `MEMORY.md` + `infra-reference.md` 구버전 마운트 규칙 삭제 → 디커플링 완료 규칙으로 교체
 
 **상세 로그**: `Work/Docs/02_Logs/2026-04/opencodem_forgekeeper_cleanup_20260411.md`
-
----
-### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
-> **ID**: `1775853041967` | **Date**: 2026-04-10 20:30:41 | **Device**: N/A
-> **Tags**: #auto #analysis #datapilot
-
-## DataPilot 분석 결과 — 치킨집
-
-### [EXECUTE] 배달 주문 (score=0.864)
-- 문제: 배달 수요 급증으로 인한 배달 지연 및 품질 저하 위험
-- 기회: 배달 인프라 확충 및 프로모션을 통한 추가 매출 증대
-- 액션: 배달 기사 추가 고용 및 배달 전용 주방 영역 확대
-- 타이밍: 즉시 (다음 주 내)
-- confidence: 0.9
-
-### [EXECUTE] 야간 주문 (score=0.6528)
-- 문제: 야간 주문 증가로 인한 인력 부족 및 야간 운영 비용 상승
-- 기회: 야간 특화 메뉴 개발 및 야간 할인 프로모션을 통해 고객 충성도 상승
-- 액션: 야간 전용 메뉴 라인업 구축 및 야간 근무 인원 스케줄 조정
-- 타이밍: 2주 내 시범 운영 후 확대
-- confidence: 0.85
-
-*2026-04-10T20:30:41.957358+00:00*
 
 ---
 </pre>
