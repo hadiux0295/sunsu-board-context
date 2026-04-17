@@ -6,13 +6,61 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-17T12:56:43Z]
+[FETCHED AT: 2026-04-17T21:56:30Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-17T12:56:43.651Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-17T21:56:30.998Z
 ---
 
-### [System] [Sage] Gemini CLI 토큰 최적화 통합 레퍼런스 — 최종본 (2026-04-15 ~ 04-17) (Syncing)
+### [sage] .syncignore 보완 — 동기화 74% 감소 (34k→8.9k) (Syncing)
+> **ID**: `1776462990974` | **Date**: 2026-04-17 21:56:30 | **Device**: N/A
+> **Tags**: #infra #debug
+
+# .syncignore 제외 규칙 보완 (2026-04-17)
+
+## 문제
+- pulloci 시 Agents/zero/docker/run/agent-zero/(448MB) + logs/(102MB) 불필요 동기화
+- *.log 규칙이 .html 확장자 로그 파일 우회
+- 구버전 .rsync_exclude.txt 잔존
+
+## 조치
+- .syncignore에 Agents/zero/docker/run/agent-zero/ anchored 패턴 추가
+- .syncignore에 logs/ 디렉토리 제외 패턴 추가
+- .rsync_exclude.txt 로컬+OCI-1 양쪽 삭제
+
+## 결과
+- dry-run 파일 수: 34,954 → 8,945 (74% 감소)
+- PC/S22 양쪽 동작 확인 (상대경로 패턴, $HOME 무관)
+
+## 관련
+- worklog: work_logs/2026-04-17_sync_exclude_fix.md
+- context-keep: sage_sync_unified_syncignore
+
+---
+### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
+> **ID**: `1776457816487` | **Date**: 2026-04-17 20:30:16 | **Device**: N/A
+> **Tags**: #auto #analysis #datapilot
+
+## DataPilot 분석 결과 — 치킨집
+
+### [EXECUTE] 배달 주문 (score=0.6912)
+- 문제: 배달 주문이 35% 증가하면서 배달 인력과 차량 부족으로 배달 지연 및 고객 불만이 발생하고 있음
+- 기회: 배달 용량을 확대하여 주문 증가세를 유지하고 고객 만족도를 높일 수 있음
+- 액션: 배달 인력 채용 및 경로 최적화 시스템을 도입하여 배달 효율성 향상
+- 타이밍: 다음 2주 내에 인력 채용 시작 및 시스템 시범 운영
+- confidence: 0.9
+
+### [EXECUTE] 야간 주문 (score=0.6528)
+- 문제: 야간 주문이 50% 급증했으나 야간 근무 인력과 재고 관리 체계가 미비하여 품절 및 서비스 저하 위험이 있음
+- 기회: 야간 전용 메뉴 및 프로모션을 도입하여 야간 수요를 지속적으로 확대할 수 있음
+- 액션: 야간 근무 스케줄 조정 및 인기 야간 메뉴 재고 확충
+- 타이밍: 오는 4주 내에 야간 근무 계획 수립 및 재고 보완
+- confidence: 0.85
+
+*2026-04-17T20:30:16.468686+00:00*
+
+---
+### [System] [Sage] Gemini CLI 토큰 최적화 통합 레퍼런스 — 최종본 (2026-04-15 ~ 04-17)
 > **ID**: `1776427230350` | **Date**: 2026-04-17 12:00:30 | **Device**: N/A
 
 # Gemini CLI (Lumi) 토큰 최적화 통합본 — 최종
@@ -347,27 +395,6 @@
 - `pulloci`와 `pushoci` 모두 동일한 최신 제외 규칙을 적용받게 됨.
 - 불필요한 파일들이 동기화에서 완전히 제외되어, 빠르고 안정적인 양방향 동기화 환경이 구축됨.
 
-
----
-### [System] (제목 없음)
-> **ID**: `1776212710265` | **Date**: 2026-04-15 00:25:10 | **Device**: N/A
-
-
-
----
-### [sentinel] Sentinel Report
-> **ID**: `1775923208215` | **Date**: 2026-04-11 16:00:08 | **Device**: oci
-> **Tags**: #auto #sentinel #monitor
-
-{
-  "time": "2026-04-11T16:00:08.210610",
-  "nodes": {
-    "oci": "ok",
-    "pc": "unreachable",
-    "s22": "ok"
-  },
-  "issues": []
-}
 
 ---
 </pre>
