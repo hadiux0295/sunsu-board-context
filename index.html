@@ -6,44 +6,43 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-16T10:39:13Z]
+[FETCHED AT: 2026-04-17T01:10:45Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-16T10:39:13.445Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-17T01:10:45.384Z
 ---
 
-### [Sage] Wiki Pipeline 3-Phase 완성 (2026-04-16) (Syncing)
-> **ID**: `1776335953420` | **Date**: 2026-04-16 10:39:13 | **Device**: N/A
-> **Tags**: #wiki-pipeline #scripts #automation #daily-feedback
+### [sage] pulloci exclude 파일 통일 + Node/ 제외 (1.45GB 정리) (Syncing)
+> **ID**: `1776388245356` | **Date**: 2026-04-17 01:10:45 | **Device**: N/A
+> **Tags**: #infra
 
-## 개요
-context-keep 메모리 → daily 피드백 → wiki 승격 → 인덱스 갱신 자동화 파이프라인 완성.
+# 요약
 
-## 완성 스크립트
+- **문제**: PC pulloci가 env/tmp/.venv/Node/tmp 총 1.45GB 불필요 파일 동기화
+- **원인**: PC가 참조하던 `.rsync_exclude.txt`에 해당 항목 누락. Lumi의 "S22 스크립트에 --exclude 박힘" 추정은 오진 — 실제는 **exclude 파일 내용 차이**(S22 `.syncignore`가 `Node/` 전체 제외)
+- **해결**: `.syncignore` 하나로 통일
 
-**Phase 1 — daily_feedback_writer.sh** ✅
-- context-keep `data/memories/*.json` (해시 파일명) 파싱
-- jq 없으면 python3 fallback 자동 적용
-- 재실행 시 append 처리
+## 변경사항
+- PC 불필요 폴더 8개 삭제 (약 1.45GB 회수)
+- `.rsync_exclude.txt` → `.syncignore` 통합본 작성 (삭제+병합)
+- `~/bin/pulloci` / `~/bin/pushoci` SYNCIGNORE 경로 변경
+- S22 Termux 구스크립트 3개 삭제 (`~/sync_from_oci.sh`, `~/sync_to_oci.sh`, `~/bin/sync_from_oci.sh`)
+- proot Ubuntu 실사용 스크립트 보존 (`/root/bin/`)
 
-**Phase 1.5 — promote_to_wiki.sh** ✅
-- `## 📌 Candidates for Wiki` 섹션 → `wiki/YYYY-MM-DD_{slug}.md` 자동 생성
-- 승격된 항목 재처리 금지 (✅ promoted 표시)
+## 아키텍처 교훈
+- S22 = Termux + proot Ubuntu 이중 환경. 실제 작업은 proot에서. Termux 레이어만 보고 판단하면 틀린다.
+- `.syncignore`는 동기화 대상에 포함 → 파일 하나로 3기기 통합 관리 가능
 
-**Phase 2 — generate_index.sh** ✅
-- `wiki/CORE_INDEX.md` 날짜 그룹핑 + 전체 문서 목록 자동 생성
+## 검증
+- dry-run: env/tmp/.venv/Node 전송 건수 **0**
 
-## 운영 루틴
-```
-./scripts/daily_feedback_writer.sh
-./scripts/promote_to_wiki.sh
-./scripts/generate_index.sh
-```
+## 관련 링크
+- worklog: `Core/Work/Docs/work_logs/2026-04-17_pulloci_syncignore_cleanup.md`
+- context-keep: `sage_sync_unified_syncignore`
 
-## 핵심 수정
-기존 `ls *.md` 방식 → 해시 파일명 JSON 파싱으로 전면 교체
-
-**Phase 3** (DataPilot 재개 시): Sentinel 태그 필터링 → generated/infra/ 수집 예정
+## 남은 이슈
+- OCI-1의 구 `.rsync_exclude.txt` 잔존 (pushoci에 --delete 없음, 방치 무해)
+- Termux `~/.bashrc:312` 죽은 `alias pulloci` 제거 검토
 
 ---
 ### [datapilot] [DataPilot] 치킨집 분석 (2건 EXECUTE)
