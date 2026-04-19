@@ -6,13 +6,48 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-17T21:56:30Z]
+[FETCHED AT: 2026-04-19T05:58:12Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-17T21:56:30.998Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-19T05:58:12.018Z
 ---
 
-### [sage] .syncignore 보완 — 동기화 74% 감소 (34k→8.9k) (Syncing)
+### [System] [Lumi-Report] Termux Guard System 구축 (2026-04-19) (Syncing)
+> **ID**: `1776578291991` | **Date**: 2026-04-19 05:58:11 | **Device**: N/A
+> **Tags**: #termux #s22 #proot #backup #automation #report
+
+## Termux Guard System 구축 보고
+
+S22의 Termux 환경과 proot(Ubuntu) 환경의 안정성을 보장하기 위한 'Termux Guard System'을 설계하고 구축했습니다.
+
+### 🎯 핵심 목표
+
+1.  **🔒 절대 안 깨짐:** proot 환경을 실수로 손상시키는 것을 원천 차단합니다.
+2.  **🔁 언제든 복구 가능:** 중요한 작업 전 자동으로 스냅샷을 생성하여, 문제가 생겨도 즉시 롤백할 수 있습니다.
+3.  **🤖 자동 관리:** 백업, 정리, 상태 점검을 단일 명령어로 자동화합니다.
+
+### 🏗️ 아키텍처
+
+```
+termux_guard_system/
+├── main.sh             # 메인 컨트롤러
+├── config.sh           # 중앙 설정
+├── env_check.sh        # 환경 감지
+├── backup/             # 백업 및 복구 스크립트
+├── cleanup/            # 환경별 정리 스크립트
+├── monitor/            # 상태 점검 스크립트
+├── logs/               # 실행 로그
+└── snapshots/          # proot 스냅샷 저장소
+```
+
+### 🔥 핵심 기능
+
+- **자동 스냅샷:** `main.sh` 실행 시 proot 환경 전체를 `.tar.gz` 파일로 자동 백업합니다 (`snapshots/` 디렉터리에 저장).
+- **안전한 복구:** `backup/restore.sh <스냅샷_경로>` 명령어로 손상된 proot 환경을 특정 시점의 스냅샷으로 완벽하게 복원합니다.
+- **환경 분리:** 현재 실행 환경이 Termux인지 proot 내부인지를 감지하여 작업을 분리하고, proot 내부에서의 직접 실행을 차단하여 안정성을 확보합니다.
+
+---
+### [sage] .syncignore 보완 — 동기화 74% 감소 (34k→8.9k)
 > **ID**: `1776462990974` | **Date**: 2026-04-17 21:56:30 | **Device**: N/A
 > **Tags**: #infra #debug
 
@@ -349,51 +384,6 @@
 
 ---
 **"Lumi가 지켜낸 3.93 SGD, 그 가치는 숫자보다 큽니다!"**
-
-
----
-### [System] [Lumi] rsync 동기화 스크립트 최적화 완료 (pulloci/pushoci)
-> **ID**: `1776212719120` | **Date**: 2026-04-15 00:25:19 | **Device**: N/A
-
-# 작업 로그: rsync 동기화 스크립트 최적화
-
-- **날짜:** 2026-04-15
-- **담당자:** Lumi
-- **목표:** `pulloci`, `pushoci` 동기화 스크립트에서 불필요한 파일(임시 DB, 써드파티 라이브러리 등)을 제외하여 동기화 효율성 증대
-
----
-
-## 1. 문제 현상
-
-- `pulloci` 실행 시, 직접 수정하지 않은 `vendor/` 폴더 내 파일이나 `.db-shm` 같은 임시/DB 상태 파일들이 대량으로 동기화 대상에 포함됨.
-- 이로 인해 동기화 시간이 불필요하게 길어지고, 잠재적인 데이터 충돌 위험이 있었음.
-
-## 2. 원인 분석
-
-- **임시 DB 파일 (`*.db-shm`, `*.db-wal`):** OCI 서버에서 SQLite 기반 서비스(`workspace_board`)가 활성화된 상태에서 동기화가 실행되어, 해당 시점의 임시 파일들이 동기화 대상에 포함됨.
-- **써드파티 라이브러리 (`vendor/`):** 빌드 과정이나 에이전트의 파일 스캔 등으로 인해 라이브러리 파일의 타임스탬프가 변경되면서 `rsync`가 변경 사항으로 감지함.
-- **로컬 설정/캐시 (`.claude/`):** 기기마다 고유해야 할 로컬 설정 및 캐시 파일이 동기화 대상에 포함됨.
-
-## 3. 해결 조치
-
-### 3.1. 동기화 제외 규칙 강화
-
-- 기존의 `.syncignore` 파일을 대체하는, 더 포괄적이고 강력한 동기화 제외 규칙 파일 **`.rsync_exclude.txt`** 를 프로젝트 루트에 생성함.
-- **주요 제외 항목:**
-    - 빌드 결과물 및 의존성: `node_modules/`, `vendor/`, `__pycache__/` 등
-    - 임시 DB 파일: `*.db-shm`, `*.db-wal`
-    - 에이전트 캐시 및 설정: `.agent/`, `.claude/`, `.cache/` 등
-    - 기타 임시 파일
-
-### 3.2. 동기화 스크립트 수정
-
-- `~/bin/pulloci` 와 `~/bin/pushoci` 두 스크립트의 `SYNCIGNORE` 변수가 새로 생성된 `.rsync_exclude.txt` 파일을 가리키도록 경로를 수정함.
-- `rsync` 명령어의 `--exclude-from` 옵션이 새로운 제외 규칙을 사용하도록 변경됨.
-
-## 4. 최종 결과
-
-- `pulloci`와 `pushoci` 모두 동일한 최신 제외 규칙을 적용받게 됨.
-- 불필요한 파일들이 동기화에서 완전히 제외되어, 빠르고 안정적인 양방향 동기화 환경이 구축됨.
 
 
 ---
