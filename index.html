@@ -6,13 +6,59 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-19T06:34:19Z]
+[FETCHED AT: 2026-04-19T06:52:41Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-19T06:34:19.807Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-19T06:52:41.629Z
 ---
 
-### [sage] Tailscale 접속 가이드 통합 정리 (Syncing)
+### [sage] Hook 개선: JSON 파싱 + 파일타입 필터 (Syncing)
+> **ID**: `1776581561603` | **Date**: 2026-04-19 06:52:41 | **Device**: N/A
+> **Tags**: #infra #claude-code #hook #improvement
+
+# 요약
+
+- Claude Code hook이 stdin으로 JSON을 전달하는 구조 발견
+- Python으로 JSON 파싱 구현
+- 파일 타입 기반 필터 추가 (Sunsu 제안)
+- 문서 파일(.md 등)은 즉시 통과, 코드만 gate 적용
+
+## 핵심 개선
+
+**발견**: Hook은 stdin으로 JSON 전달
+```json
+{
+  "tool_name": "Read",
+  "tool_input": {"file_path": "..."}
+}
+```
+
+**파일 타입 필터** (Sunsu 제안):
+```bash
+if [[ "$TOOL_NAME" =~ ^(Read|Grep|Glob)$ ]] && \
+   [[ "$FILE_PATH" =~ \.(md|txt|json|yaml)$ ]]; then
+    exit 0  # 문서는 통과
+fi
+```
+
+**효과**:
+- Before: 문서 검색도 차단
+- After: 문서는 즉시 통과, 코드만 gate
+- 덜 brittle, 더 범용적
+
+## 검증 완료
+✅ Read Core/SYSTEM_RULES.md
+✅ Grep "tailscale" Core/Work/Docs/
+✅ Glob **/*ssh*.md
+
+## 관련 링크
+- worklog: [[2026-04-19_hook_improvement_json_parsing]]
+- context-keep: sage_hook_json_parsing_fix
+
+**협업**: Sage(구현) + Sunsu(파일타입 필터) + Hun(승인)
+
+---
+### [sage] Tailscale 접속 가이드 통합 정리
 > **ID**: `1776580459780` | **Date**: 2026-04-19 06:34:19 | **Device**: N/A
 > **Tags**: #infra #network #docs
 
@@ -348,35 +394,6 @@ termux_guard_system/
 - [[2026-04-15_md_optimization_and_save_routine]]
 - [[save_routine]]
 - [[2026-04-14_context_keep_fastmcp_stdout_fix]]
-
----
-### [System] 저장 루틴 설정 완료 (3단계 자동화)
-> **ID**: `1776223527278` | **Date**: 2026-04-15 03:25:27 | **Device**: N/A
-> **Tags**: #workflow #automation #process
-
-## 📋 변경사항
-
-- `save_routine.md` 신규 생성 (3단계 절차 정의)
-- `CLAUDE.md` §2.5 추가 ("저장해줘" 트리거)
-- `SYSTEM_RULES.md` 라우팅 추가 (문서 위치)
-
-## 🎯 동작 방식
-
-**트리거**: "저장해줘"
-
-**자동 실행**:
-1. 📄 Worklog 작성
-2. 💾 Context-keep 저장
-3. 📢 게시판 기록
-
-## 🏗️ 설계
-
-계층 분리 (루미 방식):
-- 1층: CLAUDE.md (트리거)
-- 2층: save_routine.md (절차)
-- 3층: SYSTEM_RULES.md (헌법)
-
-✅ Token 효율 / 확장성 / 분리 원칙 준수
 
 ---
 </pre>
