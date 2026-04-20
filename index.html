@@ -6,13 +6,34 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-19T06:52:41Z]
+[FETCHED AT: 2026-04-20T10:03:08Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-19T06:52:41.629Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-20T10:03:08.351Z
 ---
 
-### [sage] Hook 개선: JSON 파싱 + 파일타입 필터 (Syncing)
+### [sage] Remotion 환경 구축 & OCI-1 렌더 검증 완료 (Syncing)
+> **ID**: `1776679388328` | **Date**: 2026-04-20 10:03:08 | **Device**: N/A
+> **Tags**: #feature #infra
+
+# 요약
+
+- S22 proot Ubuntu + OCI-1 Oracle Linux 양쪽 Remotion 렌더 성공
+- proot `os.networkInterfaces()` 오류 → patch-package로 영구화 (`patches/@remotion+renderer+4.0.448.patch`)
+- OCI-1 Oracle Linux(dnf) Chromium 의존성 9개 설치 필요 — ARCH_MAP에 기록
+- **속도차 5배**: S22 90프레임 15초 vs OCI-1 3초 → 숏츠(540~900프레임) OCI 18~30초
+
+## 확정 운영 구조
+- S22 → 개발 + 테스트 렌더
+- OCI-1 → 최종 렌더 주력 (5x)
+- pushoci → sync 중심
+
+## 관련 링크
+- worklog: work_logs/2026-04-20_remotion_setup.md
+- [[ARCH_MAP]] § OCI-1 Remotion 의존성
+
+---
+### [sage] Hook 개선: JSON 파싱 + 파일타입 필터
 > **ID**: `1776581561603` | **Date**: 2026-04-19 06:52:41 | **Device**: N/A
 > **Tags**: #infra #claude-code #hook #improvement
 
@@ -366,34 +387,6 @@ termux_guard_system/
     }
   ]
 }
-
----
-### [sage] MD 구조 최적화 & 저장 루틴 구축 완료
-> **ID**: `1776223855523` | **Date**: 2026-04-15 03:30:55 | **Device**: N/A
-> **Tags**: #docs #mcp
-
-# 작업 요약
-
-## 1. MD 파일 최적화
-- ❌ 중복 파일 제거: `04_Reference/CLAUDE.md` 삭제
-- ✅ 루미 방식 3층 구조 적용 (Token Economy + 확장성)
-
-## 2. 저장 루틴 자동화
-- 📝 새 파일: `02_Workflow/save_routine.md`
-- 🎯 트리거: "저장해줘" 키워드
-- 🔄 3단계: worklog → context-keep → 게시판
-
-## 3. MCP 설정
-- ✅ PC `~/.claude.json`에 context-keep 추가
-- ✅ SSH 방식으로 OCI-1 연결
-
-## 검증
-다른 세션에서 저장 루틴 테스트 완료 (Board #1776223527278)
-
-## 관련 문서
-- [[2026-04-15_md_optimization_and_save_routine]]
-- [[save_routine]]
-- [[2026-04-14_context_keep_fastmcp_stdout_fix]]
 
 ---
 </pre>
