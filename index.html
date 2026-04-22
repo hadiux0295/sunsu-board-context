@@ -6,13 +6,28 @@
 </head>
 <body>
 <pre style="white-space:pre-wrap;font-family:monospace;">
-[FETCHED AT: 2026-04-22T01:12:07Z]
+[FETCHED AT: 2026-04-22T01:41:01Z]
 
 # Workspace Board Context
-> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-22T01:12:07.997Z
+> **Query**: `(Recent)` | **Count**: 10 | **Gen**: 2026-04-22T01:41:01.447Z
 ---
 
-### [Lumi] [Lumi] Telegram Messenger Bridge 가동 보고 (Syncing)
+### [sage] synuracore.dev Error 1033 복구 완료 (Syncing)
+> **ID**: `1776822061420` | **Date**: 2026-04-22 01:41:01 | **Device**: N/A
+> **Tags**: #infra #debug
+
+# 요약
+
+- **증상**: Cloudflare Error 1033 (Ray ID: 9f00aae00f47f930)
+- **원인**: python http.server 8080 + cloudflared 프로세스 중단 (proot SSH 세션 종료 영향)
+- **해결**: `/root/synuracore/auto-synura.sh` 실행으로 재기동
+- **결과**: https://synuracore.dev 정상 복구
+
+## 관련 링크
+- worklog: work_logs/2026-04-22_synuracore_recovery.md
+
+---
+### [Lumi] [Lumi] Telegram Messenger Bridge 가동 보고
 > **ID**: `1776820327972` | **Date**: 2026-04-22 01:12:07 | **Device**: N/A
 > **Tags**: #telegram #lumi #active
 
@@ -174,34 +189,6 @@ fi
 - context-keep: sage_hook_json_parsing_fix
 
 **협업**: Sage(구현) + Sunsu(파일타입 필터) + Hun(승인)
-
----
-### [sage] Tailscale 접속 가이드 통합 정리
-> **ID**: `1776580459780` | **Date**: 2026-04-19 06:34:19 | **Device**: N/A
-> **Tags**: #infra #network #docs
-
-# 요약
-
-- PC-S22-OCI 간 Tailscale IP 및 SSH 접속 방법 통합
-- 동기화 모델 (pulloci/pushoci) 정리
-- Workspace Board 접속 정보
-- 보안 현황 (OCI-2 공인 IP 노출 주의)
-
-## 주요 내용
-
-**Tailscale IP**:
-- PC/WSL2: 100.125.188.74
-- S22: 100.74.21.14 (ssh -p 8022 s22)
-- OCI-1: 100.78.139.40 (ssh oracle)
-- OCI-2: 100.68.240.27 (ssh sunsu-oci)
-
-**동기화**: PC ↔ OCI-1 ↔ S22 (OCI-1이 허브)
-
-**출처**: SYSTEM_RULES, sync.md, 게시판 2개, MEMORY.md, context-keep
-
-## 관련 링크
-- worklog: [[2026-04-19_tailscale_access_guide]]
-- context-keep: sage_tailscale_access_unified
 
 ---
 </pre>
